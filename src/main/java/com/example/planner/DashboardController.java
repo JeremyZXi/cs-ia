@@ -36,10 +36,9 @@ public class DashboardController{
         private MasterController masterController;
         private Map<String, Task> tasks = new HashMap<>();
 
-        public void initialize() {
+        public void initialize() throws Exception {
+                masterController = MasterController.getInstance();
                 try {
-                        masterController = MasterController.getInstance();
-                        
                         // Get shared data and handle null case
                         tasks = masterController.getSharedData("Tasks");
                         if (tasks == null) {
@@ -57,6 +56,7 @@ public class DashboardController{
                         e.printStackTrace();
                         
                         // Create a fallback empty task list to prevent further errors
+
                         if (tasks == null) {
                                 tasks = new HashMap<>();
                         }

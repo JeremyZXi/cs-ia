@@ -1,6 +1,7 @@
 package com.example.planner;
 
 import com.example.planner.module.Task;
+import com.example.planner.utility.StorageManager;
 import javafx.fxml.*;
 import javafx.stage.Stage;
 import javafx.scene.*;
@@ -16,17 +17,21 @@ public class MasterController {
     private Map<String, Stage> windows = new HashMap<>();
 
     // Private constructor prevents instantiation from other classes
-    private MasterController(){
+    private MasterController() throws Exception {
         //loaddata
         loadTasks();
     }
-    private void loadTasks(){
+    private void loadTasks() throws Exception {
         Map<String, Task> tasks = new HashMap<>();
-
+        if(StorageManager.storageExists()){
+            tasks = StorageManager.load();
+        } else{
+            tasks = new HashMap<>();
+        }
         setSharedData("Tasks",tasks);
     }
     // Thread-safe Singleton instance retrieval method
-    public static synchronized MasterController getInstance() {
+    public static synchronized MasterController getInstance() throws Exception {
         if (instance == null) {
             instance = new MasterController();
         }

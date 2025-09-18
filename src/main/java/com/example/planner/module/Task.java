@@ -32,6 +32,9 @@ public class Task {
         this.description = description;
         this.id = UUID.randomUUID().toString();
     }
+    public Task() {
+        // Default constructor for deserialization
+    }
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }

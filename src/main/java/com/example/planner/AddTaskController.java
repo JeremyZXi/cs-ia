@@ -38,9 +38,13 @@ public class AddTaskController {
     private MasterController masterController;
     private Map<String, Task> tasks = new HashMap<>();
 
-    public void initialize(){
+    public void initialize() throws Exception {
         masterController = MasterController.getInstance();
         tasks = masterController.getSharedData("Tasks");
+
+        txtFiledTaskName.textProperty().addListener((obs, oldVal, newVal) -> {
+            lblTaskName.setText(newVal);
+        });
     }
 
     @FXML

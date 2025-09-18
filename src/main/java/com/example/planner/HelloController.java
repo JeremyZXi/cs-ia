@@ -15,7 +15,7 @@ public class HelloController {
     private MasterController masterController;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws Exception {
         masterController = MasterController.getInstance();
     }
 

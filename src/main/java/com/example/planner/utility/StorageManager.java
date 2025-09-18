@@ -26,7 +26,7 @@ public class StorageManager {
         MAPPER.writerWithDefaultPrettyPrinter().writeValue(FILE.toFile(), tasks);
     }
 
-    public static ArrayList<Task> load() throws Exception {
-        return MAPPER.readValue(FILE.toFile(), new TypeReference<ArrayList<Task>>() {});
+    public static Map<String, Task> load() throws Exception {
+        return MAPPER.readValue(FILE.toFile(), new TypeReference<Map<String, Task>>() {});
     }
 }
