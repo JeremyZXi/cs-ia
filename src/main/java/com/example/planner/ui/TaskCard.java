@@ -11,6 +11,10 @@ import javafx.scene.paint.Color;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+
 public class TaskCard extends HBox {
 
     private static TaskCard currentlySelectedCard = null; // tracks the selected card
@@ -23,6 +27,7 @@ public class TaskCard extends HBox {
 
     private final String defaultStyle = "-fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
     private final String selectedStyle = "-fx-background-color: #d0e8ff; -fx-border-color: #2196F3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
+    private final String completedStyle = "-fx-background-color: #e5e5e5; -fx-border-color: #cccccc; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
 
     public TaskCard(Task task,Consumer<Task> onSelectCallback) {
         this.task = task;
@@ -55,7 +60,21 @@ public class TaskCard extends HBox {
     }
 
     private void setupListeners() {
-        checkBox.setOnAction(e -> task.setComplete(checkBox.isSelected()));
+        checkBox.setOnAction(e -> {
+            boolean isComplete = checkBox.isSelected();
+            task.setComplete(isComplete);
+            playCheckSound();
+            if (isComplete) {
+                this.setStyle(completedStyle);
+                checkBox.setStyle("-fx-text-fill: #888888; -fx-strikethrough: true;");
+            } else {
+                this.setStyle(isSelected ? selectedStyle : defaultStyle);
+                checkBox.setStyle("");
+            }
+
+            playCheckSound();
+        });
+
 
         // select this card on click
         this.setOnMouseClicked(e -> select());
@@ -104,4 +123,15 @@ public class TaskCard extends HBox {
         label.setText(task.getDueDate() != null ? task.getDueDate().format(formatter) : "No due date");
         checkBox.setSelected(task.isComplete());
     }
+    private void playCheckSound() {
+        try {
+            String soundPath = getClass().getResource("/com/example/planner/ding-402325.mp3").toExternalForm();
+            Media sound = new Media(soundPath);
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.err.println("Could not play sound: " + e.getMessage());
+        }
+    }
+
 }
