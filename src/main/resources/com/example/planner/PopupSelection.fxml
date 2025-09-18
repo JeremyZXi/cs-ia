@@ -24,7 +24,7 @@
                   <Spinner fx:id="spinPriority" editable="true" maxHeight="25.0" maxWidth="55.0" prefHeight="25.0" prefWidth="55.0" />
                </children>
             </HBox>
-            <Button fx:id="btnEnter" mnemonicParsing="false" text="enter" />
+            <Button fx:id="btnEnter" mnemonicParsing="false" onAction="#handleEnter" text="enter" />
          </children>
          <padding>
             <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />

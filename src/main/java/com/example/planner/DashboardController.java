@@ -46,11 +46,11 @@ public class DashboardController{
                                 tasks = new HashMap<>();
                                 masterController.setSharedData("Tasks", tasks);
                         }
-                        
+                        /*
                         Task temp = new Task(LocalDate.now(), LocalTime.now(),LocalTime.now(),10,"Test Task","This is a test task");
                         tasks.put("task1",temp);
                         StorageManager.save(tasks);
-                        
+                        */
                         System.out.println("Dashboard initialized successfully with " + tasks.size() + " tasks");
                 } catch (Exception e) {
                         System.err.println("Error in DashboardController initialize: " + e.getMessage());
@@ -61,6 +61,8 @@ public class DashboardController{
                                 tasks = new HashMap<>();
                         }
                 }
+
+
         }
 
         @FXML

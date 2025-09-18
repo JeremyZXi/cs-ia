@@ -2,10 +2,10 @@ package com.example.planner.module;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+import java.util.UUID;
 public class Task {
 
-
+    private String id;
     private LocalDate dueDate;
     private LocalTime start;
     private LocalTime end;
@@ -20,7 +20,21 @@ public class Task {
         this.timeSpan = timeSpan;
         this.title = title;
         this.description = description;
+        this.id = UUID.randomUUID().toString();
     }
+
+    public Task(LocalDate dueDate,int timeSpan, String title, String description) {
+        this.dueDate = dueDate;
+        this.start = start;
+        this.end = end;
+        this.timeSpan = timeSpan;
+        this.title = title;
+        this.description = description;
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public LocalDate getDueDate() {
         return dueDate;
