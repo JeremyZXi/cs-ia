@@ -1,11 +1,14 @@
 package com.example.planner;
 
+import com.example.planner.module.Task;
 import javafx.fxml.*;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import java.util.*;
 import java.io.*;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 public class MasterController {
     private static MasterController instance;
@@ -15,6 +18,12 @@ public class MasterController {
     // Private constructor prevents instantiation from other classes
     private MasterController(){
         //loaddata
+        loadTasks();
+    }
+    private void loadTasks(){
+        Map<String, Task> tasks = new HashMap<>();
+
+        setSharedData("Tasks",tasks);
     }
     // Thread-safe Singleton instance retrieval method
     public static synchronized MasterController getInstance() {
@@ -50,12 +59,42 @@ public class MasterController {
             windows.put(title, stage);
 
         } catch (IOException e) {
-            showAlert("FXML File Opening Error", "Please try again.");
+            showAlert("FXML File Opening Error", "Error: " + e.getMessage() + "\n\nFull stack trace:\n" + getStackTraceString(e));
             System.out.println(e);
+            e.printStackTrace();
             // If the previous window (callerStage) exists, show it again to avoid a blank screen
             if (callerStage != null) {
                 callerStage.show(); // Fallback
             }
+        } catch (Exception e) {
+            showAlert("Unexpected Error", "Error: " + e.getMessage() + "\n\nFull stack trace:\n" + getStackTraceString(e));
+            System.out.println(e);
+            e.printStackTrace();
+            // If the previous window (callerStage) exists, show it again to avoid a blank screen
+            if (callerStage != null) {
+                callerStage.show(); // Fallback
+            }
+        }
+    }
+    public void hideWindow(String title) {
+        Stage stage = windows.get(title);
+        if (stage != null) {
+            stage.hide();
+        }
+    }
+
+    public void showWindow(String title) {
+        Stage stage = windows.get(title);
+        if (stage != null) {
+            stage.show();
+        }
+    }
+
+    public void closeWindow(String title) {
+        Stage stage = windows.get(title);
+        if (stage != null) {
+            stage.close();
+            windows.remove(title);
         }
     }
 
@@ -68,8 +107,18 @@ public class MasterController {
         alert.showAndWait(); // Wait for the user to acknowledge the alert
     }
 
-    // Method to handle button click from FXML
-    public void onHelloButtonClick() {
-        showAlert("Hello", "Hello from MasterController!");
+    // Method to add shared data
+    public void setSharedData(String key, Object value) {
+        sharedData.put(key, value);
     }
+
+    // Helper method to get stack trace as string
+    private String getStackTraceString(Exception e) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        return sw.toString();
+    }
+
+
 }

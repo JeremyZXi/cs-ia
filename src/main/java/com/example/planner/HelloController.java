@@ -3,6 +3,7 @@ package com.example.planner;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 public class HelloController {
     @FXML
@@ -11,8 +12,24 @@ public class HelloController {
     @FXML
     private Button helloButton;
 
+    private MasterController masterController;
+
+    @FXML
+    public void initialize() {
+        masterController = MasterController.getInstance();
+    }
+
     @FXML
     private void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+        masterController.closeWindow("Login");
+
+
+
+        masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null);
     }
+
+
+
+
+
 }

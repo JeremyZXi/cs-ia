@@ -10,7 +10,13 @@ module com.example.planner {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires com.almasb.fxgl.all;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.datatype.jsr310;
 
     opens com.example.planner to javafx.fxml;
+    opens com.example.planner.module to com.fasterxml.jackson.databind;
+    opens com.example.planner.utility to com.fasterxml.jackson.databind;
     exports com.example.planner;
+    exports com.example.planner.module;
+    exports com.example.planner.utility;
 }
