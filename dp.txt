@@ -1,0 +1,31 @@
+
+// TASKS[] is an array contains object TASK
+// TASK.getTime() method returns an int representing amount of time needed to complete that task in minutes
+// TASK.getPriority() method returns an double priority index between 1.0 and 10.0
+method dp(TASKS[],AVAILABLE_SPACE)
+
+    TASK_NUM = TASKS.length()
+    RESULT[][] // zeros 2D array with size of (TASK_NUM + 1) * (AVAILABLE_SPACE +  1)
+
+    loop I from 1 to TASK_NUM+1 // loop over all the tasks
+        loop J from 0 to AVAILABLE_SPACE // loop over all the time(or space)
+            if J < TASKS[I-1].getTime() then
+                // drop the current task because they can't fit into the time slot
+                RESULT[I][J] = RESULT[I - 1][J]
+            else then
+                // time availble for the current task, see if the task is prioritized or not to determine whether pick or not
+                if RESULT[I - 1][J] > RESULT[I-1][J - TASKS[I-1].getTime()] + TASKS[I-1].getPriority() then
+                    // we do not pick the current task, our available time is still J, and the maximum possible value(priority index) we may obtain would be up to (I-1)th task
+                    RESULT[I][J] = RESULT[I - 1][J]
+                else then
+                    // we do pick the current task
+                    // we would spend 'TASKS[I-1].getTime()' on the task, so what's left would be J - TASKS[I-1].getTime()
+                    // the optimal value in this case would apply for the first (I-1) task
+                    RESULT[I][J] = RESULT[I-1][J - TASKS[I-1].getTime()] + TASKS[I-1].getPriority()
+                end if
+            end if
+
+        end loop
+    end loop
+
+end method
