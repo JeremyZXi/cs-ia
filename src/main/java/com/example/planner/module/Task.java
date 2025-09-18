@@ -13,6 +13,8 @@ public class Task {
     private String title;
     private String description;
 
+    private boolean isComplete = false;
+
     public Task(LocalDate dueDate, LocalTime start, LocalTime end, int timeSpan, String title, String description) {
         this.dueDate = dueDate;
         this.start = start;
@@ -37,6 +39,15 @@ public class Task {
     }
 
     public String getId() { return id; }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean isComplete) {
+       this.isComplete = isComplete;
+    }
+
     public void setId(String id) { this.id = id; }
 
     public LocalDate getDueDate() {

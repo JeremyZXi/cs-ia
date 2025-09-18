@@ -44,43 +44,29 @@ public class MasterController {
     }
 
     // Method to open a new window
-    public void openWindow(String fxmlPath, String title, Stage callerStage) {
+    public void openWindow(String fxmlPath, String title, Runnable onCloseCallback) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = fxmlLoader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
 
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(new Scene(root));
+            stage.setOnHidden(e -> {
+                windows.remove(title); // Remove from map when window is closed
+                if (onCloseCallback != null) {
+                    onCloseCallback.run();
+                }
+            });
 
-            // return to caller when new window is closed
-            if (callerStage != null) {
-                stage.setOnHidden(e -> callerStage.show());
-            }
-
-            stage.show();
-
-            // Store the window for future reference
+            // Store the stage in the windows map
             windows.put(title, stage);
-
+            stage.show();
         } catch (IOException e) {
-            showAlert("FXML File Opening Error", "Error: " + e.getMessage() + "\n\nFull stack trace:\n" + getStackTraceString(e));
-            System.out.println(e);
             e.printStackTrace();
-            // If the previous window (callerStage) exists, show it again to avoid a blank screen
-            if (callerStage != null) {
-                callerStage.show(); // Fallback
-            }
-        } catch (Exception e) {
-            showAlert("Unexpected Error", "Error: " + e.getMessage() + "\n\nFull stack trace:\n" + getStackTraceString(e));
-            System.out.println(e);
-            e.printStackTrace();
-            // If the previous window (callerStage) exists, show it again to avoid a blank screen
-            if (callerStage != null) {
-                callerStage.show(); // Fallback
-            }
         }
     }
+
     public void hideWindow(String title) {
         Stage stage = windows.get(title);
         if (stage != null) {

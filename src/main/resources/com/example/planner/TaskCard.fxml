@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.CheckBox?>
+
+<fx:root type="javafx.scene.layout.HBox" xmlns:fx="http://javafx.com/fxml" spacing="10" style="-fx-padding: 10;">
+    <CheckBox fx:id="checkCompleted" />
+    <Label fx:id="labelTitle" style="-fx-font-weight: bold;" />
+    <Label fx:id="labelDueDate" style="-fx-text-fill: #808080FF;" />
+</fx:root>

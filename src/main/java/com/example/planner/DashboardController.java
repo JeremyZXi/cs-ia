@@ -1,4 +1,5 @@
 package com.example.planner;
+import com.example.planner.ui.TaskCard;
 import com.example.planner.module.Task;
 import com.example.planner.utility.StorageManager;
 import javafx.fxml.FXML;
@@ -10,6 +11,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import java.time.format.DateTimeFormatter;
 
 public class DashboardController{
         @FXML
@@ -61,18 +64,57 @@ public class DashboardController{
                                 tasks = new HashMap<>();
                         }
                 }
+                inbox();
+
+
 
 
         }
 
         @FXML
         public void handleAddTask(){
-                masterController.openWindow("/com/example/planner/PopupSelection.fxml","Add New Tasks",null);
+                //masterController.openWindow("/com/example/planner/PopupSelection.fxml","Add New Tasks",null);
+
+                masterController.openWindow(
+                        "/com/example/planner/PopupSelection.fxml",
+                        "Add New Tasks",
+                        () -> {
+                                // This callback runs AFTER the popup is closed
+                                // Reload task list from shared data
+                                tasks = masterController.getSharedData("Tasks");
+                                inbox(); // refresh the UI
+                        }
+                );
 
         }
+        @FXML
+        public void handleInbox(){
+                inbox();
+        }
 
+        private void inbox(){
+                lblHeader.setText("Inbox");
+                vboxAllTask.getChildren().clear();
+                vboxTodayTask.getChildren().clear();
+                vboxSection.getChildren().clear();
 
+                LocalDate today = LocalDate.now();
+                Map<String, Task> todayTask = new HashMap<>();
+                Map<String, Task> futureTask = new HashMap<>();
 
+                for (Task task : tasks.values()) {
+                        TaskCard card = new TaskCard(task, this::displayTaskDetail);
+                        if (task.getDueDate() != null && task.getDueDate().equals(today)) {
+                                vboxTodayTask.getChildren().add(card);
+                        } else {
+                                vboxAllTask.getChildren().add(card);
+                        }
+                }
+        }
+        private void displayTaskDetail(Task task) {
+                System.out.println(task.getTitle());
+                System.out.println(task.getDescription());
+        }
 
 
 }

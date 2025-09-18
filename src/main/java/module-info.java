@@ -12,6 +12,10 @@ module com.example.planner {
     requires com.almasb.fxgl.all;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.datatype.jsr310;
+    requires flexmark.util.ast;
+    requires flexmark;
+    requires flexmark.util.data;
+    requires flexmark.util.builder;
 
     opens com.example.planner to javafx.fxml;
     opens com.example.planner.module to com.fasterxml.jackson.databind;
