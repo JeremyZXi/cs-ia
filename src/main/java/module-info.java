@@ -17,6 +17,7 @@ module com.example.planner {
     requires flexmark.util.data;
     requires flexmark.util.builder;
     requires javafx.media;
+    requires opencsv;
 
     opens com.example.planner to javafx.fxml;
     opens com.example.planner.module to com.fasterxml.jackson.databind;

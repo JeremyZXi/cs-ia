@@ -14,7 +14,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.AddTaskController">
    <left>
-      <VBox focusTraversable="true" prefHeight="400.0" prefWidth="222.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="vboxLeft" focusTraversable="true" prefHeight="400.0" prefWidth="222.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="txtFiledTaskName" promptText="+ Add Task" />
             <TextArea fx:id="txtAreaTaskDescription" prefHeight="200.0" prefWidth="200.0" />

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 public class Task {
-
     private String id;
     private LocalDate dueDate;
     private LocalTime start;
@@ -12,6 +11,7 @@ public class Task {
     private int timeSpan;
     private String title;
     private String description;
+    private char letterDate;
 
     private boolean isComplete = false;
 
@@ -25,17 +25,24 @@ public class Task {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Task(LocalDate dueDate,int timeSpan, String title, String description) {
+    public Task(LocalDate dueDate,char letterDate,int timeSpan, String title, String description) {
+        this.letterDate = letterDate;
         this.dueDate = dueDate;
-        this.start = start;
-        this.end = end;
+
         this.timeSpan = timeSpan;
         this.title = title;
         this.description = description;
         this.id = UUID.randomUUID().toString();
     }
+
+    public Task(String title, String description) {
+
+        this.title = title;
+        this.description = description;
+        this.id = UUID.randomUUID().toString();
+    }
     public Task() {
-        // Default constructor for deserialization
+        //default constructor for deserialization
     }
 
     public String getId() { return id; }
@@ -53,6 +60,7 @@ public class Task {
     public LocalDate getDueDate() {
         return dueDate;
     }
+    public char getLetterDate(){return letterDate;}
 
     public LocalTime getStart() {
         return start;

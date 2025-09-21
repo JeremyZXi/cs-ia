@@ -19,6 +19,7 @@ public class TaskCard extends HBox {
 
     private static TaskCard currentlySelectedCard = null; // tracks the selected card
     private final Consumer<Task> onSelectCallback;
+    private final Consumer<Task> onTaskUpdateCallback;
 
     private final CheckBox checkBox;
     private final Label label;
@@ -29,9 +30,10 @@ public class TaskCard extends HBox {
     private final String selectedStyle = "-fx-background-color: #d0e8ff; -fx-border-color: #2196F3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
     private final String completedStyle = "-fx-background-color: #e5e5e5; -fx-border-color: #cccccc; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
 
-    public TaskCard(Task task,Consumer<Task> onSelectCallback) {
+    public TaskCard(Task task, Consumer<Task> onSelectCallback, Consumer<Task> onTaskUpdateCallback) {
         this.task = task;
         this.onSelectCallback = onSelectCallback;
+        this.onTaskUpdateCallback = onTaskUpdateCallback;
 
         // init components
         checkBox = new CheckBox(task.getTitle());
@@ -45,7 +47,8 @@ public class TaskCard extends HBox {
 
         label.setTextFill(Color.web("#1888ed"));
         label.setAlignment(Pos.CENTER_RIGHT);
-        label.setMinWidth(50);
+        label.setMinWidth(80);
+
 
         setPrefWidth(250);
         setMinWidth(250);
@@ -63,18 +66,14 @@ public class TaskCard extends HBox {
         checkBox.setOnAction(e -> {
             boolean isComplete = checkBox.isSelected();
             task.setComplete(isComplete);
+            updateCompletionStyle();
             playCheckSound();
-            if (isComplete) {
-                this.setStyle(completedStyle);
-                checkBox.setStyle("-fx-text-fill: #888888; -fx-strikethrough: true;");
-            } else {
-                this.setStyle(isSelected ? selectedStyle : defaultStyle);
-                checkBox.setStyle("");
+            
+            // notify the controller about the task update
+            if (onTaskUpdateCallback != null) {
+                onTaskUpdateCallback.accept(task);
             }
-
-            playCheckSound();
         });
-
 
         // select this card on click
         this.setOnMouseClicked(e -> select());
@@ -118,10 +117,43 @@ public class TaskCard extends HBox {
 
     public void setTask(Task task) {
         this.task = task;
+        refreshDisplay();
+    }
+    
+    /**
+     * refreshes the TaskCard display
+     */
+    public void refreshDisplay() {
+        if (task == null) {
+            return;
+        }
+        
+       //update evrything
+
         checkBox.setText(task.getTitle());
+        
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d");
-        label.setText(task.getDueDate() != null ? task.getDueDate().format(formatter) : "No due date");
+        label.setText(task.getDueDate() != null ? task.getDueDate().format(formatter)+", "+task.getLetterDate()+" day" : "No due date");
+        
+
         checkBox.setSelected(task.isComplete());
+        
+
+        updateCompletionStyle();
+    }
+    
+    /**
+     * updates the visual style based on task status
+     */
+    private void updateCompletionStyle() {
+        if (task.isComplete()) {
+            this.setStyle(completedStyle);
+            checkBox.setStyle("-fx-text-fill: #888888; -fx-strikethrough: true;");
+        } else {
+            this.setStyle(isSelected ? selectedStyle : defaultStyle);
+            checkBox.setStyle("");
+        }
     }
     private void playCheckSound() {
         try {
