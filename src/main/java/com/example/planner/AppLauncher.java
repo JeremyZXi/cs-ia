@@ -1,5 +1,6 @@
 package com.example.planner;
 
+import com.example.planner.utility.SettingManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -12,7 +13,11 @@ public class AppLauncher extends Application {
         /** NEW **/
         masterController = MasterController.getInstance();
        // masterController.openWindow("/com/example/planner/hello-view.fxml", "Login", null);
-        masterController.openWindow("/com/example/planner/Onboarding.fxml","Set up your day", null);
+        if(!SettingManager.storageExists()){
+            masterController.openWindow("/com/example/planner/Onboarding.fxml","Welcome", null);
+        } else {
+            masterController.openWindow("/com/example/planner/Dashboard.fxml","Dashboard", null);
+        }
     }
 
     public static void main(String[] args){

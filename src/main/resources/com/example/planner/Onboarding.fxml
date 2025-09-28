@@ -76,7 +76,7 @@
                         <Tooltip text="click to add a new time slot" />
                      </tooltip>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="140.0" text="Continue" />
+                  <Button mnemonicParsing="false" onAction="#onContinue" prefHeight="26.0" prefWidth="140.0" text="Continue" />
                </children>
             </VBox>
          </children>

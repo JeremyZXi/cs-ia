@@ -1,5 +1,6 @@
 package com.example.planner.utility;
 
+import com.example.planner.module.Setting;
 import com.example.planner.module.Task;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Map;
 public class SettingManager {
     private static final Path DIR = Path.of(System.getProperty("user.dir"), "data");
-    private static final Path FILE = DIR.resolve("storage.json");
+    private static final Path FILE = DIR.resolve("setting.json");
 
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .registerModule(new JavaTimeModule());
@@ -20,12 +21,12 @@ public class SettingManager {
         return Files.exists(FILE);
     }
 
-    public static void save(Map<String, Task> tasks) throws Exception {
+    public static void save(Setting setting) throws Exception {
         if (!Files.exists(DIR)) Files.createDirectories(DIR);
-        MAPPER.writerWithDefaultPrettyPrinter().writeValue(FILE.toFile(), tasks);
+        MAPPER.writerWithDefaultPrettyPrinter().writeValue(FILE.toFile(), setting);
     }
 
-    public static Map<String, Task> load() throws Exception {
-        return MAPPER.readValue(FILE.toFile(), new TypeReference<Map<String, Task>>() {});
+    public static Setting load() throws Exception {
+        return MAPPER.readValue(FILE.toFile(), Setting.class);
     }
 }

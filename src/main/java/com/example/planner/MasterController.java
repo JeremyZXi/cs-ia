@@ -1,6 +1,8 @@
 package com.example.planner;
 
+import com.example.planner.module.Setting;
 import com.example.planner.module.Task;
+import com.example.planner.utility.SettingManager;
 import com.example.planner.utility.StorageManager;
 import javafx.fxml.*;
 import javafx.stage.Stage;
@@ -20,6 +22,7 @@ public class MasterController {
     private MasterController() throws Exception {
         //loaddata
         loadTasks();
+        loadSetting();
     }
     private void loadTasks() throws Exception {
         Map<String, Task> tasks = new HashMap<>();
@@ -29,6 +32,14 @@ public class MasterController {
             tasks = new HashMap<>();
         }
         setSharedData("Tasks",tasks);
+    }
+
+    private void loadSetting() throws Exception {
+        Setting setting = new Setting();
+        if(SettingManager.storageExists()){
+            setting = SettingManager.load();
+        }
+        setSharedData("setting",setting);
     }
     // Thread-safe Singleton instance retrieval method
     public static synchronized MasterController getInstance() throws Exception {

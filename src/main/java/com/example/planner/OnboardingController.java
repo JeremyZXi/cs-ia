@@ -1,6 +1,8 @@
 package com.example.planner;
 
 import com.example.planner.module.Section;
+import com.example.planner.module.Setting;
+import com.example.planner.utility.SettingManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javafx.scene.Node;
 import javafx.scene.control.MenuButton;
@@ -156,6 +159,70 @@ public class OnboardingController {
         refreshAllCellMenus();
     }
 
+    @FXML
+   public void onContinue() throws Exception {
+        Setting setting = new Setting(new ArrayList<Section>());
+        List<Section> result = new ArrayList<Section>();
+
+        for (Map.Entry<String, Section> entry : assigned.entrySet()) {
+            String key = entry.getKey();
+            Section uiSection = entry.getValue();
+
+            String[] rc = key.split(",");
+            int c = Integer.parseInt(rc[0]);
+            int r = Integer.parseInt(rc[1]);
+
+            String letter = ((Label) letterDates.getChildren().get(c)).getText();
+
+            HBox row = (HBox) periodRow.getChildren().get(r);
+            TextField startTF = (TextField) row.getChildren().get(1);
+            TextField endTF   = (TextField) row.getChildren().get(2);
+
+            LocalTime start = LocalTime.parse(startTF.getText().trim());
+            LocalTime end   = LocalTime.parse(endTF.getText().trim());
+
+            ArrayList<LocalTime> span = new ArrayList<LocalTime>(2);
+            span.add(start);
+            span.add(end);
+
+            // find existing section by name
+            Section built = null;
+            for (int i = 0; i < result.size(); i++) {
+                Section s = result.get(i);
+                if (s.getName().equals(uiSection.getName())) {
+                    built = s;
+                    break;
+                }
+            }
+            if (built == null) {
+                built = new Section(
+                        uiSection.getName(),
+                        new ArrayList<String>(),
+                        new ArrayList<ArrayList<LocalTime>>(),
+                        uiSection.getColor()
+                );
+                result.add(built);
+            }
+
+
+            built.addTimeSlot(letter,span);
+        }
+
+        for (int i = 0; i < result.size(); i++) {
+            setting.addSection(result.get(i));
+        }
+
+        SettingManager.save(setting);
+        for(Section section:setting.getSections()){
+        System.out.println(section.getLetterDates());}
+        masterController.setSharedData("setting",setting);
+        masterController.closeWindow("Welcome");
+        masterController.openWindow("/com/example/planner/Dashboard.fxml","Dashboard",null);
+    }
+
+
+
+
 
     //utility method for refreshing period
     private void refreshPeriodDisplay() {
@@ -231,7 +298,7 @@ public class OnboardingController {
 
     private void apply(MenuButton cell, Section s) {
         cell.setText(s.getName());
-        cell.setStyle("-fx-border-color:#ddd; -fx-background-color:" + s.getHexColor() + ";");
+        cell.setStyle("-fx-border-color:#ddd; -fx-background-color:" + s.getColor() + ";");
     }
 
     private String key(int c, int r) { return c + "," + r; }
@@ -247,6 +314,7 @@ public class OnboardingController {
             }
         }
     }
+
 
 
 

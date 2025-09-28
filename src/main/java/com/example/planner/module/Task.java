@@ -15,6 +15,8 @@ public class Task {
 
     private boolean isComplete = false;
 
+    private Section section;
+
     public Task(LocalDate dueDate, LocalTime start, LocalTime end, char letterDate,int timeSpan, String title, String description) {
         this.dueDate = dueDate;
         this.start = start;
@@ -29,6 +31,16 @@ public class Task {
     public Task(LocalDate dueDate,char letterDate,int timeSpan, String title, String description) {
         this.letterDate = letterDate;
         this.dueDate = dueDate;
+
+        this.timeSpan = timeSpan;
+        this.title = title;
+        this.description = description;
+        this.id = UUID.randomUUID().toString();
+    }
+    public Task(Section section,LocalDate dueDate,char letterDate,int timeSpan, String title, String description) {
+        this.letterDate = letterDate;
+        this.dueDate = dueDate;
+        this.section = section;
 
         this.timeSpan = timeSpan;
         this.title = title;
