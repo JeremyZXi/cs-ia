@@ -31,4 +31,11 @@ public class Section {
         return this.name;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public String getHexColor() {
+        return this.color;
+    }
 }
