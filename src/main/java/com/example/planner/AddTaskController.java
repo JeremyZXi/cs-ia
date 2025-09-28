@@ -7,7 +7,10 @@ import com.example.planner.utility.StorageManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -29,6 +32,10 @@ import org.controlsfx.control.PopOver;
 public class AddTaskController {
 
     @FXML
+    private ImageView priorityImage;
+
+
+    @FXML
     private TitledPane sectionOption;
 
     @FXML
@@ -39,6 +46,9 @@ public class AddTaskController {
 
     @FXML
     private Label lblTaskName;
+
+    @FXML
+    private Button timeSpanBtn;
 
     @FXML
     private Spinner<?> spinPriority;
@@ -65,6 +75,8 @@ public class AddTaskController {
 
     private CustomDatePicker datePicker = new CustomDatePicker();
     private Section selectedSection;
+    private Integer selectedMinutes = null;
+    private double priority = 1.0;
 
     public void initialize() throws Exception {
         masterController = MasterController.getInstance();
@@ -129,11 +141,101 @@ public class AddTaskController {
 
 
 
+        Spinner<Integer> minutesSpinner = new Spinner<>();
+        minutesSpinner.setEditable(true);
+        minutesSpinner.setPrefWidth(100);
+        minutesSpinner.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 480, 60, 5)
+        );
+
+        // quick chips 4 usability
+        Button b15 = new Button("15"); Button b25 = new Button("25");
+        Button b30 = new Button("30"); Button b45 = new Button("45");
+        Button b60 = new Button("60"); Button b90 = new Button("90");
+
+        for (Button b : new Button[]{b15,b25,b30,b45,b60,b90}) {
+            b.getStyleClass().add("chip");
+            b.setOnAction(e -> minutesSpinner.getValueFactory().setValue(Integer.parseInt(b.getText())));
+        }
+
+        // actions
+        Button clearBtn = new Button("Clear");
+        Button applyBtn = new Button("Apply");
+        clearBtn.getStyleClass().add("secondary");
+        applyBtn.getStyleClass().add("primary");
+
+        Label title = new Label("Optional timespan (minutes)");
+        title.setStyle("-fx-font-weight: bold; -fx-padding: 0 0 6 0;");
+
+        HBox quickRow = new HBox(6, b15,b25,b30,b45,b60,b90);
+        HBox actions = new HBox(8, clearBtn, applyBtn);
+        quickRow.setStyle("-fx-padding: 6 0 0 0;");
+        actions.setStyle("-fx-padding: 10 0 0 0;");
+
+        VBox content = new VBox(6, title, minutesSpinner, quickRow, actions);
+        content.setStyle("-fx-padding: 10;");
+
+        // PopOver
+        PopOver timeSpanPop = new PopOver(content);
+        timeSpanPop.setDetachable(false);
+        timeSpanPop.setAutoHide(true);
+        timeSpanPop.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+
+        // reflect existing selection when opening
+        timeSpanBtn.setOnAction(e -> {
+            if (selectedMinutes != null) {
+                minutesSpinner.getValueFactory().setValue(selectedMinutes);
+            }
+            timeSpanPop.show(timeSpanBtn);
+        });
+
+        // actions behavior
+        applyBtn.setOnAction(e -> {
+            selectedMinutes = minutesSpinner.getValue();
+            // show the choice(min) on the button
+            timeSpanBtn.setText(selectedMinutes + " min");
+            timeSpanPop.hide();
+        });
+
+        clearBtn.setOnAction(e -> {
+            selectedMinutes = null;
+            timeSpanBtn.setText("Set timespan");
+            timeSpanPop.hide();
+        });
+
+
+
     }
+
+    @FXML
+    private void onHighPriority() {
+        priority = 5.0;
+        priorityImage.setImage(new Image(
+                getClass().getResource("/com/example/planner/icon/priority_high.png").toExternalForm()
+        ));
+    }
+
+    @FXML
+    private void onMediumPriority() {
+        priority = 2.5;
+        priorityImage.setImage(new Image(
+                getClass().getResource("/com/example/planner/icon/priority_medium.png").toExternalForm()
+        ));
+    }
+
+    @FXML
+    private void onLowPriority() {
+        priority = 0.0;
+        priorityImage.setImage(new Image(
+                getClass().getResource("/com/example/planner/icon/priority_low.png").toExternalForm()
+        ));
+    }
+
 
 
     @FXML
     public void handleEnter() throws Exception {
+        System.out.println(selectedMinutes);
 
         if (!txtFiledTaskName.getText().trim().isEmpty()){
             String title = txtFiledTaskName.getText();
@@ -142,17 +244,24 @@ public class AddTaskController {
             LocalDate date = datePicker.getValue();
             LocalTime start = LocalTime.now();
             LocalTime end = LocalTime.now();
+            int timeSpan;
+            if(selectedMinutes!=null){
+                timeSpan = selectedMinutes.intValue();
+            } else{
+                timeSpan = 15;
+            }
 
             Task task;
             if (date != null) {
                 //task = new Task(date,datePicker.getLetterForDate(date),60,title,description);
-                task = new Task(date,start,end, datePicker.getLetterForDate(date), 60,title,description);
+                task = new Task(date,start,end, datePicker.getLetterForDate(date), timeSpan,title,description);
                 if (selectedSection!=null){
-                    task = new Task(section,date,datePicker.getLetterForDate(date),60,title,description);
+                    task = new Task(section,date,datePicker.getLetterForDate(date),timeSpan,title,description);
                 }
             } else {
                 task = new Task(title,description);
             }
+            task.setPriority(priority);
             tasks.put(task.getId(), task);
             masterController.setSharedData("Tasks",tasks);
             StorageManager.save(tasks);

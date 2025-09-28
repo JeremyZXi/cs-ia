@@ -177,7 +177,7 @@
     "description" : "test for time start end",
     "letterDate" : "B",
     "section" : null,
-    "complete" : false
+    "complete" : true
   },
   "096fbb80-8def-47bc-b29e-cf1a7cf2f464" : {
     "id" : "096fbb80-8def-47bc-b29e-cf1a7cf2f464",
@@ -189,7 +189,7 @@
     "description" : "hiehfieff",
     "letterDate" : "D",
     "section" : null,
-    "complete" : false
+    "complete" : true
   },
   "0e3eb52a-eec7-4125-b9eb-c9941b3a4dd8" : {
     "id" : "0e3eb52a-eec7-4125-b9eb-c9941b3a4dd8",
@@ -201,7 +201,7 @@
     "description" : "powerpoint",
     "letterDate" : "F",
     "section" : null,
-    "complete" : false
+    "complete" : true
   },
   "096c5da2-c1b5-468b-9218-783460e90783" : {
     "id" : "096c5da2-c1b5-468b-9218-783460e90783",
@@ -219,6 +219,24 @@
       "color" : "#FFFFFFFF",
       "id" : "38cabfbc-1bd0-4c1b-a692-249ef0c24e7c"
     },
-    "complete" : false
+    "complete" : true
+  },
+  "3a050786-4269-42a7-aeac-7ace1fc4a5c9" : {
+    "id" : "3a050786-4269-42a7-aeac-7ace1fc4a5c9",
+    "dueDate" : [ 2025, 9, 11 ],
+    "start" : null,
+    "end" : null,
+    "timeSpan" : 60,
+    "title" : "Chinese ppt",
+    "description" : "你好\n我是\nblablabla\n《日出》\n\n### 重要！！！！",
+    "letterDate" : "H",
+    "section" : {
+      "name" : "Chinese A L&L SL",
+      "letterDates" : [ "B", "D", "F", "H" ],
+      "timeSpans" : [ [ [ 8, 0 ], [ 9, 15 ] ], [ [ 9, 40 ], [ 10, 55 ] ], [ [ 11, 15 ], [ 12, 25 ] ], [ [ 14, 15 ], [ 15, 35 ] ] ],
+      "color" : "#FFFFFFFF",
+      "id" : "2e19e627-2269-4f16-bde8-bc052ee301d5"
+    },
+    "complete" : true
   }
 }

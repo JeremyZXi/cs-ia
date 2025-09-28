@@ -24,7 +24,7 @@
          <children>
             <HBox prefHeight="28.0" prefWidth="190.0" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false">
+                  <Button fx:id="timeSpanBtn" mnemonicParsing="false" prefHeight="28.0" prefWidth="108.0">
                      <graphic>
                         <ImageView fitHeight="19.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -32,12 +32,38 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </Button>
-                  <Pane prefHeight="27.0" prefWidth="138.0" />
-                  <MenuButton mnemonicParsing="false" prefHeight="38.0" prefWidth="53.0">
+                  <Pane prefHeight="28.0" prefWidth="52.0" />
+                  <MenuButton mnemonicParsing="false" prefHeight="28.0" prefWidth="66.0">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                      <MenuItem mnemonicParsing="false" onAction="#onHighPriority" text="High Priority">
+                           <graphic>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@icon/priority_high.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></MenuItem>
+                      <MenuItem mnemonicParsing="false" onAction="#onMediumPriority" text="Medium Priority">
+                           <graphic>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@icon/priority_medium.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#onLowPriority" text="Low Priority">
+                           <graphic>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@icon/priority_low.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MenuItem>
                     </items>
                      <graphic>
                         <ImageView fitHeight="26.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
@@ -47,6 +73,7 @@
                         </ImageView>
                      </graphic>
                   </MenuButton>
+                  <ImageView fx:id="priorityImage" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
             <TextField fx:id="txtFiledTaskName" promptText="+ Add Task" />

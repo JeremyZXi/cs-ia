@@ -16,8 +16,17 @@ public class Task {
     private boolean isComplete = false;
 
     private Section section;
+    private double priority;
 
-    public Task(LocalDate dueDate, LocalTime start, LocalTime end, char letterDate,int timeSpan, String title, String description) {
+    public double getPriority() {
+        return priority;
+    }
+
+    public void setPriority(double priority) {
+        this.priority = priority;
+    }
+
+    public Task(LocalDate dueDate, LocalTime start, LocalTime end, char letterDate, int timeSpan, String title, String description) {
         this.dueDate = dueDate;
         this.start = start;
         this.end = end;
