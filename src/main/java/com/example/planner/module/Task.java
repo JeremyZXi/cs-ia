@@ -37,7 +37,20 @@ public class Task {
         this.description = description;
         this.id = UUID.randomUUID().toString();
     }
-    public Task(Section section,LocalDate dueDate,char letterDate,int timeSpan, String title, String description) {
+
+    public void setLetterDate(char letterDate) {
+        this.letterDate = letterDate;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
+
+    public Task(Section section, LocalDate dueDate, char letterDate, int timeSpan, String title, String description) {
         this.letterDate = letterDate;
         this.dueDate = dueDate;
         this.section = section;

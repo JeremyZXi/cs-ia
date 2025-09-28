@@ -1,0 +1,45 @@
+{
+  "sections" : [ {
+    "name" : "Math HL",
+    "letterDates" : [ "A", "C", "E", "G", "H" ],
+    "timeSpans" : [ [ [ 8, 0 ], [ 9, 15 ] ], [ [ 9, 40 ], [ 10, 55 ] ], [ [ 11, 15 ], [ 12, 25 ] ], [ [ 14, 15 ], [ 15, 35 ] ], [ [ 11, 15 ], [ 12, 25 ] ] ],
+    "color" : "#FFFFFFFF",
+    "id" : "7148625d-9b2a-4dcf-a91c-72edf76493d4"
+  }, {
+    "name" : "TOK",
+    "letterDates" : [ "A", "E" ],
+    "timeSpans" : [ [ [ 9, 40 ], [ 10, 55 ] ], [ [ 14, 15 ], [ 15, 35 ] ] ],
+    "color" : "#FFFFFFFF",
+    "id" : "e3b53395-b703-4c7a-8705-6e3e937b267a"
+  }, {
+    "name" : "Chinese A L&L SL",
+    "letterDates" : [ "B", "D", "F", "H" ],
+    "timeSpans" : [ [ [ 8, 0 ], [ 9, 15 ] ], [ [ 9, 40 ], [ 10, 55 ] ], [ [ 11, 15 ], [ 12, 25 ] ], [ [ 14, 15 ], [ 15, 35 ] ] ],
+    "color" : "#FFFFFFFF",
+    "id" : "2e19e627-2269-4f16-bde8-bc052ee301d5"
+  }, {
+    "name" : "Computer Science SL",
+    "letterDates" : [ "A", "E", "C", "G" ],
+    "timeSpans" : [ [ [ 11, 15 ], [ 12, 25 ] ], [ [ 8, 0 ], [ 9, 15 ] ], [ [ 14, 15 ], [ 15, 35 ] ], [ [ 9, 40 ], [ 10, 55 ] ] ],
+    "color" : "#FFFFFFFF",
+    "id" : "38cabfbc-1bd0-4c1b-a692-249ef0c24e7c"
+  }, {
+    "name" : "History SL",
+    "letterDates" : [ "B", "D", "H", "F" ],
+    "timeSpans" : [ [ [ 9, 40 ], [ 10, 55 ] ], [ [ 11, 15 ], [ 12, 25 ] ], [ [ 8, 0 ], [ 9, 15 ] ], [ [ 14, 15 ], [ 15, 35 ] ] ],
+    "color" : "#FFFFFFFF",
+    "id" : "aa4257e8-15dc-455d-a43b-14c1fe6f7aad"
+  }, {
+    "name" : "Physics HL",
+    "letterDates" : [ "C", "A", "D", "E", "G" ],
+    "timeSpans" : [ [ [ 8, 0 ], [ 9, 15 ] ], [ [ 14, 15 ], [ 15, 35 ] ], [ [ 8, 0 ], [ 9, 15 ] ], [ [ 9, 40 ], [ 10, 55 ] ], [ [ 11, 15 ], [ 12, 25 ] ] ],
+    "color" : "#FFFFFFFF",
+    "id" : "e939e26b-ca75-4d45-98b7-c8135e2f0a25"
+  }, {
+    "name" : "English B HL",
+    "letterDates" : [ "B", "F", "D", "G", "H" ],
+    "timeSpans" : [ [ [ 11, 15 ], [ 12, 25 ] ], [ [ 8, 0 ], [ 9, 15 ] ], [ [ 14, 15 ], [ 15, 35 ] ], [ [ 8, 0 ], [ 9, 15 ] ], [ [ 9, 40 ], [ 10, 55 ] ] ],
+    "color" : "#FFFFFFFF",
+    "id" : "5e5822f4-04d4-4f32-ae1d-dc2b6703ac96"
+  } ]
+}
