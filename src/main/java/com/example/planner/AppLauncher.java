@@ -11,7 +11,8 @@ public class AppLauncher extends Application {
     {
         /** NEW **/
         masterController = MasterController.getInstance();
-        masterController.openWindow("/com/example/planner/hello-view.fxml", "Login", null);
+       // masterController.openWindow("/com/example/planner/hello-view.fxml", "Login", null);
+        masterController.openWindow("/com/example/planner/Onboarding.fxml","Set up your day", null);
     }
 
     public static void main(String[] args){

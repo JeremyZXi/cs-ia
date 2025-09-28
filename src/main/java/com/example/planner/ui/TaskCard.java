@@ -84,7 +84,6 @@ public class TaskCard extends HBox {
         }else {
             return  null;
         }
-
     }
 
 
@@ -104,7 +103,7 @@ public class TaskCard extends HBox {
 
     public void deselect() {
         isSelected = false;
-        setStyle(defaultStyle);
+        updateCompletionStyle();
     }
 
     public boolean isSelected() {

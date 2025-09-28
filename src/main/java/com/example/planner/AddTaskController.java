@@ -11,6 +11,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 //for markdown
@@ -109,9 +110,13 @@ public class AddTaskController {
             String title = txtFiledTaskName.getText();
             String description = txtAreaTaskDescription.getText();
             LocalDate date = datePicker.getValue();
+            LocalTime start = LocalTime.now();
+            LocalTime end = LocalTime.now();
+
             Task task;
             if (date != null) {
-                task = new Task(date,datePicker.getLetterForDate(date),60,title,description);
+                //task = new Task(date,datePicker.getLetterForDate(date),60,title,description);
+                task = new Task(date,start,end, datePicker.getLetterForDate(date), 60,title,description);
             } else {
                 task = new Task(title,description);
             }

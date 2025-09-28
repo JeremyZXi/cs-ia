@@ -15,13 +15,14 @@ public class Task {
 
     private boolean isComplete = false;
 
-    public Task(LocalDate dueDate, LocalTime start, LocalTime end, int timeSpan, String title, String description) {
+    public Task(LocalDate dueDate, LocalTime start, LocalTime end, char letterDate,int timeSpan, String title, String description) {
         this.dueDate = dueDate;
         this.start = start;
         this.end = end;
         this.timeSpan = timeSpan;
         this.title = title;
         this.description = description;
+        this.letterDate = letterDate;
         this.id = UUID.randomUUID().toString();
     }
 
