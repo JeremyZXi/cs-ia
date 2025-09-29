@@ -230,6 +230,13 @@ public class AddTaskController {
                 getClass().getResource("/com/example/planner/icon/priority_low.png").toExternalForm()
         ));
     }
+    @FXML
+    private void onRegularPriority() {
+        priority = 1.0;
+        priorityImage.setImage(new Image(
+                getClass().getResource("/com/example/planner/icon/priority_regular.png").toExternalForm()
+        ));
+    }
 
 
 

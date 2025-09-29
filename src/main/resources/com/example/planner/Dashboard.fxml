@@ -207,6 +207,7 @@
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="lblTaskInfo" prefHeight="17.0" prefWidth="303.0" text="I am a due date" textFill="#1888ed" />
+                        <ImageView fx:id="prioritySign" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </HBox>
                </children>

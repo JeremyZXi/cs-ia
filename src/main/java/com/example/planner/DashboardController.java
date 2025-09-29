@@ -15,6 +15,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -25,6 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DashboardController{
+        @FXML
+        private ImageView prioritySign;
         @FXML
         private Label lblGreetings;
 
@@ -197,7 +201,13 @@ public class DashboardController{
                 txtFieldTaskName.setText(task.getTitle());
                 txtAreaDescription.setText(task.getDescription());
                 checkBoxIsComplete.setSelected(task.isComplete());
-                lblTaskInfo.setText(task.getDueDate().toString()+" ("+task.getLetterDate()+" day)");
+                lblTaskInfo.setText(task.getDueDate().toString()+" ("+task.getLetterDate()+" day) "+task.getSection().getName());
+                Image img = getPrioritySign(task);
+                prioritySign.setImage(img);
+                boolean show = (img != null);
+                prioritySign.setVisible(show);
+                prioritySign.setManaged(show);
+
 
                 // new event listeners
                 setupEventListeners(task);
@@ -312,7 +322,13 @@ public class DashboardController{
                 txtFieldTaskName.setText(task.getTitle());
                 txtAreaDescription.setText(task.getDescription());
                 checkBoxIsComplete.setSelected(task.isComplete());
-                
+                Image img = getPrioritySign(task);
+                prioritySign.setImage(img);
+                boolean show = (img != null);
+                prioritySign.setVisible(show);
+                prioritySign.setManaged(show);
+
+
                 // reestablish listeners
                 setupEventListeners(task);
                 
@@ -327,6 +343,7 @@ public class DashboardController{
                 txtAreaDescription.clear();
                 checkBoxIsComplete.setSelected(false);
                 wvDescription.getEngine().loadContent("", "text/html");
+                prioritySign.imageProperty().set(null);
         }
 
         private void updateCompletionTask() {
@@ -379,6 +396,33 @@ public class DashboardController{
                         }
                 }
         }
+
+        private Image getPrioritySign(Task task){
+                double p = task.getPriority();
+                final double EPS = 1e-6; // handle floating point precision
+
+                if (Math.abs(p - 1.0) < EPS) {
+                        return new Image(getClass()
+                                .getResource("/com/example/planner/icon/priority_regular.png")
+                                .toExternalForm());
+                } else if (Math.abs(p - 5.0) < EPS) {
+                        return new Image(getClass()
+                                .getResource("/com/example/planner/icon/priority_high.png")
+                                .toExternalForm());
+                } else if (Math.abs(p - 2.5) < EPS) {
+                        return new Image(getClass()
+                                .getResource("/com/example/planner/icon/priority_medium.png")
+                                .toExternalForm());
+                } else if (Math.abs(p - 0.0) < EPS) {
+                        return new Image(getClass()
+                                .getResource("/com/example/planner/icon/priority_low.png")
+                                .toExternalForm());
+                } else {
+                        return null;
+                }
+        }
+
+
 
 
 
