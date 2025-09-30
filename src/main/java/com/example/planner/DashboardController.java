@@ -177,7 +177,7 @@ public class DashboardController{
                                         } else {
                                                 vboxAllTask.getChildren().add(card);
                                         }
-                                        updateCompletionTask();
+                                        renderLists(selectedTasks);
                                         optimizedTasks();
                                 }
                         });
@@ -203,7 +203,7 @@ public class DashboardController{
                                 vboxAllTask.getChildren().add(card);
                         }
                 }
-                updateCompletionTask();
+                renderLists(tasks);
                 optimizedTasks();
         }
 
@@ -306,7 +306,7 @@ public class DashboardController{
                         refreshTaskCard(task);
                         saveTasksToStorage();
                         //refresh the sorting when completion status changes
-                        updateCompletionTask();
+                        renderLists(getActiveSource());
                 };
                 checkBoxIsComplete.setOnAction(completionHandler);
         }
@@ -357,7 +357,7 @@ public class DashboardController{
                 }
                 
                 // refresh the sorting when task completion status changes from TaskCard
-                updateCompletionTask();
+                renderLists(getActiveSource());
         }
         
         /**
@@ -398,56 +398,48 @@ public class DashboardController{
                 prioritySign.imageProperty().set(null);
         }
 
-        private void updateCompletionTask() {
+        private void renderLists(Map<String, Task> source) {
                 vboxTodayTask.getChildren().clear();
                 vboxAllTask.getChildren().clear();
-
-              
                 taskCardMap.clear();
 
+                LocalDate today = LocalDate.now();
                 ArrayList<Task> completeToday = new ArrayList<>();
                 ArrayList<Task> completeAll = new ArrayList<>();
-                LocalDate today = LocalDate.now();
 
-                for (Task task : tasks.values()) {
-                        TaskCard taskCard = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
-                        taskCardMap.put(task.getId(), taskCard);
-                        taskCard.refreshDisplay();
+                for (Task task : source.values()) {
+                        TaskCard card = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
+                        taskCardMap.put(task.getId(), card);
+                        card.refreshDisplay();
 
                         boolean isDueToday = task.getDueDate() != null && task.getDueDate().equals(today);
-
 
                         if (isDueToday) {
                                 if (task.isComplete()) {
                                         completeToday.add(task);
                                 } else {
-                                        vboxTodayTask.getChildren().add(taskCard);
+                                        vboxTodayTask.getChildren().add(card);
                                 }
                         } else {
                                 if (task.isComplete()) {
                                         completeAll.add(task);
                                 } else {
-                                        vboxAllTask.getChildren().add(taskCard);
+                                        vboxAllTask.getChildren().add(card);
                                 }
                         }
                 }
 
-
+                // Append completed at the bottom
                 for (Task task : completeToday) {
-                        TaskCard taskCard = taskCardMap.get(task.getId());
-                        if (taskCard != null) {
-                                vboxTodayTask.getChildren().add(taskCard);
-                        }
+                        TaskCard card = taskCardMap.get(task.getId());
+                        if (card != null) vboxTodayTask.getChildren().add(card);
                 }
-
-                // Add completed ALL OTHER tasks at bottom of all-task list
                 for (Task task : completeAll) {
-                        TaskCard taskCard = taskCardMap.get(task.getId());
-                        if (taskCard != null) {
-                                vboxAllTask.getChildren().add(taskCard);
-                        }
+                        TaskCard card = taskCardMap.get(task.getId());
+                        if (card != null) vboxAllTask.getChildren().add(card);
                 }
         }
+
 
         private Image getPrioritySign(Task task){
                 double p = task.getPriority();
@@ -473,6 +465,12 @@ public class DashboardController{
                         return null;
                 }
         }
+        //return map we should redner now(either selectedSection or other)
+        private Map<String, Task> getActiveSource() {
+                if (selectedSection == null) return tasks;
+                return filterTask(tasks, selectedSection);
+        }
+
 
 
 
