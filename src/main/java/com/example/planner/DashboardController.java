@@ -1,4 +1,6 @@
 package com.example.planner;
+import com.example.planner.module.Section;
+import com.example.planner.module.Setting;
 import com.example.planner.ui.CustomDatePicker;
 import com.example.planner.ui.TaskCard;
 import com.example.planner.module.Task;
@@ -11,10 +13,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -25,6 +24,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DashboardController{
         @FXML
@@ -83,6 +83,8 @@ public class DashboardController{
         
         // Track TaskCard instances for updates
         private Map<String, TaskCard> taskCardMap = new HashMap<>();
+        private Setting setting;
+        private Section selectedSection;
 
 
 
@@ -97,10 +99,12 @@ public class DashboardController{
                 try {
                         // Get shared data and handle null case
                         tasks = masterController.getSharedData("Tasks");
+                        setting = masterController.getSharedData("setting");
                         if (tasks == null) {
                                 tasks = new HashMap<>();
                                 masterController.setSharedData("Tasks", tasks);
                         }
+
                         /*
                         Task temp = new Task(LocalDate.now(), LocalTime.now(),LocalTime.now(),10,"Test Task","This is a test task");
                         tasks.put("task1",temp);
@@ -147,15 +151,44 @@ public class DashboardController{
         }
 
         private void inbox(){
+                LocalDate today = LocalDate.now();
                 lblHeader.setText("Inbox");
                 vboxAllTask.getChildren().clear();
                 vboxTodayTask.getChildren().clear();
                 vboxSection.getChildren().clear();
+
+                //TODO: section selection
+                for (Section section:setting.getSections()){
+                        Button sectionBtn = new Button(section.getName());
+                        sectionBtn.setOnAction(e->{
+                                taskCardMap.clear();
+                                selectedSection = section;
+                                lblHeader.setText(section.getName());
+                                vboxAllTask.getChildren().clear();
+                                vboxTodayTask.getChildren().clear();
+                                //filter tasks
+                                Map<String,Task> selectedTasks = filterTask(tasks,section);
+                                for(Task task:selectedTasks.values()){
+                                        TaskCard card = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
+                                        taskCardMap.put(task.getId(), card);
+                                        card.refreshDisplay();
+                                        if (task.getDueDate() != null && task.getDueDate().equals(today)) {
+                                                vboxTodayTask.getChildren().add(card);
+                                        } else {
+                                                vboxAllTask.getChildren().add(card);
+                                        }
+                                        updateCompletionTask();
+                                        optimizedTasks();
+                                }
+                        });
+                        vboxSection.getChildren().add(sectionBtn);
+                }
+
                 
                 // clear the task card mapping
                 taskCardMap.clear();
 
-                LocalDate today = LocalDate.now();
+
 
                 for (Task task : tasks.values()) {
                         TaskCard card = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
@@ -178,6 +211,25 @@ public class DashboardController{
 
                 //TODO: this method will be used to display auto-planned task at the top of the list
                 //vboxOptimized.getChildren().add(new TaskCard(tasks.get("df056c8d-f50d-4376-99dc-94a1296c4ab1"), this::displayTaskDetail, this::handleTaskUpdateFromCard));
+        }
+
+        private Map<String, Task> filterTask(Map<String, Task> taskLists,Section filterSection){
+                Map<String, Task> filteredTask = new HashMap<>();
+                for (Map.Entry<String, Task> entry : taskLists.entrySet()) {
+                        Task task = entry.getValue();
+                        if (task != null && task.getSection() != null && task.getSection().getName() != null) {
+                                if(task.getSection().getName().equals(filterSection.getName())){
+                                        filteredTask.put(entry.getKey(), task);
+                                } else {
+                                    //skip this aka not include
+                                }
+                        } else {
+                                //skip this aka not include
+                        }
+                }
+
+                System.out.println(filteredTask);
+                return  filteredTask;
         }
         private void displayTaskDetail(Task task) {
 
