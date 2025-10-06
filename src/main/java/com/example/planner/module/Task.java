@@ -15,7 +15,7 @@ public class Task {
 
     private boolean isComplete = false;
 
-    private Section section;
+    private Section section = new Section();;
     private double priority;
 
     public double getPriority() {
@@ -45,6 +45,7 @@ public class Task {
         this.title = title;
         this.description = description;
         this.id = UUID.randomUUID().toString();
+
     }
 
     public void setLetterDate(char letterDate) {
