@@ -1,0 +1,15 @@
+{
+  "sections" : [ {
+    "name" : "Clash Royale",
+    "letterDates" : [ "A" ],
+    "timeSpans" : [ [ [ 8, 0 ], [ 9, 0 ] ] ],
+    "color" : "#FFFF00FF",
+    "id" : "1aebca4b-715c-4f4b-a2cb-1dbdfde610ea"
+  }, {
+    "name" : "Boom Beach",
+    "letterDates" : [ "F","A"],
+    "timeSpans" : [ [ [ 13, 0 ], [ 14, 0 ] ] ],
+    "color" : "#0000FFFF",
+    "id" : "a204f036-56b7-4ac4-94fc-959f32795246"
+  } ]
+}

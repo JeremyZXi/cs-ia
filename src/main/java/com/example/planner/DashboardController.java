@@ -472,6 +472,15 @@ public class DashboardController{
         }
 
 
+        //navbar navigation
+
+        @FXML
+        public void onSetting(){
+                masterController.closeWindow("Dashboard");
+                masterController.openWindow("/com/example/planner/Setting.fxml", "Setting", null);
+        }
+
+
 
 
 
