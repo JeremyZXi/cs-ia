@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.SettingController">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="424.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Edit Your Typical Day Structure">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Pane prefHeight="32.0" prefWidth="241.0">
+               <children>
+                  <TextField fx:id="daysInCycle" layoutX="28.0" layoutY="4.0" prefHeight="26.0" prefWidth="144.0" promptText="# of days in a cycle" />
+               </children>
+            </Pane>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+
+   <right>
+      <VBox prefHeight="328.0" prefWidth="154.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+         <children>
+            <Label text="Add Your Sections">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="sectionName" promptText="Section Name" />
+            <HBox prefHeight="27.0" prefWidth="230.0">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="57.0" text="Tag color" />
+                  <ColorPicker fx:id="tagColor" prefHeight="23.0" prefWidth="102.0" />
+               </children>
+            </HBox>
+            <Button mnemonicParsing="false" onAction="#onAddSection" text="Add Section" />
+            <Label text="Your Sections">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <VBox fx:id="sectionsList" prefHeight="200.0" prefWidth="209.0" spacing="5.0" style="-fx-background-color: #ececec;" />
+         </children>
+      </VBox>
+   </right>
+
+   <bottom>
+      <HBox prefHeight="40.0" prefWidth="712.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onAddPeriod" prefHeight="26.0" prefWidth="128.0" text="+ Period">
+                     <tooltip>
+                        <Tooltip text="click to add a new time slot" />
+                     </tooltip>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onSave" prefHeight="26.0" prefWidth="140.0" text="Save" />
+               </children>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+
+   <center>
+      <GridPane hgap="10.0" style="-fx-background-color: #ffffff;" vgap="8.0" BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints minWidth="140.0" prefWidth="160.0" />
+            <ColumnConstraints hgrow="ALWAYS" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="40.0" prefHeight="42.0" />
+            <RowConstraints vgrow="ALWAYS" />
+         </rowConstraints>
+
+         <children>
+            <Region prefHeight="42.0" prefWidth="160.0" style="-fx-background-color: #f6f6f6; -fx-border-color: #dcdcdc;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <HBox fx:id="letterDates" prefHeight="42.0" spacing="10.0" style="-fx-background-color: #f6f6f6; -fx-border-color: #dcdcdc; -fx-padding: 8;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+               <padding>
+                  <Insets left="8.0" right="8.0" />
+               </padding>
+            </HBox>
+
+            <VBox fx:id="periodRow" prefHeight="211.0" prefWidth="194.0" spacing="5.0" style="-fx-background-color: #fafafa; -fx-border-color: #dcdcdc; -fx-padding: 8;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+            <GridPane fx:id="midGrid" hgap="10.0" style="-fx-background-color: #ffffff; -fx-border-color: #dcdcdc; -fx-padding: 8;" vgap="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Period">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+         </children>
+
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </GridPane>
+   </center>
+</BorderPane>
