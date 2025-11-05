@@ -4,6 +4,7 @@ import com.example.planner.module.Setting;
 import com.example.planner.ui.CustomDatePicker;
 import com.example.planner.ui.TaskCard;
 import com.example.planner.module.Task;
+import com.example.planner.utility.Planning;
 import com.example.planner.utility.StorageManager;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
@@ -83,8 +84,18 @@ public class DashboardController{
         
         // Track TaskCard instances for updates
         private Map<String, TaskCard> taskCardMap = new HashMap<>();
+
+        // use to keep result of the auto planning
+        private boolean optimizedActive = false;               // whether the user planned their task
+        private ArrayList<String> optimizedTaskIds = new ArrayList<>(); // store the order and id of planned task
+
+
+
+
         private Setting setting;
         private Section selectedSection;
+
+
 
 
 
@@ -178,7 +189,7 @@ public class DashboardController{
                                                 vboxAllTask.getChildren().add(card);
                                         }
                                         renderLists(selectedTasks);
-                                        optimizedTasks();
+                                        //optimizedTasks();
                                 }
                         });
                         vboxSection.getChildren().add(sectionBtn);
@@ -204,14 +215,44 @@ public class DashboardController{
                         }
                 }
                 renderLists(tasks);
-                optimizedTasks();
+                //optimizedTasks();
         }
 
-        private void optimizedTasks(){
+        @FXML
+        public void OnOptimizedTasks() {
+                LocalDate today = LocalDate.now();
 
-                //TODO: this method will be used to display auto-planned task at the top of the list
-                //vboxOptimized.getChildren().add(new TaskCard(tasks.get("df056c8d-f50d-4376-99dc-94a1296c4ab1"), this::displayTaskDetail, this::handleTaskUpdateFromCard));
+                Map<String, Task> todayTasks = tasks.entrySet().stream()
+                        .filter(e -> e.getValue().getDueDate() != null
+                                && e.getValue().getDueDate().equals(today)
+                                && !e.getValue().isComplete())
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+                if (todayTasks.isEmpty()) {
+                        optimizedActive = false;
+                        optimizedTaskIds.clear();
+                        renderLists(getActiveSource());
+                        return;
+                }
+
+                int availableTime = 75; // 或从 setting 取
+                ArrayList<Task> plannedTasks = Planning.plan(todayTasks, availableTime);
+
+                // 保存“优化模式”及顺序（用ID持久化）
+                optimizedActive = true;
+                optimizedTaskIds.clear();
+                for (Task t : plannedTasks) {
+                        optimizedTaskIds.add(t.getId());
+                }
+
+                // 先按常规逻辑渲染
+                renderLists(getActiveSource());
+                // 再套用“分隔符+置顶”
+                applyOptimizedLayout();
         }
+
+
+
 
         private Map<String, Task> filterTask(Map<String, Task> taskLists,Section filterSection){
                 Map<String, Task> filteredTask = new HashMap<>();
@@ -307,6 +348,7 @@ public class DashboardController{
                         saveTasksToStorage();
                         //refresh the sorting when completion status changes
                         renderLists(getActiveSource());
+                        if (optimizedActive) {applyOptimizedLayout();}
                 };
                 checkBoxIsComplete.setOnAction(completionHandler);
         }
@@ -358,6 +400,7 @@ public class DashboardController{
                 
                 // refresh the sorting when task completion status changes from TaskCard
                 renderLists(getActiveSource());
+                if (optimizedActive) {applyOptimizedLayout();}
         }
         
         /**
@@ -441,6 +484,9 @@ public class DashboardController{
         }
 
 
+
+
+
         private Image getPrioritySign(Task task){
                 double p = task.getPriority();
                 final double EPS = 1e-6; // handle floating point precision
@@ -470,6 +516,71 @@ public class DashboardController{
                 if (selectedSection == null) return tasks;
                 return filterTask(tasks, selectedSection);
         }
+
+        private void applyOptimizedLayout() {
+                // if there's nothing, remove all the separators
+                if (!optimizedActive || optimizedTaskIds == null || optimizedTaskIds.isEmpty()) {
+                        removeOptimizedSeparators();
+                        return;
+                }
+
+                // to avoid duplication
+                removeOptimizedSeparators();
+
+                // filter tasks: today(in case it's been a day & optimized)
+                LocalDate today = LocalDate.now();
+                ArrayList<String> stillApplicable = new ArrayList<>();
+                for (String id : optimizedTaskIds) {
+                        Task t = tasks.get(id);
+                        if (t != null && t.getDueDate() != null
+                                && t.getDueDate().equals(today)
+                                && !t.isComplete()) {
+                                stillApplicable.add(id);
+                        }
+                }
+
+                // if all complete, quit
+                if (stillApplicable.isEmpty()) {
+                        optimizedActive = false;
+                        optimizedTaskIds.clear();
+                        return;
+                }
+
+                // insert top separator
+                Label topLabel = new Label("Recommended Tasks (Optimized)");
+                topLabel.getStyleClass().add("optimized-header");
+                vboxTodayTask.getChildren().add(0, topLabel);
+
+                // order the tasks
+                int insertIndex = 1;
+                for (String id : stillApplicable) {
+                        TaskCard card = taskCardMap.get(id);
+                        if (card != null) {
+                                vboxTodayTask.getChildren().remove(card);              // remove from original place
+                                vboxTodayTask.getChildren().add(insertIndex, card);    // insert to top
+                                insertIndex++;
+                        }
+                }
+
+                // buttom separator
+                Label bottomLabel = new Label("Other Tasks");
+                bottomLabel.getStyleClass().add("optimized-footer");
+                vboxTodayTask.getChildren().add(insertIndex, bottomLabel);
+
+                // update  optimizedTaskIds to stillApplicable to prevent past due/completed
+                optimizedTaskIds = stillApplicable;
+        }
+
+        private void removeOptimizedSeparators() {
+                vboxTodayTask.getChildren().removeIf(node ->
+                        node instanceof Label &&
+                                (
+                                        "Recommended Tasks (Optimized)".equals(((Label) node).getText()) ||
+                                                "Other Tasks".equals(((Label) node).getText())
+                                )
+                );
+        }
+
 
 
         //navbar navigation
