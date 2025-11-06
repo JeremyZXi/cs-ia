@@ -6,6 +6,8 @@ import com.example.planner.ui.TaskCard;
 import com.example.planner.module.Task;
 import com.example.planner.utility.Planning;
 import com.example.planner.utility.StorageManager;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
@@ -21,9 +23,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
+import java.io.FileReader;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -163,7 +167,6 @@ public class DashboardController{
         public void handleInbox(){
                 inbox();
         }
-
         private void inbox(){
                 onInbox = true;
                 LocalDate today = LocalDate.now();
@@ -242,6 +245,55 @@ public class DashboardController{
                 renderLists(tasks);
                 //optimizedTasks();
         }
+
+        /*
+        @FXML
+        public void handleToday(){
+                vboxSection.getChildren().clear();
+                LocalDate today = LocalDate.now();
+
+                for (Section section:setting.getSections()){
+                        String todayLetter = letterDate(today)+"";
+                        for(String letter:section.getLetterDates()){
+                                if(letter.equals(todayLetter)){
+                                        Button sectionBtn = new Button(section.getName());
+                                        sectionBtn.setOnAction(e->{
+                                                btnPlan.setDisable(false);
+                                                optimizedActive = false;
+                                                onInbox = false;
+                                                optimizedTaskIds.clear();
+
+                                                taskCardMap.clear();
+                                                selectedSection = section;
+                                                lblHeader.setText(section.getName());
+                                                vboxAllTask.getChildren().clear();
+                                                vboxTodayTask.getChildren().clear();
+                                                //filter tasks
+                                                Map<String,Task> selectedTasks = filterTask(tasks,section);
+                                                for(Task task:selectedTasks.values()){
+                                                        TaskCard card = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
+                                                        taskCardMap.put(task.getId(), card);
+                                                        card.refreshDisplay();
+                                                        if (task.getDueDate() != null && task.getDueDate().equals(today)) {
+                                                                vboxTodayTask.getChildren().add(card);
+                                                        } else if (task.getDueDate().isBefore(today)) {
+                                                                vboxTodayTask.getChildren().add(card);
+                                                                System.out.println("past due 1");
+                                                        } else {
+                                                                vboxAllTask.getChildren().add(card);
+                                                        }
+                                                        renderLists(selectedTasks);
+                                                        //optimizedTasks();
+                                                }
+                                        });
+                                        vboxSection.getChildren().add(sectionBtn);
+                                }
+                }
+                }
+
+
+
+        }*/
 
         @FXML
         public void OnOptimizedTasks() {
@@ -612,6 +664,36 @@ public class DashboardController{
                                 )
                 );
         }
+
+        //temporary date convertion
+        //TODO: implement whatever Mr.Ben implemented in his VB code
+        /*
+        private char letterDate(LocalDate d) {
+                char letter = '0';
+                List<String[]> data = readCSV("data/letter_day_calendar.csv");
+                for (String[] row : data) {
+                        if (row[0].equals(d.toString())) {
+                                letter = row[2].charAt(0);
+                        }
+                }
+                return letter;
+        }
+        private List<String[]> readCSV(String file) {
+                List<String[]> allData = null;
+                try {
+                        FileReader filereader = new FileReader(file);
+                        CSVReader csvReader = new CSVReaderBuilder(filereader)
+                                .withSkipLines(1)
+                                .build();
+                        allData = csvReader.readAll();
+
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+                return allData;
+        }
+
+   */
 
 
 

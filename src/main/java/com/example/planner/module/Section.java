@@ -33,10 +33,9 @@ public class Section {
 
     public ArrayList<String> getLetterDates() { return letterDates; }
 
-    public ArrayList<ArrayList<LocalTime>> getTimeSpans() { return timeSpans; }
 
-    // Optional alias if other code expects getTimeSlots()
     public ArrayList<ArrayList<LocalTime>> getTimeSlots() { return timeSpans; }
+    public ArrayList<ArrayList<LocalTime>> getTimeSpans() { return timeSpans; }
 
     public Section(String name, String color) {
         this.name = name;
