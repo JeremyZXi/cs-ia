@@ -16,7 +16,7 @@ public class Task {
     private boolean isComplete = false;
 
     private Section section = new Section();;
-    private double priority;
+    private double priority = 1.0;
 
     public double getPriority() {
         return priority;

@@ -65,6 +65,8 @@ public class DashboardController{
         private TextArea txtAreaDescription;
         @FXML
         private Label lblTaskInfo;
+        @FXML
+        private Button btnPlan;
 
         private MasterController masterController;
         private Map<String, Task> tasks = new HashMap<>();
@@ -87,6 +89,7 @@ public class DashboardController{
 
         // use to keep result of the auto planning
         private boolean optimizedActive = false;               // whether the user planned their task
+        private boolean onInbox = true;
         private ArrayList<String> optimizedTaskIds = new ArrayList<>(); // store the order and id of planned task
 
 
@@ -162,16 +165,32 @@ public class DashboardController{
         }
 
         private void inbox(){
+                onInbox = true;
                 LocalDate today = LocalDate.now();
-                lblHeader.setText("Inbox");
+
+                selectedSection = null;
+                optimizedActive = false;
+                optimizedTaskIds.clear();
+
                 vboxAllTask.getChildren().clear();
                 vboxTodayTask.getChildren().clear();
                 vboxSection.getChildren().clear();
+
+                btnPlan.setDisable(true);
+                lblHeader.setText("inbox");
+
+
+
 
                 //TODO: section selection
                 for (Section section:setting.getSections()){
                         Button sectionBtn = new Button(section.getName());
                         sectionBtn.setOnAction(e->{
+                                btnPlan.setDisable(false);
+                                optimizedActive = false;
+                                onInbox = false;
+                                optimizedTaskIds.clear();
+
                                 taskCardMap.clear();
                                 selectedSection = section;
                                 lblHeader.setText(section.getName());
@@ -185,6 +204,9 @@ public class DashboardController{
                                         card.refreshDisplay();
                                         if (task.getDueDate() != null && task.getDueDate().equals(today)) {
                                                 vboxTodayTask.getChildren().add(card);
+                                        } else if (task.getDueDate().isBefore(today)) {
+                                                vboxTodayTask.getChildren().add(card);
+                                                System.out.println("past due 1");
                                         } else {
                                                 vboxAllTask.getChildren().add(card);
                                         }
@@ -210,6 +232,9 @@ public class DashboardController{
                         
                         if (task.getDueDate() != null && task.getDueDate().equals(today)) {
                                 vboxTodayTask.getChildren().add(card);
+                        } else if(task.getDueDate().isBefore(today)){
+                                vboxTodayTask.getChildren().add(card);
+                                System.out.println("past due 2");
                         } else {
                                 vboxAllTask.getChildren().add(card);
                         }
@@ -225,6 +250,7 @@ public class DashboardController{
                 Map<String, Task> todayTasks = tasks.entrySet().stream()
                         .filter(e -> e.getValue().getDueDate() != null
                                 && e.getValue().getDueDate().equals(today)
+                                || e.getValue().getDueDate().isBefore(today)
                                 && !e.getValue().isComplete())
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
@@ -235,19 +261,19 @@ public class DashboardController{
                         return;
                 }
 
-                int availableTime = 75; // 或从 setting 取
+                int availableTime = 75; // TODO: obtain from settings
                 ArrayList<Task> plannedTasks = Planning.plan(todayTasks, availableTime);
 
-                // 保存“优化模式”及顺序（用ID持久化）
+                // save the optimized tasks
                 optimizedActive = true;
                 optimizedTaskIds.clear();
                 for (Task t : plannedTasks) {
                         optimizedTaskIds.add(t.getId());
                 }
 
-                // 先按常规逻辑渲染
+                // render normally first
                 renderLists(getActiveSource());
-                // 再套用“分隔符+置顶”
+                // apply the separators
                 applyOptimizedLayout();
         }
 
@@ -294,7 +320,7 @@ public class DashboardController{
                 txtFieldTaskName.setText(task.getTitle());
                 txtAreaDescription.setText(task.getDescription());
                 checkBoxIsComplete.setSelected(task.isComplete());
-                lblTaskInfo.setText(task.getDueDate().toString()+" ("+task.getLetterDate()+" day) "+task.getSection().getName());
+                lblTaskInfo.setText(task.getDueDate().toString()+" ("+task.getLetterDate()+" day) | "+task.getTimeSpan()+" minutes | "+task.getSection().getName());
                 Image img = getPrioritySign(task);
                 prioritySign.setImage(img);
                 boolean show = (img != null);
@@ -348,7 +374,7 @@ public class DashboardController{
                         saveTasksToStorage();
                         //refresh the sorting when completion status changes
                         renderLists(getActiveSource());
-                        if (optimizedActive) {applyOptimizedLayout();}
+                        //if (optimizedActive && !onInbox) {applyOptimizedLayout();}
                 };
                 checkBoxIsComplete.setOnAction(completionHandler);
         }
@@ -455,11 +481,13 @@ public class DashboardController{
                         taskCardMap.put(task.getId(), card);
                         card.refreshDisplay();
 
-                        boolean isDueToday = task.getDueDate() != null && task.getDueDate().equals(today);
+                        // ★ Treat dueDate <= today as "Today's Tasks"
+                        boolean dueKnown = task.getDueDate() != null;
+                        boolean isTodayOrPast = dueKnown && !task.getDueDate().isAfter(today);
 
-                        if (isDueToday) {
+                        if (isTodayOrPast) {
                                 if (task.isComplete()) {
-                                        completeToday.add(task);
+                                        completeToday.add(task);      // completed overdue/today go to bottom of Today box
                                 } else {
                                         vboxTodayTask.getChildren().add(card);
                                 }
@@ -472,16 +500,17 @@ public class DashboardController{
                         }
                 }
 
-                // Append completed at the bottom
-                for (Task task : completeToday) {
-                        TaskCard card = taskCardMap.get(task.getId());
-                        if (card != null) vboxTodayTask.getChildren().add(card);
+                // Append completed at the bottom of each list
+                for (Task t : completeToday) {
+                        TaskCard c = taskCardMap.get(t.getId());
+                        if (c != null) vboxTodayTask.getChildren().add(c);
                 }
-                for (Task task : completeAll) {
-                        TaskCard card = taskCardMap.get(task.getId());
-                        if (card != null) vboxAllTask.getChildren().add(card);
+                for (Task t : completeAll) {
+                        TaskCard c = taskCardMap.get(t.getId());
+                        if (c != null) vboxAllTask.getChildren().add(c);
                 }
         }
+
 
 
 
@@ -513,7 +542,9 @@ public class DashboardController{
         }
         //return map we should redner now(either selectedSection or other)
         private Map<String, Task> getActiveSource() {
-                if (selectedSection == null) return tasks;
+                if (selectedSection == null){
+                        return tasks;
+                }
                 return filterTask(tasks, selectedSection);
         }
 
@@ -533,7 +564,8 @@ public class DashboardController{
                 for (String id : optimizedTaskIds) {
                         Task t = tasks.get(id);
                         if (t != null && t.getDueDate() != null
-                                && t.getDueDate().equals(today)
+                                && (t.getDueDate().equals(today)
+                                || t.getDueDate().isBefore(today))
                                 && !t.isComplete()) {
                                 stillApplicable.add(id);
                         }

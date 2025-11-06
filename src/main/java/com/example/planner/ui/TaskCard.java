@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
@@ -45,7 +46,12 @@ public class TaskCard extends HBox {
         checkBox.setPadding(new Insets(8, 8, 8, 8));
         checkBox.setSelected(task.isComplete());
 
-        label.setTextFill(Color.web("#1888ed"));
+        if(task.getDueDate().isBefore(LocalDate.now())){
+            label.setTextFill(Color.web("#eb4034"));
+        }else{
+            label.setTextFill(Color.web("#1888ed"));
+        }
+
         label.setAlignment(Pos.CENTER_RIGHT);
         label.setMinWidth(80);
 
