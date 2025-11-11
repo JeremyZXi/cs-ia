@@ -29,9 +29,9 @@
             <Insets bottom="16.0" left="8.0" right="8.0" top="16.0" />
          </padding>
 
-         <Button prefHeight="33.0" prefWidth="36.0">
+         <Button onAction="#onDashboard" prefHeight="33.0" prefWidth="36.0">
             <graphic>
-               <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+               <ImageView fitHeight="24.0" fitWidth="24.0" onDragDetected="#onDashboard" preserveRatio="true">
                   <image>
                      <Image url="@icon/list.png" />
                   </image>
@@ -39,7 +39,7 @@
             </graphic>
          </Button>
 
-         <Button prefHeight="38.0" prefWidth="32.0">
+         <Button onAction="#onCalendar" prefHeight="38.0" prefWidth="32.0">
             <graphic>
                <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
                   <image>
@@ -86,7 +86,7 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <Label fx:id="lblHeader" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Monday August 11 2025" />
                <Pane HBox.hgrow="ALWAYS" />
-               <Button mnemonicParsing="false" text="Button" />
+               <Button fx:id="addTaskBtn" mnemonicParsing="false" text="Button" />
             </HBox>
          </VBox>
 

@@ -33,6 +33,10 @@ public class MasterController {
         }
         setSharedData("Tasks",tasks);
     }
+    public Stage getWindows(String key){
+        System.out.println(windows.get(key));
+        return windows.get(key);
+    }
 
     private void loadSetting() throws Exception {
         Setting setting = new Setting();
@@ -55,7 +59,7 @@ public class MasterController {
     }
 
     // Method to open a new window
-    public void openWindow(String fxmlPath, String title, Runnable onCloseCallback) {
+    public void openWindow(String fxmlPath, String title, Runnable onCloseCallback, Stage callerStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
@@ -69,6 +73,9 @@ public class MasterController {
                     onCloseCallback.run();
                 }
             });
+            if (callerStage != null) {
+                stage.setOnHidden(e -> callerStage.show());
+            }
 
             // Store the stage in the windows map
             windows.put(title, stage);

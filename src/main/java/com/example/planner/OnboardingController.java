@@ -159,7 +159,7 @@ public class OnboardingController {
         }
         masterController.setSharedData("setting", setting);
         masterController.closeWindow("Welcome");
-        masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null);
+        masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null,null);
     }
 
     /** Extracted: convert current UI state into a Setting. */

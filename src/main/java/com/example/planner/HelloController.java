@@ -25,7 +25,7 @@ public class HelloController {
 
 
 
-        masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null);
+        //masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null);
     }
 
 

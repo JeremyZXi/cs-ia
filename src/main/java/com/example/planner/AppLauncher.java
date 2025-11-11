@@ -14,9 +14,9 @@ public class AppLauncher extends Application {
         masterController = MasterController.getInstance();
        // masterController.openWindow("/com/example/planner/hello-view.fxml", "Login", null);
         if(!SettingManager.storageExists()){
-            masterController.openWindow("/com/example/planner/Onboarding.fxml","Welcome", null);
+            masterController.openWindow("/com/example/planner/Onboarding.fxml","Welcome", null,null);
         } else {
-            masterController.openWindow("/com/example/planner/Dashboard.fxml","Dashboard", null);
+            masterController.openWindow("/com/example/planner/Dashboard.fxml","Dashboard", null,null);
         }
     }
 

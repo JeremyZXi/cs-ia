@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 import java.io.FileReader;
 import java.time.LocalDate;
@@ -74,6 +75,8 @@ public class DashboardController{
 
         private MasterController masterController;
         private Map<String, Task> tasks = new HashMap<>();
+
+        private List<String[]> data = readCSV("data/letter_day_calendar.csv");
         
         // State management for current task display
         private Task currentDisplayedTask = null;
@@ -149,16 +152,14 @@ public class DashboardController{
         @FXML
         public void handleAddTask(){
                 //masterController.openWindow("/com/example/planner/PopupSelection.fxml","Add New Tasks",null);
+                Stage currentStage = (Stage) btnPlan.getScene().getWindow();
 
-                masterController.openWindow(
-                        "/com/example/planner/PopupSelection.fxml",
-                        "Add New Tasks",
-                        () -> {
+                masterController.openWindow("/com/example/planner/PopupSelection.fxml", "Add New Tasks", () -> {
                                 // callback runs AFTER the popup is closed
                                 // Reload task list from shared data
                                 tasks = masterController.getSharedData("Tasks");
                                 inbox(); // refresh the UI
-                        }
+                        },currentStage
                 );
 
 
@@ -166,6 +167,51 @@ public class DashboardController{
         @FXML
         public void handleInbox(){
                 inbox();
+        }
+
+        @FXML
+        public void handleToday(){
+                vboxSection.getChildren().clear();
+                LocalDate today = LocalDate.now();
+                for (Section section:setting.getSections()){
+                        for(String letter: section.getLetterDates()){
+                                if (letter.equals(letterDate(today))){
+                                        System.out.println(section.getName());
+
+                                        Button sectionBtn = new Button(section.getName());
+                                        sectionBtn.setOnAction(e->{
+                                                btnPlan.setDisable(false);
+                                                optimizedActive = false;
+                                                onInbox = false;
+                                                optimizedTaskIds.clear();
+
+                                                taskCardMap.clear();
+                                                selectedSection = section;
+                                                lblHeader.setText(section.getName());
+                                                vboxAllTask.getChildren().clear();
+                                                vboxTodayTask.getChildren().clear();
+                                                //filter tasks
+                                                Map<String,Task> selectedTasks = filterTask(tasks,section);
+                                                for(Task task:selectedTasks.values()){
+                                                        TaskCard card = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
+                                                        taskCardMap.put(task.getId(), card);
+                                                        card.refreshDisplay();
+                                                        if (task.getDueDate() != null && task.getDueDate().equals(today)) {
+                                                                vboxTodayTask.getChildren().add(card);
+                                                        } else if (task.getDueDate().isBefore(today)) {
+                                                                vboxTodayTask.getChildren().add(card);
+                                                                System.out.println("past due 1");
+                                                        } else {
+                                                                vboxAllTask.getChildren().add(card);
+                                                        }
+                                                        renderLists(selectedTasks);
+                                                        //optimizedTasks();
+                                                }
+                                        });
+                                        vboxSection.getChildren().add(sectionBtn);
+                                }
+                        }
+                }
         }
         private void inbox(){
                 onInbox = true;
@@ -245,55 +291,6 @@ public class DashboardController{
                 renderLists(tasks);
                 //optimizedTasks();
         }
-
-        /*
-        @FXML
-        public void handleToday(){
-                vboxSection.getChildren().clear();
-                LocalDate today = LocalDate.now();
-
-                for (Section section:setting.getSections()){
-                        String todayLetter = letterDate(today)+"";
-                        for(String letter:section.getLetterDates()){
-                                if(letter.equals(todayLetter)){
-                                        Button sectionBtn = new Button(section.getName());
-                                        sectionBtn.setOnAction(e->{
-                                                btnPlan.setDisable(false);
-                                                optimizedActive = false;
-                                                onInbox = false;
-                                                optimizedTaskIds.clear();
-
-                                                taskCardMap.clear();
-                                                selectedSection = section;
-                                                lblHeader.setText(section.getName());
-                                                vboxAllTask.getChildren().clear();
-                                                vboxTodayTask.getChildren().clear();
-                                                //filter tasks
-                                                Map<String,Task> selectedTasks = filterTask(tasks,section);
-                                                for(Task task:selectedTasks.values()){
-                                                        TaskCard card = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
-                                                        taskCardMap.put(task.getId(), card);
-                                                        card.refreshDisplay();
-                                                        if (task.getDueDate() != null && task.getDueDate().equals(today)) {
-                                                                vboxTodayTask.getChildren().add(card);
-                                                        } else if (task.getDueDate().isBefore(today)) {
-                                                                vboxTodayTask.getChildren().add(card);
-                                                                System.out.println("past due 1");
-                                                        } else {
-                                                                vboxAllTask.getChildren().add(card);
-                                                        }
-                                                        renderLists(selectedTasks);
-                                                        //optimizedTasks();
-                                                }
-                                        });
-                                        vboxSection.getChildren().add(sectionBtn);
-                                }
-                }
-                }
-
-
-
-        }*/
 
         @FXML
         public void OnOptimizedTasks() {
@@ -667,13 +664,12 @@ public class DashboardController{
 
         //temporary date convertion
         //TODO: implement whatever Mr.Ben implemented in his VB code
-        /*
-        private char letterDate(LocalDate d) {
-                char letter = '0';
-                List<String[]> data = readCSV("data/letter_day_calendar.csv");
+
+        private String letterDate(LocalDate d) {
+                String letter = "0";
                 for (String[] row : data) {
                         if (row[0].equals(d.toString())) {
-                                letter = row[2].charAt(0);
+                                letter = String.valueOf(row[2].charAt(0));
                         }
                 }
                 return letter;
@@ -693,7 +689,7 @@ public class DashboardController{
                 return allData;
         }
 
-   */
+
 
 
 
@@ -701,8 +697,26 @@ public class DashboardController{
 
         @FXML
         public void onSetting(){
+                Stage currentStage = (Stage) btnPlan.getScene().getWindow();
                 masterController.closeWindow("Dashboard");
-                masterController.openWindow("/com/example/planner/Setting.fxml", "Setting", null);
+                masterController.openWindow("/com/example/planner/Setting.fxml", "Setting", null,currentStage);
+        }
+
+        @FXML
+        public void onCalendar(){
+                Stage currentStage = (Stage) btnPlan.getScene().getWindow();
+
+                masterController.openWindow("/com/example/planner/Calendar.fxml", "Calendar", null,null);
+                masterController.closeWindow("Dashboard");
+                System.out.println("Closing");
+        }
+
+        @FXML
+        public void onDashboard(){
+                Stage currentStage = (Stage) btnPlan.getScene().getWindow();
+
+                masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null,null);
+                masterController.closeWindow("Dashboard");
         }
 
 
