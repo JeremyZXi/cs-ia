@@ -73,9 +73,9 @@
                   <Insets bottom="16.0" left="8.0" right="8.0" top="16.0" />
                </padding>
             </VBox>
-            <VBox minWidth="167.0" prefHeight="400.0" prefWidth="131.0" spacing="10.0">
+            <VBox minWidth="167.0" prefHeight="515.0" prefWidth="190.0" spacing="10.0">
                <children>
-                  <Label fx:id="lblGreetings" prefHeight="17.0" prefWidth="129.0" text="Monday Sep 17  C day" />
+                  <Label fx:id="lblGreetings" prefHeight="17.0" prefWidth="135.0" text="Monday Sep 17  C day" wrapText="true" />
                   <Button mnemonicParsing="false" onAction="#handleInbox" prefHeight="26.0" prefWidth="151.0" text="Inbox">
                      <graphic>
                         <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">

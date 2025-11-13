@@ -1,5 +1,6 @@
 package com.example.planner;
 
+import com.example.planner.module.Section;
 import com.example.planner.module.Setting;
 import com.example.planner.utility.SettingManager;
 import javafx.application.Platform;
@@ -22,9 +23,16 @@ public class SettingController extends OnboardingController {
 
     @FXML
     public void onSave() throws Exception {
-        // Reuse parent's conversion + navigation, or customize
+        // Reuse parent's conversion + navigation
         masterController.closeWindow("Setting");
-        onContinue();
+        Setting setting = toSettingFromUI();
+        SettingManager.save(setting);
+        for (Section section : setting.getSections()) {
+            System.out.println(section.getLetterDates());
+        }
+        masterController.setSharedData("setting", setting);
+        System.out.println("setting saved");
     }
+
 
 }

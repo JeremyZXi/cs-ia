@@ -158,6 +158,7 @@ public class OnboardingController {
             System.out.println(section.getLetterDates());
         }
         masterController.setSharedData("setting", setting);
+        System.out.println("setting saved");
         masterController.closeWindow("Welcome");
         masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null,null);
     }

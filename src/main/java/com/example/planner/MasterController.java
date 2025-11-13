@@ -5,6 +5,7 @@ import com.example.planner.module.Task;
 import com.example.planner.utility.SettingManager;
 import com.example.planner.utility.StorageManager;
 import javafx.fxml.*;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -15,8 +16,8 @@ import java.io.PrintWriter;
 
 public class MasterController {
     private static MasterController instance;
-    private Map<String, Object> sharedData = new HashMap<>();
-    private Map<String, Stage> windows = new HashMap<>();
+    private final Map<String, Object> sharedData = new HashMap<>();
+    private final Map<String, Stage> windows = new HashMap<>();
 
     // Private constructor prevents instantiation from other classes
     private MasterController() throws Exception {
@@ -76,6 +77,9 @@ public class MasterController {
             if (callerStage != null) {
                 stage.setOnHidden(e -> callerStage.show());
             }
+
+
+
 
             // Store the stage in the windows map
             windows.put(title, stage);

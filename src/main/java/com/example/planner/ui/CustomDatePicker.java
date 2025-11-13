@@ -1,5 +1,6 @@
 package com.example.planner.ui;
 
+import com.example.planner.utility.Date2Letter;
 import com.example.planner.utility.DateDisplayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -47,7 +48,7 @@ public class CustomDatePicker extends DatePicker {
 
                 if (empty || date == null) return;
 
-                char letter = letterDate(date);
+                char letter = Date2Letter.letterDate(date).charAt(0);
 
                 ((Label) badge.getChildren().get(0)).setText(String.valueOf(letter));
                 setGraphic(wrapWithCornerBadge(badge));
@@ -80,38 +81,14 @@ public class CustomDatePicker extends DatePicker {
     }
 
     public char getLetterForDate(LocalDate date) {
-        return letterDate(date);
+        return Date2Letter.letterDate(date).charAt(0);
     }
 
     public String getLetterDateLabel(LocalDate date) {
-        char letter = letterDate(date);
+        char letter = Date2Letter.letterDate(date).charAt(0);
         return (letter != '0') ? "Letter Day: " + letter : "";
     }
 
 
-    private char letterDate(LocalDate d) {
-        char letter = '0';
-        List<String[]> data = readCSV("data/letter_day_calendar.csv");
-        for (String[] row : data) {
-            if (row[0].equals(d.toString())) {
-                letter = row[2].charAt(0);
-            }
-        }
-        return letter;
-    }
 
-    private List<String[]> readCSV(String file) {
-        List<String[]> allData = null;
-        try {
-            FileReader filereader = new FileReader(file);
-            CSVReader csvReader = new CSVReaderBuilder(filereader)
-                    .withSkipLines(1)
-                    .build();
-            allData = csvReader.readAll();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return allData;
-    }
 }

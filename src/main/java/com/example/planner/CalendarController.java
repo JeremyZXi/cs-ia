@@ -2,6 +2,7 @@ package com.example.planner;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 
@@ -9,6 +10,8 @@ import javafx.stage.Stage;
 public class CalendarController {
     @FXML
     private Button addTaskBtn;
+    @FXML
+    private GridPane gridMonth;
     private MasterController masterController;
 
     public void initialize() throws Exception {

@@ -19,9 +19,13 @@ module com.example.planner {
     requires javafx.media;
     requires opencsv;
 
+
+    // --- Open to JavaFX ---
     opens com.example.planner to javafx.fxml;
     opens com.example.planner.module to com.fasterxml.jackson.databind;
     opens com.example.planner.utility to com.fasterxml.jackson.databind;
+
+    // --- Exported packages ---
     exports com.example.planner;
     exports com.example.planner.module;
     exports com.example.planner.utility;

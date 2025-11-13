@@ -73,7 +73,7 @@ public class AddTaskController {
 
     private Setting setting;
 
-    private CustomDatePicker datePicker = new CustomDatePicker();
+    private final CustomDatePicker datePicker = new CustomDatePicker();
     private Section selectedSection;
     private Integer selectedMinutes = null;
     private double priority = 1.0;
@@ -122,7 +122,7 @@ public class AddTaskController {
                 Button sectionBtn = new Button(section.getName());
                 sectionBtn.setOnAction(e->{
                     selectedSection = section;
-                    lblDueInfo.setText(newVal.toString()+" ("+datePicker.getLetterForDate(newVal)+" day) "+section.getName());
+                    lblDueInfo.setText(newVal +" ("+datePicker.getLetterForDate(newVal)+" day) "+section.getName());
                     sectionOption.setText(section.getName());
                 });
                 optionLists.getChildren().add(sectionBtn);

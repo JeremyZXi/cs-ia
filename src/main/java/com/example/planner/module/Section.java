@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class Section {
-    private String name;
-    private ArrayList<String> letterDates;
-    private ArrayList<ArrayList<LocalTime>> timeSpans;
-    private String color;
+    private final String name;
+    private final ArrayList<String> letterDates;
+    private final ArrayList<ArrayList<LocalTime>> timeSpans;
+    private final String color;
     private String id;
 
     public Section(String name, ArrayList<String> letterDates, ArrayList<ArrayList<LocalTime>> timeSpan, String color) {

@@ -4,6 +4,7 @@ import com.example.planner.module.Setting;
 import com.example.planner.ui.CustomDatePicker;
 import com.example.planner.ui.TaskCard;
 import com.example.planner.module.Task;
+import com.example.planner.utility.Date2Letter;
 import com.example.planner.utility.Planning;
 import com.example.planner.utility.StorageManager;
 import com.opencsv.CSVReader;
@@ -26,6 +27,7 @@ import javafx.stage.Stage;
 
 import java.io.FileReader;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +78,7 @@ public class DashboardController{
         private MasterController masterController;
         private Map<String, Task> tasks = new HashMap<>();
 
-        private List<String[]> data = readCSV("data/letter_day_calendar.csv");
+
         
         // State management for current task display
         private Task currentDisplayedTask = null;
@@ -92,7 +94,7 @@ public class DashboardController{
         private HtmlRenderer markdownRenderer;
         
         // Track TaskCard instances for updates
-        private Map<String, TaskCard> taskCardMap = new HashMap<>();
+        private final Map<String, TaskCard> taskCardMap = new HashMap<>();
 
         // use to keep result of the auto planning
         private boolean optimizedActive = false;               // whether the user planned their task
@@ -111,7 +113,10 @@ public class DashboardController{
 
         public void initialize() throws Exception {
                 masterController = MasterController.getInstance();
-                
+                LocalDate today = LocalDate.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM d"); // e.g. Monday Sep 17
+                lblGreetings.setText(today.format(formatter) + ", " + Date2Letter.letterDate(today)+" day");
+
                 // Initialize Markdown components once
                 MutableDataSet options = new MutableDataSet();
                 markdownParser = Parser.builder(options).build();
@@ -159,7 +164,7 @@ public class DashboardController{
                                 // Reload task list from shared data
                                 tasks = masterController.getSharedData("Tasks");
                                 inbox(); // refresh the UI
-                        },currentStage
+                        },null
                 );
 
 
@@ -175,7 +180,7 @@ public class DashboardController{
                 LocalDate today = LocalDate.now();
                 for (Section section:setting.getSections()){
                         for(String letter: section.getLetterDates()){
-                                if (letter.equals(letterDate(today))){
+                                if (letter.equals(Date2Letter.letterDate(today))){
                                         System.out.println(section.getName());
 
                                         Button sectionBtn = new Button(section.getName());
@@ -665,29 +670,7 @@ public class DashboardController{
         //temporary date convertion
         //TODO: implement whatever Mr.Ben implemented in his VB code
 
-        private String letterDate(LocalDate d) {
-                String letter = "0";
-                for (String[] row : data) {
-                        if (row[0].equals(d.toString())) {
-                                letter = String.valueOf(row[2].charAt(0));
-                        }
-                }
-                return letter;
-        }
-        private List<String[]> readCSV(String file) {
-                List<String[]> allData = null;
-                try {
-                        FileReader filereader = new FileReader(file);
-                        CSVReader csvReader = new CSVReaderBuilder(filereader)
-                                .withSkipLines(1)
-                                .build();
-                        allData = csvReader.readAll();
 
-                } catch (Exception e) {
-                        e.printStackTrace();
-                }
-                return allData;
-        }
 
 
 
@@ -705,18 +688,18 @@ public class DashboardController{
         @FXML
         public void onCalendar(){
                 Stage currentStage = (Stage) btnPlan.getScene().getWindow();
-
-                masterController.openWindow("/com/example/planner/Calendar.fxml", "Calendar", null,null);
                 masterController.closeWindow("Dashboard");
-                System.out.println("Closing");
+                masterController.openWindow("/com/example/planner/Calendar.fxml", "Calendar", null,null);
+
+
         }
 
         @FXML
         public void onDashboard(){
                 Stage currentStage = (Stage) btnPlan.getScene().getWindow();
-
-                masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null,null);
                 masterController.closeWindow("Dashboard");
+                masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null,null);
+
         }
 
 
