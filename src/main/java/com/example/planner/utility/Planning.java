@@ -20,6 +20,7 @@ public class Planning {
         int num = taskList.size();
         double[][] result = new double[num + 1][availableTime + 1];
 
+
         // dynamic programming for 0/1 knapsack
         for (int i = 1; i <= num; i++) {
             Task currentTask = taskList.get(i - 1);
@@ -48,6 +49,7 @@ public class Planning {
                 j -= selected.getTimeSpan();
             }
         }
+        //TODO: Add sorting based on priority
 
         return selectedTasks;
     }

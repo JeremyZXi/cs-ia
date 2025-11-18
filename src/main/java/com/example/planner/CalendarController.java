@@ -1,5 +1,6 @@
 package com.example.planner;
 
+import com.example.planner.ui.TaskCalendarCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -16,7 +17,7 @@ public class CalendarController {
 
     public void initialize() throws Exception {
         masterController = MasterController.getInstance();
-
+        
     }
 
 
@@ -42,5 +43,10 @@ public class CalendarController {
         Stage currentStage = (Stage) addTaskBtn.getScene().getWindow();
         masterController.closeWindow("Calendar");
         masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null,null);
+    }
+    @FXML
+    public void onSearch(){
+        Stage currentStage = (Stage) addTaskBtn.getScene().getWindow();
+        masterController.openWindow("/com/example/planner/SearchView.fxml", "Search", null,null);
     }
 }

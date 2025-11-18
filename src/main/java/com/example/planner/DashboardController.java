@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+//TODO: add some sort of searching functionality
 public class DashboardController{
         @FXML
         private ImageView prioritySign;
@@ -80,20 +81,20 @@ public class DashboardController{
 
 
         
-        // State management for current task display
+        // state management for current task display
         private Task currentDisplayedTask = null;
         
-        // Event listeners to manage cleanup
+        // event listeners to manage cleanup
         private ChangeListener<String> titleListener = null;
         private ChangeListener<String> descriptionListener = null;
         private EventHandler<ActionEvent> completionHandler = null;
         
-        // Reusable Markdown components
+        // reusable Markdown components
         private WebEngine webEngine;
         private Parser markdownParser;
         private HtmlRenderer markdownRenderer;
         
-        // Track TaskCard instances for updates
+        // track TaskCard instances for updates
         private final Map<String, TaskCard> taskCardMap = new HashMap<>();
 
         // use to keep result of the auto planning
@@ -114,16 +115,16 @@ public class DashboardController{
         public void initialize() throws Exception {
                 masterController = MasterController.getInstance();
                 LocalDate today = LocalDate.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM d"); // e.g. Monday Sep 17
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM d"); // AKA Monday Sep 17
                 lblGreetings.setText(today.format(formatter) + ", " + Date2Letter.letterDate(today)+" day");
 
-                // Initialize Markdown components once
+                // initialize md components once
                 MutableDataSet options = new MutableDataSet();
                 markdownParser = Parser.builder(options).build();
                 markdownRenderer = HtmlRenderer.builder(options).build();
                 
                 try {
-                        // Get shared data and handle null case
+                        // get shared data and handle null
                         tasks = masterController.getSharedData("Tasks");
                         setting = masterController.getSharedData("setting");
                         if (tasks == null) {
@@ -141,7 +142,7 @@ public class DashboardController{
                         System.err.println("Error in DashboardController initialize: " + e.getMessage());
                         e.printStackTrace();
                         
-                        // Create a fallback empty task list to prevent further errors
+                        //cCreate a fallback empty task list to prevent further errors
 
                         if (tasks == null) {
                                 tasks = new HashMap<>();
@@ -236,7 +237,7 @@ public class DashboardController{
 
 
 
-                //TODO: section selection
+
                 for (Section section:setting.getSections()){
                         Button sectionBtn = new Button(section.getName());
                         sectionBtn.setOnAction(e->{
@@ -700,6 +701,12 @@ public class DashboardController{
                 masterController.closeWindow("Dashboard");
                 masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null,null);
 
+        }
+
+        @FXML
+        public void onSearch(){
+                Stage currentStage = (Stage) btnPlan.getScene().getWindow();
+                masterController.openWindow("/com/example/planner/SearchView.fxml", "Search", null,null);
         }
 
 

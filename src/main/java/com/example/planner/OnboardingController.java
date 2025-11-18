@@ -151,6 +151,11 @@ public class OnboardingController {
     }
 
     @FXML
+    public void onImportDate(){
+
+    }
+
+    @FXML
     public void onContinue() throws Exception {
         Setting setting = toSettingFromUI();
         SettingManager.save(setting);
@@ -162,6 +167,7 @@ public class OnboardingController {
         masterController.closeWindow("Welcome");
         masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null,null);
     }
+
 
     /** Extracted: convert current UI state into a Setting. */
     protected Setting toSettingFromUI() {

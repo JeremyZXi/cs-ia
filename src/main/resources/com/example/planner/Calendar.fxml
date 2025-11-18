@@ -29,7 +29,7 @@
             <Insets bottom="16.0" left="8.0" right="8.0" top="16.0" />
          </padding>
 
-         <Button onAction="#onDashboard" prefHeight="33.0" prefWidth="36.0">
+         <Button onAction="#onDashboard" prefHeight="40.0" prefWidth="40.0">
             <graphic>
                <ImageView fitHeight="24.0" fitWidth="24.0" onDragDetected="#onDashboard" preserveRatio="true">
                   <image>
@@ -39,7 +39,7 @@
             </graphic>
          </Button>
 
-         <Button onAction="#onCalendar" prefHeight="38.0" prefWidth="32.0">
+         <Button onAction="#onCalendar" prefHeight="40.0" prefWidth="40.0">
             <graphic>
                <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
                   <image>
@@ -49,11 +49,20 @@
             </graphic>
          </Button>
 
-         <Button onAction="#onSetting" prefHeight="41.0" prefWidth="41.0">
+         <Button onAction="#onSetting" prefHeight="40.0" prefWidth="40.0">
             <graphic>
                <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
                   <image>
                      <Image url="@icon/setting.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+         </Button>
+         <Button onAction="#onSetting" prefHeight="40.0" prefWidth="40.0">
+            <graphic>
+               <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                  <image>
+                     <Image url="@icon/search.png" />
                   </image>
                </ImageView>
             </graphic>

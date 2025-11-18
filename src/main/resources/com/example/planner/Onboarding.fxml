@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.OnboardingController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.OnboardingController">
+
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="424.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
@@ -61,7 +52,44 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <VBox fx:id="sectionsList" prefHeight="200.0" prefWidth="209.0" spacing="5.0" style="-fx-background-color: #ececec;" />
+
+            <!-- Scrollable sections list (adapted from Settings FXML) -->
+            <ScrollPane>
+               <content>
+                  <VBox fx:id="sectionsList" prefHeight="200.0" prefWidth="209.0" spacing="5.0" style="-fx-background-color: #ececec;" />
+               </content>
+            </ScrollPane>
+
+            <!-- Import buttons (adapted from Settings FXML) -->
+            <VBox spacing="5.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="155.0" text="Import Config File">
+                     <graphic>
+                        <ImageView fitHeight="17.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icon/upload.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Import existing configuration file" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="onImportDate" mnemonicParsing="false" prefHeight="26.0" prefWidth="154.0" text="Import Date Config">
+                     <graphic>
+                        <ImageView fitHeight="17.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icon/date-file.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Import config file contains holidays to generate cycle date " />
+                     </tooltip>
+                  </Button>
+               </children>
+            </VBox>
+
          </children>
       </VBox>
    </right>
