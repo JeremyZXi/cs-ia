@@ -6,14 +6,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 
 public class TaskCard extends HBox {
@@ -46,9 +45,9 @@ public class TaskCard extends HBox {
         checkBox.setPadding(new Insets(8, 8, 8, 8));
         checkBox.setSelected(task.isComplete());
 
-        if(task.getDueDate().isBefore(LocalDate.now())){
+        if (task.getDueDate().isBefore(LocalDate.now())) {
             label.setTextFill(Color.web("#eb4034"));
-        }else{
+        } else {
             label.setTextFill(Color.web("#1888ed"));
         }
 
@@ -74,7 +73,7 @@ public class TaskCard extends HBox {
             task.setComplete(isComplete);
             updateCompletionStyle();
             playCheckSound();
-            
+
             // notify the controller about the task update
             if (onTaskUpdateCallback != null) {
                 onTaskUpdateCallback.accept(task);
@@ -84,11 +83,12 @@ public class TaskCard extends HBox {
         // select this card on click
         this.setOnMouseClicked(e -> select());
     }
+
     public static TaskCard getCurrentlySelectedTask() {
-        if(currentlySelectedCard != null){
-            return  currentlySelectedCard;
-        }else {
-            return  null;
+        if (currentlySelectedCard != null) {
+            return currentlySelectedCard;
+        } else {
+            return null;
         }
     }
 
@@ -124,7 +124,7 @@ public class TaskCard extends HBox {
         this.task = task;
         refreshDisplay();
     }
-    
+
     /**
      * refreshes the TaskCard display
      */
@@ -132,22 +132,22 @@ public class TaskCard extends HBox {
         if (task == null) {
             return;
         }
-        
-       //update evrything
+
+        //update evrything
 
         checkBox.setText(task.getTitle());
-        
+
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d");
-        label.setText(task.getDueDate() != null ? task.getDueDate().format(formatter)+", "+task.getLetterDate()+" day" : "No due date");
-        
+        label.setText(task.getDueDate() != null ? task.getDueDate().format(formatter) + ", " + task.getLetterDate() + " day" : "No due date");
+
 
         checkBox.setSelected(task.isComplete());
-        
+
 
         updateCompletionStyle();
     }
-    
+
     /**
      * updates the visual style based on task status
      */
@@ -160,6 +160,7 @@ public class TaskCard extends HBox {
             checkBox.setStyle("");
         }
     }
+
     private void playCheckSound() {
         try {
             String soundPath = getClass().getResource("/com/example/planner/ding-402325.mp3").toExternalForm();

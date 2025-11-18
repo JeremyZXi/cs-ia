@@ -1,234 +1,249 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.web.*?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.DashboardController">
-   <left>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="56.0" spacing="10.0" style="-fx-background-color: #ececec;">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#onDashboard" prefHeight="40.0" prefWidth="40.0">
-                     <graphic>
-                        <ImageView accessibleRole="BUTTON" fitHeight="24.0" fitWidth="24.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/list.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#onCalendar" prefHeight="40.0" prefWidth="40.0">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/calendar.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#onSetting" prefHeight="40.0" prefWidth="40.0">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <graphic>
-                        <ImageView accessibleRole="BUTTON" fitHeight="24.0" fitWidth="24.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/setting.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#onSearch" prefHeight="40.0" prefWidth="40.0">
-                     <graphic>
-                        <ImageView accessibleRole="BUTTON" fitHeight="24.0" fitWidth="24.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/search.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Pane prefHeight="200.0" prefWidth="200.0" />
-                  <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="32.0">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/help.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-               <padding>
-                  <Insets bottom="16.0" left="8.0" right="8.0" top="16.0" />
-               </padding>
-            </VBox>
-            <VBox minWidth="167.0" prefHeight="515.0" prefWidth="190.0" spacing="10.0">
-               <children>
-                  <Label fx:id="lblGreetings" prefHeight="17.0" prefWidth="135.0" text="Monday Sep 17  C day" wrapText="true" />
-                  <Button mnemonicParsing="false" onAction="#handleInbox" prefHeight="26.0" prefWidth="151.0" text="Inbox">
-                     <graphic>
-                        <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/inbox.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="SE_RESIZE" />
-                           </cursor>
-                        </ImageView>
-                     </graphic>
-                     <tooltip>
-                        <Tooltip text="Show all your tasks" />
-                     </tooltip>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#handleToday" prefHeight="26.0" prefWidth="151.0" text="Today">
-                     <graphic>
-                        <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/today.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="SE_RESIZE" />
-                           </cursor>
-                        </ImageView>
-                     </graphic>
-                     <tooltip>
-                        <Tooltip text="Show today's tasks" />
-                     </tooltip>
-                  </Button>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                      <TitledPane animated="false" expanded="false" prefWidth="135.0" text="List">
-                           <content>
-                              <VBox fx:id="vboxSection" prefHeight="173.0" prefWidth="114.0" />
-                           </content>
-                        </TitledPane>
-                     </children>
-                  </VBox>
-                  <Accordion prefWidth="135.0" />
-               </children>
-               <padding>
-                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-               </padding>
-            </VBox>
-         </children>
-      </HBox>
-   </left>
-   <center>
-      <VBox prefHeight="515.0" prefWidth="484.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="lblHeader" text="G12 English B Blue class">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <HBox prefHeight="27.0" prefWidth="311.0" spacing="10.0">
-               <children>
-                  <Button fx:id="btnAddTask" minWidth="92.0" mnemonicParsing="false" onAction="#handleAddTask" prefHeight="26.0" prefWidth="111.0" text="Add Task">
-                     <graphic>
-                        <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/list_add.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnPlan" minWidth="92.0" mnemonicParsing="false" onAction="#OnOptimizedTasks" prefHeight="26.0" prefWidth="111.0" text="Auto Planing">
-                     <graphic>
-                        <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icon/auto_planning.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </HBox>
-            <Label fx:id="lblTaskCat1" text="Today's Tasks" />
-            <ScrollPane maxWidth="300.0" prefHeight="170.0" prefWidth="300.0">
-               <content>
-                  <VBox maxWidth="250.0" prefHeight="200.0" prefWidth="235.0" spacing="5.0">
-                     <padding>
-                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                     </padding>
-                     <children>
-                        <VBox fx:id="vboxOptimized" prefHeight="28.0" prefWidth="219.0" />
-                        <VBox fx:id="vboxTodayTask" prefHeight="200.0" prefWidth="100.0" />
-                     </children>
-                  </VBox>
-               </content>
-               <padding>
-                  <Insets bottom="8.0" left="2.0" right="2.0" top="8.0" />
-               </padding>
-            </ScrollPane>
-            <Label fx:id="lblTaskCat2" text="All Tasks" />
-            <ScrollPane maxWidth="300.0" prefHeight="188.0" prefWidth="300.0">
-               <content>
-                  <VBox fx:id="vboxAllTask" maxWidth="235.0" prefHeight="200.0" prefWidth="300.0" />
-               </content>
-               <padding>
-                  <Insets bottom="8.0" left="2.0" right="2.0" top="8.0" />
-               </padding>
-            </ScrollPane>
-         </children>
-         <padding>
-            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-         </padding>
-      </VBox>
-   </center>
-   <right>
-      <BorderPane prefHeight="515.0" prefWidth="335.0" BorderPane.alignment="CENTER">
-         <top>
-            <VBox prefHeight="71.0" prefWidth="270.0" spacing="10.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-                     <children>
-                        <CheckBox fx:id="checkBoxIsComplete" mnemonicParsing="false">
-                           <HBox.margin>
-                              <Insets top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <TextField fx:id="txtFieldTaskName" />
-                     </children>
-                     <padding>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                     </padding>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label fx:id="lblTaskInfo" prefHeight="17.0" prefWidth="303.0" text="I am a due date" textFill="#1888ed" />
-                        <ImageView fx:id="prioritySign" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
-                     </children>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-               </padding>
-            </VBox>
-         </top>
-         <left>
-            <Separator orientation="VERTICAL" prefHeight="492.0" prefWidth="6.0" BorderPane.alignment="CENTER" />
-         </left>
-         <center>
-            <SplitPane dividerPositions="0.5030581039755352" maxHeight="420.0" prefHeight="420.0" prefWidth="281.0" BorderPane.alignment="CENTER">
-              <items>
-                  <ScrollPane>
-                     <content>
-                        <TextArea fx:id="txtAreaDescription" prefHeight="420.0" prefWidth="512.0" />
-                     </content>
-                  </ScrollPane>
-                  <ScrollPane prefHeight="420.0" prefWidth="200.0">
-                     <content>
-                        <WebView fx:id="wvDescription" minHeight="-1.0" minWidth="-1.0" prefHeight="411.0" prefWidth="161.0" />
-                     </content>
-                  </ScrollPane>
-              </items>
-            </SplitPane>
-         </center></BorderPane>
-   </right>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0"
+            prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.planner.DashboardController">
+    <left>
+        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="56.0" spacing="10.0"
+                      style="-fx-background-color: #ececec;">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onDashboard" prefHeight="40.0" prefWidth="40.0">
+                            <graphic>
+                                <ImageView accessibleRole="BUTTON" fitHeight="24.0" fitWidth="24.0"
+                                           mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icon/list.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onCalendar" prefHeight="40.0" prefWidth="40.0">
+                            <graphic>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icon/calendar.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onSetting" prefHeight="40.0" prefWidth="40.0">
+                            <VBox.margin>
+                                <Insets/>
+                            </VBox.margin>
+                            <graphic>
+                                <ImageView accessibleRole="BUTTON" fitHeight="24.0" fitWidth="24.0"
+                                           mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icon/setting.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onSearch" prefHeight="40.0" prefWidth="40.0">
+                            <graphic>
+                                <ImageView accessibleRole="BUTTON" fitHeight="24.0" fitWidth="24.0"
+                                           mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icon/search.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Pane prefHeight="200.0" prefWidth="200.0"/>
+                        <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="32.0">
+                            <graphic>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icon/help.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets bottom="16.0" left="8.0" right="8.0" top="16.0"/>
+                    </padding>
+                </VBox>
+                <VBox minWidth="167.0" prefHeight="515.0" prefWidth="190.0" spacing="10.0">
+                    <children>
+                        <Label fx:id="lblGreetings" prefHeight="17.0" prefWidth="135.0" text="Monday Sep 17  C day"
+                               wrapText="true"/>
+                        <Button mnemonicParsing="false" onAction="#handleInbox" prefHeight="26.0" prefWidth="151.0"
+                                text="Inbox">
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icon/inbox.png"/>
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="SE_RESIZE"/>
+                                    </cursor>
+                                </ImageView>
+                            </graphic>
+                            <tooltip>
+                                <Tooltip text="Show all your tasks"/>
+                            </tooltip>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#handleToday" prefHeight="26.0" prefWidth="151.0"
+                                text="Today">
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icon/today.png"/>
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="SE_RESIZE"/>
+                                    </cursor>
+                                </ImageView>
+                            </graphic>
+                            <tooltip>
+                                <Tooltip text="Show today's tasks"/>
+                            </tooltip>
+                        </Button>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                            <children>
+                                <TitledPane animated="false" expanded="false" prefWidth="135.0" text="List">
+                                    <content>
+                                        <VBox fx:id="vboxSection" prefHeight="173.0" prefWidth="114.0"/>
+                                    </content>
+                                </TitledPane>
+                            </children>
+                        </VBox>
+                        <Accordion prefWidth="135.0"/>
+                    </children>
+                    <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                    </padding>
+                </VBox>
+            </children>
+        </HBox>
+    </left>
+    <center>
+        <VBox prefHeight="515.0" prefWidth="484.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="lblHeader" text="G12 English B Blue class">
+                    <font>
+                        <Font name="System Bold" size="13.0"/>
+                    </font>
+                </Label>
+                <HBox prefHeight="27.0" prefWidth="311.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="btnAddTask" minWidth="92.0" mnemonicParsing="false" onAction="#handleAddTask"
+                                prefHeight="26.0" prefWidth="111.0" text="Add Task">
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icon/list_add.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="btnPlan" minWidth="92.0" mnemonicParsing="false" onAction="#OnOptimizedTasks"
+                                prefHeight="26.0" prefWidth="111.0" text="Auto Planing">
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icon/auto_planning.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                </HBox>
+                <Label fx:id="lblTaskCat1" text="Today's Tasks"/>
+                <ScrollPane maxWidth="300.0" prefHeight="170.0" prefWidth="300.0">
+                    <content>
+                        <VBox maxWidth="250.0" prefHeight="200.0" prefWidth="235.0" spacing="5.0">
+                            <padding>
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                            </padding>
+                            <children>
+                                <VBox fx:id="vboxOptimized" prefHeight="28.0" prefWidth="219.0"/>
+                                <VBox fx:id="vboxTodayTask" prefHeight="200.0" prefWidth="100.0"/>
+                            </children>
+                        </VBox>
+                    </content>
+                    <padding>
+                        <Insets bottom="8.0" left="2.0" right="2.0" top="8.0"/>
+                    </padding>
+                </ScrollPane>
+                <Label fx:id="lblTaskCat2" text="All Tasks"/>
+                <ScrollPane maxWidth="300.0" prefHeight="188.0" prefWidth="300.0">
+                    <content>
+                        <VBox fx:id="vboxAllTask" maxWidth="235.0" prefHeight="200.0" prefWidth="300.0"/>
+                    </content>
+                    <padding>
+                        <Insets bottom="8.0" left="2.0" right="2.0" top="8.0"/>
+                    </padding>
+                </ScrollPane>
+            </children>
+            <padding>
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+            </padding>
+        </VBox>
+    </center>
+    <right>
+        <BorderPane prefHeight="515.0" prefWidth="335.0" BorderPane.alignment="CENTER">
+            <top>
+                <VBox prefHeight="71.0" prefWidth="270.0" spacing="10.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                            <children>
+                                <CheckBox fx:id="checkBoxIsComplete" mnemonicParsing="false">
+                                    <HBox.margin>
+                                        <Insets top="3.0"/>
+                                    </HBox.margin>
+                                </CheckBox>
+                                <TextField fx:id="txtFieldTaskName"/>
+                            </children>
+                            <padding>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </padding>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <Label fx:id="lblTaskInfo" prefHeight="17.0" prefWidth="303.0" text="I am a due date"
+                                       textFill="#1888ed"/>
+                                <ImageView fx:id="prioritySign" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                                           preserveRatio="true"/>
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                    </padding>
+                </VBox>
+            </top>
+            <left>
+                <Separator orientation="VERTICAL" prefHeight="492.0" prefWidth="6.0" BorderPane.alignment="CENTER"/>
+            </left>
+            <center>
+                <SplitPane dividerPositions="0.5030581039755352" maxHeight="420.0" prefHeight="420.0" prefWidth="281.0"
+                           BorderPane.alignment="CENTER">
+                    <items>
+                        <ScrollPane>
+                            <content>
+                                <TextArea fx:id="txtAreaDescription" prefHeight="420.0" prefWidth="512.0"/>
+                            </content>
+                        </ScrollPane>
+                        <ScrollPane prefHeight="420.0" prefWidth="200.0">
+                            <content>
+                                <WebView fx:id="wvDescription" minHeight="-1.0" minWidth="-1.0" prefHeight="411.0"
+                                         prefWidth="161.0"/>
+                            </content>
+                        </ScrollPane>
+                    </items>
+                </SplitPane>
+            </center>
+        </BorderPane>
+    </right>
 </BorderPane>

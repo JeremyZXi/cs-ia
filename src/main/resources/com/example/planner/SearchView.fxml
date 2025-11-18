@@ -2,92 +2,101 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.web.*?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.SearchViewController">
-   <left>
-      <VBox prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox prefHeight="85.0" prefWidth="600.0">
-               <children>
-                  <TextField fx:id="searchField" prefHeight="26.0" prefWidth="503.0" promptText="Enter your search item...">
-                     <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="20.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <HBox prefHeight="0.0" prefWidth="560.0" spacing="10.0">
-                     <VBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </VBox.margin>
-                     <children>
-                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearch" style="-fx-background-color: #4285f4;" text="Search" textFill="WHITE" />
-                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <TableView fx:id="taskTable" prefHeight="515.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
-               <columns>
-                  <TableColumn fx:id="titleColumn" prefWidth="150.0" text="Title" />
-                  <TableColumn fx:id="dueDateColumn" prefWidth="100.0" text="Due Date" />
-                  <TableColumn fx:id="timeSpanColumn" prefWidth="80.0" text="Time Span" />
-                  <TableColumn fx:id="priorityColumn" prefWidth="80.0" text="Priority" />
-                  <TableColumn fx:id="completedColumn" prefWidth="100.0" text="Completed" />
-               </columns>
-            </TableView>
-         </children>
-      </VBox>
-   </left>
-   <right>
-      <BorderPane prefHeight="515.0" prefWidth="335.0" BorderPane.alignment="CENTER">
-         <top>
-            <VBox prefHeight="79.0" prefWidth="300.0" spacing="10.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-                     <children>
-                        <CheckBox fx:id="checkBoxIsComplete" mnemonicParsing="false">
-                           <HBox.margin>
-                              <Insets top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <TextField fx:id="txtFieldTaskName" />
-                     </children>
-                     <padding>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                     </padding>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label fx:id="lblTaskInfo" prefHeight="17.0" prefWidth="303.0" text="I am a due date" textFill="#1888ed" />
-                        <ImageView fx:id="prioritySign" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
-                     </children>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-               </padding>
-            </VBox>
-         </top>
-         <left>
-            <Separator orientation="VERTICAL" prefHeight="492.0" prefWidth="6.0" BorderPane.alignment="CENTER" />
-         </left>
-         <center>
-            <SplitPane dividerPositions="0.5030581039755352" maxHeight="420.0" prefHeight="420.0" prefWidth="281.0" BorderPane.alignment="CENTER">
-               <items>
-                  <ScrollPane prefHeight="466.0" prefWidth="143.0">
-                     <content>
-                        <TextArea fx:id="txtAreaDescription" prefHeight="420.0" prefWidth="512.0" />
-                     </content>
-                  </ScrollPane>
-                  <ScrollPane prefHeight="420.0" prefWidth="200.0">
-                     <content>
-                        <WebView fx:id="wvDescription" minHeight="-1.0" minWidth="-1.0" prefHeight="411.0" prefWidth="161.0" />
-                     </content>
-                  </ScrollPane>
-               </items>
-            </SplitPane>
-         </center></BorderPane>
-   </right>
+<?import javafx.scene.web.WebView?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+            prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.planner.SearchViewController">
+    <left>
+        <VBox prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="85.0" prefWidth="600.0">
+                    <children>
+                        <TextField fx:id="searchField" prefHeight="26.0" prefWidth="503.0"
+                                   promptText="Enter your search item...">
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" top="20.0"/>
+                            </VBox.margin>
+                        </TextField>
+                        <HBox prefHeight="0.0" prefWidth="560.0" spacing="10.0">
+                            <VBox.margin>
+                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                            </VBox.margin>
+                            <children>
+                                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearch"
+                                        style="-fx-background-color: #4285f4;" text="Search" textFill="WHITE"/>
+                                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel"
+                                        text="Cancel"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <TableView fx:id="taskTable" prefHeight="515.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="titleColumn" prefWidth="150.0" text="Title"/>
+                        <TableColumn fx:id="dueDateColumn" prefWidth="100.0" text="Due Date"/>
+                        <TableColumn fx:id="timeSpanColumn" prefWidth="80.0" text="Time Span"/>
+                        <TableColumn fx:id="priorityColumn" prefWidth="80.0" text="Priority"/>
+                        <TableColumn fx:id="completedColumn" prefWidth="100.0" text="Completed"/>
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+    </left>
+    <right>
+        <BorderPane prefHeight="515.0" prefWidth="335.0" BorderPane.alignment="CENTER">
+            <top>
+                <VBox prefHeight="79.0" prefWidth="300.0" spacing="10.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                            <children>
+                                <CheckBox fx:id="checkBoxIsComplete" mnemonicParsing="false">
+                                    <HBox.margin>
+                                        <Insets top="3.0"/>
+                                    </HBox.margin>
+                                </CheckBox>
+                                <TextField fx:id="txtFieldTaskName"/>
+                            </children>
+                            <padding>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </padding>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <Label fx:id="lblTaskInfo" prefHeight="17.0" prefWidth="303.0" text="I am a due date"
+                                       textFill="#1888ed"/>
+                                <ImageView fx:id="prioritySign" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                                           preserveRatio="true"/>
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                    </padding>
+                </VBox>
+            </top>
+            <left>
+                <Separator orientation="VERTICAL" prefHeight="492.0" prefWidth="6.0" BorderPane.alignment="CENTER"/>
+            </left>
+            <center>
+                <SplitPane dividerPositions="0.5030581039755352" maxHeight="420.0" prefHeight="420.0" prefWidth="281.0"
+                           BorderPane.alignment="CENTER">
+                    <items>
+                        <ScrollPane prefHeight="466.0" prefWidth="143.0">
+                            <content>
+                                <TextArea fx:id="txtAreaDescription" prefHeight="420.0" prefWidth="512.0"/>
+                            </content>
+                        </ScrollPane>
+                        <ScrollPane prefHeight="420.0" prefWidth="200.0">
+                            <content>
+                                <WebView fx:id="wvDescription" minHeight="-1.0" minWidth="-1.0" prefHeight="411.0"
+                                         prefWidth="161.0"/>
+                            </content>
+                        </ScrollPane>
+                    </items>
+                </SplitPane>
+            </center>
+        </BorderPane>
+    </right>
 </BorderPane>

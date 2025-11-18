@@ -3,7 +3,6 @@ package com.example.planner;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 public class HelloController {
     @FXML
@@ -24,12 +23,8 @@ public class HelloController {
         masterController.closeWindow("Login");
 
 
-
         //masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null);
     }
-
-
-
 
 
 }

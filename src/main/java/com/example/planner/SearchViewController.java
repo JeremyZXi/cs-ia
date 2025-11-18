@@ -1,13 +1,11 @@
 package com.example.planner;
 
-import com.example.planner.MasterController;
 import com.example.planner.module.Task;
 import com.example.planner.utility.StorageManager;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -20,7 +18,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.Stage;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,23 +26,38 @@ import java.util.Map;
 
 public class SearchViewController {
 
-    @FXML private TextField searchField;
-    @FXML private Button searchButton;
-    @FXML private Button cancelButton;
-    @FXML private TableView<Task> taskTable;
-    @FXML private TableColumn<Task, String> titleColumn;
-    @FXML private TableColumn<Task, String> dueDateColumn;
-    @FXML private TableColumn<Task, String> timeSpanColumn;
-    @FXML private TableColumn<Task, String> priorityColumn;
-    @FXML private TableColumn<Task, String> completedColumn;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private Button cancelButton;
+    @FXML
+    private TableView<Task> taskTable;
+    @FXML
+    private TableColumn<Task, String> titleColumn;
+    @FXML
+    private TableColumn<Task, String> dueDateColumn;
+    @FXML
+    private TableColumn<Task, String> timeSpanColumn;
+    @FXML
+    private TableColumn<Task, String> priorityColumn;
+    @FXML
+    private TableColumn<Task, String> completedColumn;
 
     // Task detail components
-    @FXML private CheckBox checkBoxIsComplete;
-    @FXML private TextField txtFieldTaskName;
-    @FXML private Label lblTaskInfo;
-    @FXML private TextArea txtAreaDescription;
-    @FXML private WebView wvDescription;
-    @FXML private ImageView prioritySign;
+    @FXML
+    private CheckBox checkBoxIsComplete;
+    @FXML
+    private TextField txtFieldTaskName;
+    @FXML
+    private Label lblTaskInfo;
+    @FXML
+    private TextArea txtAreaDescription;
+    @FXML
+    private WebView wvDescription;
+    @FXML
+    private ImageView prioritySign;
 
     private MasterController masterController;
     private Map<String, Task> tasks;
@@ -176,12 +188,8 @@ public class SearchViewController {
             return true;
         }
 
-        if (task.getDueDate() != null &&
-                task.getDueDate().toString().toLowerCase().contains(searchTerm)) {
-            return true;
-        }
-
-        return false;
+        return task.getDueDate() != null &&
+                task.getDueDate().toString().toLowerCase().contains(searchTerm);
     }
 
     @FXML

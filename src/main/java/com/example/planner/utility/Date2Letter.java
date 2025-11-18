@@ -52,9 +52,9 @@ public class Date2Letter {
     /**
      * Generate the calendar CSV
      * Columns: date, weekday, cycle_letter
-     *  - cycle_letter advances through A..H on weekdays (Mon–Fri)
-     *  - weekends (Sat, Sun) get '0' and do NOT advance the cycle
-     *  - holidays get '0' and do NOT advance the cycle
+     * - cycle_letter advances through A..H on weekdays (Mon–Fri)
+     * - weekends (Sat, Sun) get '0' and do NOT advance the cycle
+     * - holidays get '0' and do NOT advance the cycle
      */
     public static void generateCalendarCsv(
             LocalDate startDate,
@@ -116,10 +116,10 @@ public class Date2Letter {
 
     /**
      * Load holiday dates from a CSV file chosen by the user.
-     *
+     * <p>
      * Expected format:
-     *  - First column = date in YYYY-MM-DD (ISO) format.
-     *  - First row is treated as header and skipped.
+     * - First column = date in YYYY-MM-DD (ISO) format.
+     * - First row is treated as header and skipped.
      */
     public static Set<LocalDate> loadHolidaysFromCsv(File holidayFile) {
         Set<LocalDate> holidays = new HashSet<>();

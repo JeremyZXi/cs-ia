@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class StorageManager {
@@ -27,6 +26,7 @@ public class StorageManager {
     }
 
     public static Map<String, Task> load() throws Exception {
-        return MAPPER.readValue(FILE.toFile(), new TypeReference<Map<String, Task>>() {});
+        return MAPPER.readValue(FILE.toFile(), new TypeReference<Map<String, Task>>() {
+        });
     }
 }

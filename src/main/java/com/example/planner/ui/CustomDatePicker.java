@@ -1,7 +1,6 @@
 package com.example.planner.ui;
 
 import com.example.planner.utility.Date2Letter;
-import com.example.planner.utility.DateDisplayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,14 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.StackPane;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-
-import java.io.FileReader;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class CustomDatePicker extends DatePicker {
 
@@ -88,7 +80,6 @@ public class CustomDatePicker extends DatePicker {
         char letter = Date2Letter.letterDate(date).charAt(0);
         return (letter != '0') ? "Letter Day: " + letter : "";
     }
-
 
 
 }

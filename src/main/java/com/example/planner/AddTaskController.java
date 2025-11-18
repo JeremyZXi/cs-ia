@@ -1,9 +1,14 @@
 package com.example.planner;
+
 import com.example.planner.module.Section;
 import com.example.planner.module.Setting;
 import com.example.planner.module.Task;
 import com.example.planner.ui.CustomDatePicker;
 import com.example.planner.utility.StorageManager;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,19 +19,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-
+import org.controlsfx.control.PopOver;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-//for markdown
-import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.html.HtmlRenderer;
-import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.util.data.MutableDataSet;
-import org.controlsfx.control.PopOver;
 
 
 public class AddTaskController {
@@ -85,9 +84,7 @@ public class AddTaskController {
         Platform.runLater(() -> txtFiledTaskName.requestFocus());
 
 
-
-
-        vboxLeft.getChildren().add(2,datePicker);
+        vboxLeft.getChildren().add(2, datePicker);
         // md syntx converter
         MutableDataSet options = new MutableDataSet();
         Parser parser = Parser.builder(options).build();
@@ -100,7 +97,7 @@ public class AddTaskController {
         txtAreaTaskDescription.textProperty().addListener((obs, oldVal, newVal) -> {
             Node document = parser.parse(newVal);
             String html = renderer.render(document);
-            webEngine.loadContent(html,"text/html");
+            webEngine.loadContent(html, "text/html");
 
         });
 
@@ -115,14 +112,14 @@ public class AddTaskController {
             }
         });
         datePicker.valueProperty().addListener((obs, oldVal, newVal) -> {
-            lblDueInfo.setText(newVal.toString()+" ("+datePicker.getLetterForDate(newVal)+" day)");
+            lblDueInfo.setText(newVal.toString() + " (" + datePicker.getLetterForDate(newVal) + " day)");
             ArrayList<Section> selected = sectionFilter(String.valueOf(datePicker.getLetterForDate(newVal)));
             VBox optionLists = new VBox(5);
-            for(Section section: selected){
+            for (Section section : selected) {
                 Button sectionBtn = new Button(section.getName());
-                sectionBtn.setOnAction(e->{
+                sectionBtn.setOnAction(e -> {
                     selectedSection = section;
-                    lblDueInfo.setText(newVal +" ("+datePicker.getLetterForDate(newVal)+" day) "+section.getName());
+                    lblDueInfo.setText(newVal + " (" + datePicker.getLetterForDate(newVal) + " day) " + section.getName());
                     sectionOption.setText(section.getName());
                 });
                 optionLists.getChildren().add(sectionBtn);
@@ -140,7 +137,6 @@ public class AddTaskController {
         });
 
 
-
         Spinner<Integer> minutesSpinner = new Spinner<>();
         minutesSpinner.setEditable(true);
         minutesSpinner.setPrefWidth(100);
@@ -149,11 +145,14 @@ public class AddTaskController {
         );
 
         // quick chips 4 usability
-        Button b15 = new Button("15"); Button b25 = new Button("25");
-        Button b30 = new Button("30"); Button b45 = new Button("45");
-        Button b60 = new Button("60"); Button b90 = new Button("90");
+        Button b15 = new Button("15");
+        Button b25 = new Button("25");
+        Button b30 = new Button("30");
+        Button b45 = new Button("45");
+        Button b60 = new Button("60");
+        Button b90 = new Button("90");
 
-        for (Button b : new Button[]{b15,b25,b30,b45,b60,b90}) {
+        for (Button b : new Button[]{b15, b25, b30, b45, b60, b90}) {
             b.getStyleClass().add("chip");
             b.setOnAction(e -> minutesSpinner.getValueFactory().setValue(Integer.parseInt(b.getText())));
         }
@@ -167,7 +166,7 @@ public class AddTaskController {
         Label title = new Label("Optional timespan (minutes)");
         title.setStyle("-fx-font-weight: bold; -fx-padding: 0 0 6 0;");
 
-        HBox quickRow = new HBox(6, b15,b25,b30,b45,b60,b90);
+        HBox quickRow = new HBox(6, b15, b25, b30, b45, b60, b90);
         HBox actions = new HBox(8, clearBtn, applyBtn);
         quickRow.setStyle("-fx-padding: 6 0 0 0;");
         actions.setStyle("-fx-padding: 10 0 0 0;");
@@ -204,7 +203,6 @@ public class AddTaskController {
         });
 
 
-
     }
 
     @FXML
@@ -230,6 +228,7 @@ public class AddTaskController {
                 getClass().getResource("/com/example/planner/icon/priority_low.png").toExternalForm()
         ));
     }
+
     @FXML
     private void onRegularPriority() {
         priority = 1.0;
@@ -239,12 +238,11 @@ public class AddTaskController {
     }
 
 
-
     @FXML
     public void handleEnter() throws Exception {
         System.out.println(selectedMinutes);
 
-        if (!txtFiledTaskName.getText().trim().isEmpty()){
+        if (!txtFiledTaskName.getText().trim().isEmpty()) {
             String title = txtFiledTaskName.getText();
             String description = txtAreaTaskDescription.getText();
             Section section = selectedSection;
@@ -252,41 +250,41 @@ public class AddTaskController {
             LocalTime start = LocalTime.now();
             LocalTime end = LocalTime.now();
             int timeSpan;
-            if(selectedMinutes!=null){
+            if (selectedMinutes != null) {
                 timeSpan = selectedMinutes.intValue();
-            } else{
+            } else {
                 timeSpan = 15;
             }
 
             Task task;
             if (date != null) {
                 //task = new Task(date,datePicker.getLetterForDate(date),60,title,description);
-                task = new Task(date,start,end, datePicker.getLetterForDate(date), timeSpan,title,description);
-                if (selectedSection!=null){
-                    task = new Task(section,date,datePicker.getLetterForDate(date),timeSpan,title,description);
+                task = new Task(date, start, end, datePicker.getLetterForDate(date), timeSpan, title, description);
+                if (selectedSection != null) {
+                    task = new Task(section, date, datePicker.getLetterForDate(date), timeSpan, title, description);
                 }
             } else {
-                task = new Task(title,description);
+                task = new Task(title, description);
             }
             task.setPriority(priority);
             tasks.put(task.getId(), task);
-            masterController.setSharedData("Tasks",tasks);
+            masterController.setSharedData("Tasks", tasks);
             StorageManager.save(tasks);
             masterController.closeWindow("Add New Tasks");
             System.out.println("Closing");
-        } else{
+        } else {
             txtFiledTaskName.requestFocus();
             txtFiledTaskName.setStyle("-fx-border-color: red; -fx-border-width: 1;");//set the boarder to red
         }
     }
 
-    public ArrayList<Section> sectionFilter(String letterDate){
+    public ArrayList<Section> sectionFilter(String letterDate) {
         ArrayList<Section> selected = new ArrayList<>();
-        for(Section section:setting.getSections()){
-            for(String letter:section.getLetterDates()){
-                if (letter.equals(letterDate)){
+        for (Section section : setting.getSections()) {
+            for (String letter : section.getLetterDates()) {
+                if (letter.equals(letterDate)) {
                     selected.add(section);
-                    System.out.println(section.getName()+" filtered");
+                    System.out.println(section.getName() + " filtered");
                 }
             }
         }

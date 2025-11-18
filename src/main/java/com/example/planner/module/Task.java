@@ -3,6 +3,7 @@ package com.example.planner.module;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
+
 public class Task {
     private String id;
     private LocalDate dueDate;
@@ -37,7 +38,7 @@ public class Task {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Task(LocalDate dueDate,char letterDate,int timeSpan, String title, String description) {
+    public Task(LocalDate dueDate, char letterDate, int timeSpan, String title, String description) {
         this.letterDate = letterDate;
         this.dueDate = dueDate;
 
@@ -77,26 +78,34 @@ public class Task {
         this.description = description;
         this.id = UUID.randomUUID().toString();
     }
+
     public Task() {
         //default constructor for deserialization
     }
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
     public boolean isComplete() {
         return isComplete;
     }
 
     public void setComplete(boolean isComplete) {
-       this.isComplete = isComplete;
+        this.isComplete = isComplete;
     }
 
-    public void setId(String id) { this.id = id; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public LocalDate getDueDate() {
         return dueDate;
     }
-    public char getLetterDate(){return letterDate;}
+
+    public char getLetterDate() {
+        return letterDate;
+    }
 
     public LocalTime getStart() {
         return start;

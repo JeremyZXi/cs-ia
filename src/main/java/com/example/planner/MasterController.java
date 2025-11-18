@@ -4,15 +4,17 @@ import com.example.planner.module.Setting;
 import com.example.planner.module.Task;
 import com.example.planner.utility.SettingManager;
 import com.example.planner.utility.StorageManager;
-import javafx.fxml.*;
-import javafx.scene.image.Image;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import java.util.*;
-import java.io.*;
-import java.io.StringWriter;
+
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MasterController {
     private static MasterController instance;
@@ -25,27 +27,30 @@ public class MasterController {
         loadTasks();
         loadSetting();
     }
+
     private void loadTasks() throws Exception {
         Map<String, Task> tasks = new HashMap<>();
-        if(StorageManager.storageExists()){
+        if (StorageManager.storageExists()) {
             tasks = StorageManager.load();
-        } else{
+        } else {
             tasks = new HashMap<>();
         }
-        setSharedData("Tasks",tasks);
+        setSharedData("Tasks", tasks);
     }
-    public Stage getWindows(String key){
+
+    public Stage getWindows(String key) {
         System.out.println(windows.get(key));
         return windows.get(key);
     }
 
     private void loadSetting() throws Exception {
         Setting setting = new Setting();
-        if(SettingManager.storageExists()){
+        if (SettingManager.storageExists()) {
             setting = SettingManager.load();
         }
-        setSharedData("setting",setting);
+        setSharedData("setting", setting);
     }
+
     // Thread-safe Singleton instance retrieval method
     public static synchronized MasterController getInstance() throws Exception {
         if (instance == null) {
@@ -53,6 +58,7 @@ public class MasterController {
         }
         return instance;
     }
+
     // Method to retrieve shared data
     @SuppressWarnings("unchecked")
     public <T> T getSharedData(String key) {
@@ -77,8 +83,6 @@ public class MasterController {
             if (callerStage != null) {
                 stage.setOnHidden(e -> callerStage.show());
             }
-
-
 
 
             // Store the stage in the windows map

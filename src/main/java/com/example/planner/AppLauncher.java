@@ -5,23 +5,25 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class AppLauncher extends Application {
-    /** NEW **/
+    /**
+     * NEW
+     **/
     private MasterController masterController;
+
     @Override
-    public void start(Stage stage) throws Exception
-    {
+    public void start(Stage stage) throws Exception {
         /** NEW **/
 
         masterController = MasterController.getInstance();
-       // masterController.openWindow("/com/example/planner/hello-view.fxml", "Login", null);
-        if(!SettingManager.storageExists()){
-            masterController.openWindow("/com/example/planner/Onboarding.fxml","Welcome", null,null);
+        // masterController.openWindow("/com/example/planner/hello-view.fxml", "Login", null);
+        if (!SettingManager.storageExists()) {
+            masterController.openWindow("/com/example/planner/Onboarding.fxml", "Welcome", null, null);
         } else {
-            masterController.openWindow("/com/example/planner/Dashboard.fxml","Dashboard", null,null);
+            masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null, null);
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         launch(args);
     }
 }

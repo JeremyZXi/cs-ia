@@ -6,23 +6,30 @@ import com.example.planner.utility.SettingManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.Node;
 
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class OnboardingController {
-    @FXML protected TextField daysInCycle;
-    @FXML protected GridPane midGrid;
-    @FXML protected HBox letterDates;
-    @FXML protected VBox periodRow;
-    @FXML protected TextField sectionName;
-    @FXML protected VBox sectionsList;
-    @FXML protected ColorPicker tagColor;
+    @FXML
+    protected TextField daysInCycle;
+    @FXML
+    protected GridPane midGrid;
+    @FXML
+    protected HBox letterDates;
+    @FXML
+    protected VBox periodRow;
+    @FXML
+    protected TextField sectionName;
+    @FXML
+    protected VBox sectionsList;
+    @FXML
+    protected ColorPicker tagColor;
 
     protected MasterController masterController;
     protected int numOfDays;
@@ -65,13 +72,15 @@ public class OnboardingController {
 
     @FXML
     public void onAddPeriod() {
-        HBox row = makePeriodRow(LocalTime.of(8,0), LocalTime.of(9,0));
+        HBox row = makePeriodRow(LocalTime.of(8, 0), LocalTime.of(9, 0));
         periodRow.getChildren().add(row);
         periodCounter++;
         rebuildGrid();
     }
 
-    /** New: build a single period row with specific start/end times. */
+    /**
+     * New: build a single period row with specific start/end times.
+     */
     protected HBox makePeriodRow(LocalTime start, LocalTime end) {
         Label periodLabel = new Label("" + periodCounter);
         periodLabel.setPrefWidth(20);
@@ -121,7 +130,9 @@ public class OnboardingController {
         refreshAllCellMenus();
     }
 
-    /** New: add a section and render its row in the UI (reused by loader). */
+    /**
+     * New: add a section and render its row in the UI (reused by loader).
+     */
     protected void addSectionToUI(Section section) {
         String hexColor = section.getColor();
         // spacing and padding for each section row
@@ -151,7 +162,7 @@ public class OnboardingController {
     }
 
     @FXML
-    public void onImportDate(){
+    public void onImportDate() {
 
     }
 
@@ -165,11 +176,13 @@ public class OnboardingController {
         masterController.setSharedData("setting", setting);
         System.out.println("setting saved");
         masterController.closeWindow("Welcome");
-        masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null,null);
+        masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null, null);
     }
 
 
-    /** Extracted: convert current UI state into a Setting. */
+    /**
+     * Extracted: convert current UI state into a Setting.
+     */
     protected Setting toSettingFromUI() {
         Setting setting = new Setting(new ArrayList<>());
         List<Section> result = new ArrayList<>();
@@ -186,10 +199,10 @@ public class OnboardingController {
 
             HBox row = (HBox) periodRow.getChildren().get(r);
             TextField startTF = (TextField) row.getChildren().get(1);
-            TextField endTF   = (TextField) row.getChildren().get(2);
+            TextField endTF = (TextField) row.getChildren().get(2);
 
             LocalTime start = LocalTime.parse(startTF.getText().trim());
-            LocalTime end   = LocalTime.parse(endTF.getText().trim());
+            LocalTime end = LocalTime.parse(endTF.getText().trim());
 
             ArrayList<LocalTime> span = new ArrayList<>(2);
             span.add(start);
@@ -243,7 +256,9 @@ public class OnboardingController {
         midGrid.getColumnConstraints().clear();
         midGrid.getRowConstraints().clear();
 
-        if (cols <= 0 || rows <= 0) { return; }
+        if (cols <= 0 || rows <= 0) {
+            return;
+        }
 
         for (int c = 0; c < cols; c++) {
             midGrid.getColumnConstraints().add(new ColumnConstraints(90));
@@ -294,21 +309,29 @@ public class OnboardingController {
         cell.setStyle("-fx-border-color:#ddd; -fx-background-color:" + s.getColor() + ";");
     }
 
-    protected String key(int c, int r) { return c + "," + r; }
+    protected String key(int c, int r) {
+        return c + "," + r;
+    }
 
     protected void refreshAllCellMenus() {
         for (Node n : midGrid.getChildren()) {
             if (n instanceof MenuButton mb) {
                 Integer c = GridPane.getColumnIndex(mb);
-                if (c == null) { c = 0; }
+                if (c == null) {
+                    c = 0;
+                }
                 Integer r = GridPane.getRowIndex(mb);
-                if (r == null) { r = 0; }
+                if (r == null) {
+                    r = 0;
+                }
                 mb.getItems().setAll(buildMenuItems(mb, c, r));
             }
         }
     }
 
-    /** New: clear everything in the editor UI. */
+    /**
+     * New: clear everything in the editor UI.
+     */
     protected void clearAll() {
         sections.clear();
         assigned.clear();
@@ -322,7 +345,9 @@ public class OnboardingController {
         daysInCycle.clear();
     }
 
-    /** New: set day count without triggering intermediate rebuilds. */
+    /**
+     * New: set day count without triggering intermediate rebuilds.
+     */
     protected void setDays(int days) {
         suppressRebuild = true;
         this.numOfDays = days;
@@ -331,7 +356,9 @@ public class OnboardingController {
         suppressRebuild = false;
     }
 
-    /** New: Load an existing Setting into the UI. */
+    /**
+     * New: Load an existing Setting into the UI.
+     */
     protected void loadFromSetting(Setting setting) {
         if (setting == null || setting.getSections() == null) return;
 
@@ -359,7 +386,8 @@ public class OnboardingController {
         setDays(maxLetterIndex + 1);
 
         // 3) Collect unique spans (start,end) and create period rows
-        record Span(LocalTime a, LocalTime b) {}
+        record Span(LocalTime a, LocalTime b) {
+        }
         Map<String, Integer> spanToRow = new LinkedHashMap<>();
         List<Span> uniqueSpans = new ArrayList<>();
 
