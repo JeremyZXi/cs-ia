@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
-<BorderPane prefHeight="515.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.CalendarController">
+
+<BorderPane fx:id="root" prefHeight="515.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.CalendarController">
 
     <!-- ============ LEFT (icon bar only) ============ -->
     <left>
         <VBox prefWidth="56.0" spacing="10.0" style="-fx-background-color: #ececec;" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="16.0" left="8.0" right="8.0" top="16.0"/>
+                <Insets bottom="16.0" left="8.0" right="8.0" top="16.0" />
             </padding>
 
             <Button onAction="#onDashboard" prefHeight="40.0" prefWidth="40.0">
                 <graphic>
                     <ImageView fitHeight="24.0" fitWidth="24.0" onDragDetected="#onDashboard" preserveRatio="true">
                         <image>
-                            <Image url="@icon/list.png"/>
+                            <Image url="@icon/list.png" />
                         </image>
                     </ImageView>
                 </graphic>
@@ -29,7 +45,7 @@
                 <graphic>
                     <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
                         <image>
-                            <Image url="@icon/calendar.png"/>
+                            <Image url="@icon/calendar.png" />
                         </image>
                     </ImageView>
                 </graphic>
@@ -39,28 +55,29 @@
                 <graphic>
                     <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
                         <image>
-                            <Image url="@icon/setting.png"/>
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Button onAction="#onSetting" prefHeight="40.0" prefWidth="40.0">
-                <graphic>
-                    <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
-                        <image>
-                            <Image url="@icon/search.png"/>
+                            <Image url="@icon/setting.png" />
                         </image>
                     </ImageView>
                 </graphic>
             </Button>
 
-            <Pane VBox.vgrow="ALWAYS"/>
-
-            <Button prefHeight="41.0" prefWidth="32.0">
+            <Button onAction="#onSearch" prefHeight="40.0" prefWidth="40.0">
                 <graphic>
                     <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
                         <image>
-                            <Image url="@icon/help.png"/>
+                            <Image url="@icon/search.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Pane VBox.vgrow="ALWAYS" />
+
+            <Button onAction="#onHelp" prefHeight="41.0" prefWidth="32.0">
+                <graphic>
+                    <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                        <image>
+                            <Image url="@icon/help.png" />
                         </image>
                     </ImageView>
                 </graphic>
@@ -72,69 +89,83 @@
     <center>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
             </padding>
 
-            <!-- Greeting / date / add task -->
+            <!-- Top bar: greeting + month/year controls + new task -->
             <VBox spacing="4.0">
-                <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Hi, Xiyan"/>
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <Label fx:id="lblHeader" style="-fx-font-size: 14px; -fx-font-weight: bold;"
-                           text="Monday August 11 2025"/>
-                    <Pane HBox.hgrow="ALWAYS"/>
-                    <Button fx:id="addTaskBtn" mnemonicParsing="false" text="Button"/>
+                <HBox fx:id="topHbox" alignment="CENTER_LEFT" spacing="10.0">
+
+                    <!-- Month / Year controls -->
+                    <Button fx:id="btnPrevMonth" onAction="#onPreviousMonth" text="‹" />
+
+                    <ComboBox fx:id="cmbMonth" prefWidth="120.0" />
+
+                    <Spinner fx:id="spnYear" editable="true" prefWidth="90.0" />
+
+                    <Button fx:id="btnNextMonth" onAction="#onNextMonth" text="›" />
+
+                    <Pane HBox.hgrow="ALWAYS" />
+
+                    <!-- New task button -->
+                    <Button fx:id="addTaskBtn" mnemonicParsing="false" onAction="#onNewTask" text="New Task">
+                        <graphic>
+                            <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@icon/list_add.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
                 </HBox>
             </VBox>
-
-            <!-- Month bar -->
-            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #d6d6d6;">
-                <padding>
-                    <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
-                </padding>
-                <Button fx:id="btnPrevMonth" prefWidth="30.0" text="‹"/>
-                <Label fx:id="lblMonthTitle" style="-fx-font-weight: bold;" text="January 2017"/>
-                <Button fx:id="btnNextMonth" prefWidth="30.0" text="›"/>
-                <Pane HBox.hgrow="ALWAYS"/>
-            </HBox>
 
             <!-- Weekday header -->
             <GridPane hgap="5.0" vgap="5.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
                 </columnConstraints>
                 <children>
-                    <Label style="-fx-font-weight: bold;" text="Mo" GridPane.columnIndex="0"/>
-                    <Label style="-fx-font-weight: bold;" text="Tu" GridPane.columnIndex="1"/>
-                    <Label style="-fx-font-weight: bold;" text="We" GridPane.columnIndex="2"/>
-                    <Label style="-fx-font-weight: bold;" text="Th" GridPane.columnIndex="3"/>
-                    <Label style="-fx-font-weight: bold;" text="Fr" GridPane.columnIndex="4"/>
-                    <Label style="-fx-font-weight: bold;" text="Sa" GridPane.columnIndex="5"/>
-                    <Label style="-fx-font-weight: bold;" text="Su" GridPane.columnIndex="6"/>
+                    <Label style="-fx-font-weight: bold;" text="Mo" GridPane.columnIndex="0" />
+                    <Label style="-fx-font-weight: bold;" text="Tu" GridPane.columnIndex="1" />
+                    <Label style="-fx-font-weight: bold;" text="We" GridPane.columnIndex="2" />
+                    <Label style="-fx-font-weight: bold;" text="Th" GridPane.columnIndex="3" />
+                    <Label style="-fx-font-weight: bold;" text="Fr" GridPane.columnIndex="4" />
+                    <Label style="-fx-font-weight: bold;" text="Sa" GridPane.columnIndex="5" />
+                    <Label style="-fx-font-weight: bold;" text="Su" GridPane.columnIndex="6" />
                 </children>
                 <rowConstraints>
-                    <RowConstraints/>
+                    <RowConstraints />
                 </rowConstraints>
             </GridPane>
 
-            <!-- Calendar grid -->
+            <!-- Calendar grid (6 rows → up to 6 weeks) -->
             <ScrollPane fitToWidth="true" prefHeight="360.0">
                 <content>
-                    <GridPane fx:id="gridMonth" hgap="5.0" prefHeight="360.0" vgap="5.0">
+                    <GridPane fx:id="gridMonth" gridLinesVisible="true" hgap="5.0" prefHeight="360.0" vgap="5.0">
                         <columnConstraints>
-                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
-                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28"/>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
                         </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
+                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
+                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
+                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
+                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
+                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
+                        </rowConstraints>
                         <!-- dynamically filled from controller -->
                     </GridPane>
                 </content>
@@ -142,40 +173,40 @@
         </VBox>
     </center>
 
-    <!-- ============ RIGHT (detail pane stays) ============ -->
+    <!-- ============ RIGHT (detail pane) ============ -->
     <right>
         <BorderPane prefHeight="515.0" prefWidth="335.0" BorderPane.alignment="CENTER">
             <top>
                 <VBox prefHeight="71.0" prefWidth="270.0" spacing="10.0" BorderPane.alignment="CENTER">
                     <children>
                         <HBox spacing="10.0">
-                            <CheckBox fx:id="checkBoxIsComplete" mnemonicParsing="false"/>
-                            <TextField fx:id="txtFieldTaskName"/>
+                            <CheckBox fx:id="checkBoxIsComplete" mnemonicParsing="false" />
+                            <TextField fx:id="txtFieldTaskName" promptText="Task name" />
                         </HBox>
-                        <HBox>
-                            <Label fx:id="lblTaskInfo" text="I am a due date" textFill="#1888ed"/>
-                            <ImageView fx:id="prioritySign" fitHeight="20.0" fitWidth="20.0" preserveRatio="true"/>
+                        <HBox spacing="6.0">
+                            <Label fx:id="lblTaskInfo" text="No due date" textFill="#1888ed" />
+                            <ImageView fx:id="prioritySign" fitHeight="20.0" fitWidth="20.0" preserveRatio="true" />
                         </HBox>
                     </children>
                     <padding>
-                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                     </padding>
                 </VBox>
             </top>
             <left>
-                <Separator orientation="VERTICAL" prefHeight="492.0" BorderPane.alignment="CENTER"/>
+                <Separator orientation="VERTICAL" prefHeight="492.0" BorderPane.alignment="CENTER" />
             </left>
             <center>
                 <SplitPane dividerPositions="0.5" prefHeight="420.0" prefWidth="281.0">
                     <items>
                         <ScrollPane>
                             <content>
-                                <TextArea fx:id="txtAreaDescription" prefHeight="420.0" prefWidth="512.0"/>
+                                <TextArea fx:id="txtAreaDescription" prefHeight="420.0" prefWidth="512.0" promptText="Task notes..." />
                             </content>
                         </ScrollPane>
                         <ScrollPane prefHeight="420.0" prefWidth="200.0">
                             <content>
-                                <WebView fx:id="wvDescription" prefHeight="411.0" prefWidth="161.0"/>
+                                <WebView fx:id="wvDescription" prefHeight="411.0" prefWidth="161.0" />
                             </content>
                         </ScrollPane>
                     </items>

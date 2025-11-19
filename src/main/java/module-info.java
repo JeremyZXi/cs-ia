@@ -18,6 +18,7 @@ module com.example.planner {
     requires flexmark.util.builder;
     requires javafx.media;
     requires opencsv;
+    requires se.alipsa.ymp;
 
 
     // --- Open to JavaFX ---

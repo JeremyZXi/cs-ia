@@ -44,6 +44,8 @@ public class SearchViewController {
     private TableColumn<Task, String> priorityColumn;
     @FXML
     private TableColumn<Task, String> completedColumn;
+    @FXML
+    private TableColumn<Task, String> sectionColumn;
 
     // Task detail components
     @FXML
@@ -118,6 +120,8 @@ public class SearchViewController {
         // config each cell with value
         titleColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getTitle()));
+        sectionColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSection().getName()));
 
         dueDateColumn.setCellValueFactory(cellData -> {
             Task task = cellData.getValue();
@@ -133,6 +137,7 @@ public class SearchViewController {
 
         priorityColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.format("%.1f", cellData.getValue().getPriority())));
+
 
         completedColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().isComplete() ? "Yes" : "No"));

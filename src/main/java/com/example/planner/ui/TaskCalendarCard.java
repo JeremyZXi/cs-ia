@@ -3,173 +3,80 @@ package com.example.planner.ui;
 import com.example.planner.module.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
+public class TaskCalendarCard extends Button {
 
-public class TaskCalendarCard extends HBox {
+    private final Task task;
+    private Color accentColor = Color.web("#e3f2fd"); // default color
 
-    private static TaskCalendarCard currentlySelectedCard = null; // tracks the selected card
-    private final Consumer<Task> onSelectCallback;
-    private final Consumer<Task> onTaskUpdateCallback;
+    public TaskCalendarCard(Task task) {
+        this(task, null);
+    }
 
-    private final CheckBox checkBox;
-    private final Label label;
-    private Task task;
-    private boolean isSelected = false;
 
-    private final String defaultStyle = "-fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
-    private final String selectedStyle = "-fx-background-color: #d0e8ff; -fx-border-color: #2196F3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
-    private final String completedStyle = "-fx-background-color: #e5e5e5; -fx-border-color: #cccccc; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
 
-    public TaskCalendarCard(Task task, Consumer<Task> onSelectCallback, Consumer<Task> onTaskUpdateCallback) {
+    /**
+     * constructor with an optional click callback.
+     * The callback receives the underlying Task.
+     */
+    public TaskCalendarCard(Task task, Consumer<Task> onClick) {
         this.task = task;
-        this.onSelectCallback = onSelectCallback;
-        this.onTaskUpdateCallback = onTaskUpdateCallback;
 
-        // init components
-        checkBox = new CheckBox(task.getTitle());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d");
-        label = new Label(task.getDueDate() != null ? task.getDueDate().format(formatter) : "No due date");
+        // Basic visual setup
+        setFocusTraversable(false);
+        setPadding(new Insets(2, 4, 2, 4));
+        setAlignment(Pos.TOP_LEFT);
+        setWrapText(true);                  // long titles wrap
+        setMaxWidth(Double.MAX_VALUE);      // fill cell width if needed
+        getStyleClass().add("task-calendar-card");
 
-        checkBox.setPrefWidth(338);
-        checkBox.setPrefHeight(50);
-        checkBox.setPadding(new Insets(8, 8, 8, 8));
-        checkBox.setSelected(task.isComplete());
+        // Only display the title of the task
+        String title = (task != null && task.getTitle() != null)
+                ? task.getTitle()
+                : "(no title)";
+        setText(title);
 
-        if (task.getDueDate().isBefore(LocalDate.now())) {
-            label.setTextFill(Color.web("#eb4034"));
-        } else {
-            label.setTextFill(Color.web("#1888ed"));
+        // Optional click callback
+        if (onClick != null) {
+            setOnAction(e -> onClick.accept(this.task));
         }
 
-        label.setAlignment(Pos.CENTER_RIGHT);
-        label.setMinWidth(80);
-
-
-        setPrefWidth(250);
-        setMinWidth(250);
-        setPrefHeight(40);
-        setAlignment(Pos.CENTER_LEFT);
-        setSpacing(10);
-        setStyle(defaultStyle);
-
-        getChildren().addAll(checkBox, label);
-
-        setupListeners();
+        // Initial color
+        applyAccentColor();
     }
 
-    private void setupListeners() {
-        checkBox.setOnAction(e -> {
-            boolean isComplete = checkBox.isSelected();
-            task.setComplete(isComplete);
-            updateCompletionStyle();
-            playCheckSound();
-
-            // notify the controller about the task update
-            if (onTaskUpdateCallback != null) {
-                onTaskUpdateCallback.accept(task);
-            }
-        });
-
-        // select this card on click
-        this.setOnMouseClicked(e -> select());
+    /**
+     * Change the accent/background color of this card.
+     * This is the main hook for you to theme by priority, list, etc.
+     */
+    public void setAccentColor(Color color) {
+        if (color == null) return;
+        this.accentColor = color;
+        applyAccentColor();
     }
 
-    public static TaskCalendarCard getCurrentlySelectedTask() {
-        if (currentlySelectedCard != null) {
-            return currentlySelectedCard;
-        } else {
-            return null;
-        }
+    /** Where the color is actually applied. Customize this as you like. */
+    private void applyAccentColor() {
+        String web = toWebColor(accentColor);
+        // >>> THIS IS THE PLACE TO TWEAK COLORS / STYLE <<<
+        setStyle("-fx-background-color: " + web + ";" +
+                "-fx-background-radius: 4;" +
+                "-fx-padding: 2 4 2 4;" +
+                "-fx-text-fill: -fx-text-inner-color;");
     }
 
-
-    public void select() {
-        if (currentlySelectedCard != null && currentlySelectedCard != this) {
-            currentlySelectedCard.deselect();
-        }
-
-        isSelected = true;
-        setStyle(selectedStyle);
-        currentlySelectedCard = this;
-
-        if (onSelectCallback != null) {
-            onSelectCallback.accept(task);
-        }
-    }
-
-    public void deselect() {
-        isSelected = false;
-        updateCompletionStyle();
-    }
-
-    public boolean isSelected() {
-        return isSelected;
+    private String toWebColor(Color c) {
+        int r = (int) Math.round(c.getRed() * 255);
+        int g = (int) Math.round(c.getGreen() * 255);
+        int b = (int) Math.round(c.getBlue() * 255);
+        return String.format("#%02x%02x%02x", r, g, b);
     }
 
     public Task getTask() {
         return task;
     }
-
-    public void setTask(Task task) {
-        this.task = task;
-        refreshDisplay();
-    }
-
-    /**
-     * refreshes the TaskCard display
-     */
-    public void refreshDisplay() {
-        if (task == null) {
-            return;
-        }
-
-        //update evrything
-
-        checkBox.setText(task.getTitle());
-
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d");
-        label.setText(task.getDueDate() != null ? task.getDueDate().format(formatter) + ", " + task.getLetterDate() + " day" : "No due date");
-
-
-        checkBox.setSelected(task.isComplete());
-
-
-        updateCompletionStyle();
-    }
-
-    /**
-     * updates the visual style based on task status
-     */
-    private void updateCompletionStyle() {
-        if (task.isComplete()) {
-            this.setStyle(completedStyle);
-            checkBox.setStyle("-fx-text-fill: #888888; -fx-strikethrough: true;");
-        } else {
-            this.setStyle(isSelected ? selectedStyle : defaultStyle);
-            checkBox.setStyle("");
-        }
-    }
-
-    private void playCheckSound() {
-        try {
-            String soundPath = getClass().getResource("/com/example/planner/ding-402325.mp3").toExternalForm();
-            Media sound = new Media(soundPath);
-            MediaPlayer mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.play();
-        } catch (Exception e) {
-            System.err.println("Could not play sound: " + e.getMessage());
-        }
-    }
-
 }
