@@ -115,6 +115,12 @@
             <artifactId>fx-yearmonth-picker</artifactId>
             <version>1.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-ext-tables</artifactId>
+            <version>0.64.8</version>
+        </dependency>
+
     </dependencies>
 
     <build>

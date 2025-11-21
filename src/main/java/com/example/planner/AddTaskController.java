@@ -27,7 +27,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * window use to add new task
+ * <p>
+ * Add new tasks
+ * process data & permanent storage
+ */
 public class AddTaskController {
 
     @FXML
@@ -101,7 +106,7 @@ public class AddTaskController {
 
         });
 
-        // Add Enter key event handler to the task name field
+        // add Enter key event handler to the task name field
         txtFiledTaskName.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 try {
@@ -111,6 +116,7 @@ public class AddTaskController {
                 }
             }
         });
+        //listener for date picker to update the preview and update section selection
         datePicker.valueProperty().addListener((obs, oldVal, newVal) -> {
             lblDueInfo.setText(newVal.toString() + " (" + datePicker.getLetterForDate(newVal) + " day)");
             ArrayList<Section> selected = sectionFilter(String.valueOf(datePicker.getLetterForDate(newVal)));
@@ -128,6 +134,7 @@ public class AddTaskController {
 
         });
 
+        //instruct the user to filled missing field
         txtFiledTaskName.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal && txtFiledTaskName.getText().trim().isEmpty()) {
                 Tooltip.install(txtFiledTaskName, emptyFieldTooltip);
@@ -136,7 +143,7 @@ public class AddTaskController {
             }
         });
 
-
+        //add time spinner
         Spinner<Integer> minutesSpinner = new Spinner<>();
         minutesSpinner.setEditable(true);
         minutesSpinner.setPrefWidth(100);
@@ -243,6 +250,7 @@ public class AddTaskController {
         System.out.println(selectedMinutes);
 
         if (!txtFiledTaskName.getText().trim().isEmpty()) {
+            //extract data from UI
             String title = txtFiledTaskName.getText();
             String description = txtAreaTaskDescription.getText();
             Section section = selectedSection;
@@ -256,6 +264,7 @@ public class AddTaskController {
                 timeSpan = 15;
             }
 
+            //save data into task object
             Task task;
             if (date != null) {
                 //task = new Task(date,datePicker.getLetterForDate(date),60,title,description);
@@ -278,6 +287,10 @@ public class AddTaskController {
         }
     }
 
+    /**
+     * filter the section of the day
+     * @param letterDate letter date from A-H
+     */
     public ArrayList<Section> sectionFilter(String letterDate) {
         ArrayList<Section> selected = new ArrayList<>();
         for (Section section : setting.getSections()) {

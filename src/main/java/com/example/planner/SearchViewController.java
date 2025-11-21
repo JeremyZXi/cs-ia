@@ -24,6 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A controller class responsible for search window
+ * <p>
+ * search tasks
+ * edit and update tasks
+ */
 public class SearchViewController {
 
     @FXML
@@ -116,6 +122,9 @@ public class SearchViewController {
         clearTaskDetail();
     }
 
+    /**
+     * load data into table(columns) and format them correctly
+     */
     private void setupTableColumns() {
         // config each cell with value
         titleColumn.setCellValueFactory(cellData ->
@@ -160,6 +169,7 @@ public class SearchViewController {
 
     /**
      * Linear search implementation to find tasks that match the search term
+     * @param searchTerm string that contain the search term
      */
     private List<Task> linearSearch(String searchTerm) {
         List<Task> results = new ArrayList<>();
@@ -176,9 +186,12 @@ public class SearchViewController {
     }
 
     /**
-     * Checks if a task matches the search criteria
+     * Checks if a task matches the search criteria AKA compare
+     * @param task the task to check
+     * @param searchTerm criteria to check
      */
     private boolean taskMatches(Task task, String searchTerm) {
+        //compare all the fields
         if (task.getTitle() != null &&
                 task.getTitle().toLowerCase().contains(searchTerm)) {
             return true;
@@ -207,6 +220,7 @@ public class SearchViewController {
 
     /**
      * Display task details in the right panel
+     * @param task task to display
      */
     private void displayTaskDetail(Task task) {
         if (task == null) {
@@ -259,6 +273,9 @@ public class SearchViewController {
         renderMarkdown(task.getDescription());
     }
 
+    /**
+     * clean up all the listeners to avoid memory leak
+     */
     private void cleanupEventListeners() {
         // remove old listeners if they exist so no memory leak
         if (titleListener != null) {
@@ -271,7 +288,10 @@ public class SearchViewController {
             checkBoxIsComplete.setOnAction(null);
         }
     }
-
+    /**
+     * setup event listener for the task displayed in the detail pane
+     * @param task the task which we want to update
+     */
     private void setupEventListeners(Task task) {
         // listen to title
         titleListener = (obs, oldVal, newVal) -> {
@@ -298,11 +318,18 @@ public class SearchViewController {
         checkBoxIsComplete.setOnAction(completionHandler);
     }
 
+    /**
+     * refresh table view to show updates
+     */
     private void refreshTableView() {
         // table refresh to show updated values
         taskTable.refresh();
     }
 
+    /**
+     * convert markdown into html to display in the webengine
+     * @param markdownText the markdown task to display
+     */
     private void renderMarkdown(String markdownText) {
         if (markdownText == null) markdownText = "";
 
@@ -311,6 +338,10 @@ public class SearchViewController {
         webEngine.loadContent(html, "text/html");
     }
 
+
+    /**
+     * save tasks to permanent storage by using StorageManager
+     */
     private void saveTasksToStorage() {
         try {
             StorageManager.save(tasks);
@@ -320,6 +351,9 @@ public class SearchViewController {
         }
     }
 
+    /**
+     * Clear detail pane for latter use
+     */
     private void clearTaskDetail() {
         cleanupEventListeners();
         currentDisplayedTask = null;
@@ -333,6 +367,10 @@ public class SearchViewController {
         prioritySign.setManaged(false);
     }
 
+    /**
+     * correspond priority to the corresponding UI component
+     * @param task corresponding task object
+     */
     private Image getPrioritySign(Task task) {
         double p = task.getPriority();
         final double EPS = 1e-6;

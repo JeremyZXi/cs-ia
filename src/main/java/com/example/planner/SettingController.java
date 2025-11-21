@@ -5,6 +5,12 @@ import com.example.planner.module.Setting;
 import com.example.planner.utility.SettingManager;
 import javafx.fxml.FXML;
 
+/**
+ * A controller class responsible for the UI components of the Setting window, as well as some data processing
+ * <p>
+ * Inherited from OnboardingController
+ * See OnboardingController Class
+ */
 public class SettingController extends OnboardingController {
 
     @Override
@@ -29,6 +35,7 @@ public class SettingController extends OnboardingController {
         masterController.setSharedData("setting", setting);
         System.out.println("setting saved");
     }
+
 
 
 }

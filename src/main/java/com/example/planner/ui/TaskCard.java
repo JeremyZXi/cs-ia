@@ -14,7 +14,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
-
+/**
+ * a custom card that display task in dashboard lists
+ * <p>
+ * used in dashboard
+ */
 public class TaskCard extends HBox {
 
     private static TaskCard currentlySelectedCard = null; // tracks the selected card
@@ -30,6 +34,12 @@ public class TaskCard extends HBox {
     private final String selectedStyle = "-fx-background-color: #d0e8ff; -fx-border-color: #2196F3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
     private final String completedStyle = "-fx-background-color: #e5e5e5; -fx-border-color: #cccccc; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;";
 
+    /**
+     * constructor that creates an instance of TaskCard
+     * @param task the task this card hold
+     * @param onSelectCallback callback to return selection status
+     * @param onTaskUpdateCallback callback to return update status
+     */
     public TaskCard(Task task, Consumer<Task> onSelectCallback, Consumer<Task> onTaskUpdateCallback) {
         this.task = task;
         this.onSelectCallback = onSelectCallback;
@@ -67,6 +77,9 @@ public class TaskCard extends HBox {
         setupListeners();
     }
 
+    /**
+     * Setup listeners on checkbox and mouse click
+     */
     private void setupListeners() {
         checkBox.setOnAction(e -> {
             boolean isComplete = checkBox.isSelected();
@@ -84,15 +97,10 @@ public class TaskCard extends HBox {
         this.setOnMouseClicked(e -> select());
     }
 
-    public static TaskCard getCurrentlySelectedTask() {
-        if (currentlySelectedCard != null) {
-            return currentlySelectedCard;
-        } else {
-            return null;
-        }
-    }
 
-
+    /**
+     * update the style when selected and update the selection status
+     */
     public void select() {
         if (currentlySelectedCard != null && currentlySelectedCard != this) {
             currentlySelectedCard.deselect();
@@ -112,14 +120,23 @@ public class TaskCard extends HBox {
         updateCompletionStyle();
     }
 
+    /**
+     * @return isSelected
+     */
     public boolean isSelected() {
         return isSelected;
     }
 
+    /**
+     * @return task the task hold by this card
+     */
     public Task getTask() {
         return task;
     }
 
+    /**
+     * @param task set new task for this card
+     */
     public void setTask(Task task) {
         this.task = task;
         refreshDisplay();
@@ -161,6 +178,9 @@ public class TaskCard extends HBox {
         }
     }
 
+    /**
+     * play the ding~~ sound when completing the task
+     */
     private void playCheckSound() {
         try {
             String soundPath = getClass().getResource("/com/example/planner/ding-402325.mp3").toExternalForm();

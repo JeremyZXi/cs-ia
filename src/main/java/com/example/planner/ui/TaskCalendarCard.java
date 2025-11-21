@@ -8,11 +8,19 @@ import javafx.scene.paint.Color;
 
 import java.util.function.Consumer;
 
+/**
+ * a custom card that display task in calendar view
+ * <p>
+ * used in Calendar
+ */
 public class TaskCalendarCard extends Button {
 
     private final Task task;
     private Color accentColor = Color.web("#e3f2fd"); // default color
 
+    /**
+     * constructor creates an instance of TaskCalendarCard
+     */
     public TaskCalendarCard(Task task) {
         this(task, null);
     }
@@ -25,6 +33,7 @@ public class TaskCalendarCard extends Button {
      */
     public TaskCalendarCard(Task task, Consumer<Task> onClick) {
         this.task = task;
+        this.accentColor = Color.web(task.getSection().getColor());
 
         // Basic visual setup
         setFocusTraversable(false);
@@ -50,8 +59,8 @@ public class TaskCalendarCard extends Button {
     }
 
     /**
-     * Change the accent/background color of this card.
-     * This is the main hook for you to theme by priority, list, etc.
+     * change the accent/background color of this card.
+     * @param color Color object
      */
     public void setAccentColor(Color color) {
         if (color == null) return;
@@ -59,7 +68,7 @@ public class TaskCalendarCard extends Button {
         applyAccentColor();
     }
 
-    /** Where the color is actually applied. Customize this as you like. */
+    /** apply color */
     private void applyAccentColor() {
         String web = toWebColor(accentColor);
         // >>> THIS IS THE PLACE TO TWEAK COLORS / STYLE <<<
@@ -69,6 +78,11 @@ public class TaskCalendarCard extends Button {
                 "-fx-text-fill: -fx-text-inner-color;");
     }
 
+    /**
+     * convert hex to webcolor
+     * @param c
+     * @return RGB format
+     */
     private String toWebColor(Color c) {
         int r = (int) Math.round(c.getRed() * 255);
         int g = (int) Math.round(c.getGreen() * 255);
@@ -76,6 +90,9 @@ public class TaskCalendarCard extends Button {
         return String.format("#%02x%02x%02x", r, g, b);
     }
 
+    /**
+     * @return task
+     */
     public Task getTask() {
         return task;
     }

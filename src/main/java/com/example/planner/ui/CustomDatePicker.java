@@ -12,14 +12,25 @@ import javafx.scene.layout.StackPane;
 
 import java.time.LocalDate;
 
+/**
+ * a custom date picker that display letter date in its calendar
+ * <p>
+ * useful for assigning date to task
+ */
 public class CustomDatePicker extends DatePicker {
 
+    /**
+     * Creates a new CustomDatePicker instance
+     */
     public CustomDatePicker() {
         super();
         installFactory();
         //setConverter(new DateDisplayer(this));
     }
 
+    /**
+     * display letter date in the calendar selection view
+     */
     private void installFactory() {
         setDayCellFactory(dp -> new DateCell() {
             private final StackPane badge = buildBadge();
@@ -30,6 +41,11 @@ public class CustomDatePicker extends DatePicker {
                 setGraphicTextGap(4);
             }
 
+            /**
+             * overridde method to display letter date
+             * @param date
+             * @param empty
+             */
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
@@ -52,7 +68,10 @@ public class CustomDatePicker extends DatePicker {
 
             }
 
-
+            /**
+             * build badge for letter date display
+             * @return
+             */
             private StackPane buildBadge() {
                 Label lbl = new Label();
                 lbl.setMinSize(18, 18);
@@ -62,6 +81,11 @@ public class CustomDatePicker extends DatePicker {
                 return new StackPane(lbl);
             }
 
+            /**
+             * create wrapper for badge
+             * @param b
+             * @return wrapper
+             */
             private Node wrapWithCornerBadge(Node b) {
                 StackPane wrapper = new StackPane();
                 StackPane.setAlignment(b, Pos.TOP_RIGHT);
@@ -72,14 +96,16 @@ public class CustomDatePicker extends DatePicker {
         });
     }
 
+    /**
+     * conver calendar date to letter date
+     * @param date
+     * @return letterdtae
+     */
     public char getLetterForDate(LocalDate date) {
         return Date2Letter.letterDate(date).charAt(0);
     }
 
-    public String getLetterDateLabel(LocalDate date) {
-        char letter = Date2Letter.letterDate(date).charAt(0);
-        return (letter != '0') ? "Letter Day: " + letter : "";
-    }
+
 
 
 }

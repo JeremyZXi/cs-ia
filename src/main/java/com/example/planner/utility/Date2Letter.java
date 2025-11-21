@@ -18,7 +18,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
+/**
+ * A utility class converting calendar date to letter date
+ * <p>
+ * LocalDate to A-H
+ */
 public class Date2Letter {
 
     // default calendar file
@@ -32,7 +36,9 @@ public class Date2Letter {
 
     /**
      * Look up the cycle letter for a given LocalDate, based on calendar.csv
-     * Returns '0' if not found.
+     * returns '0' if not found.
+     * @param d LocalDate object
+     * @return letter the corresponding letter date
      */
     public static String letterDate(LocalDate d) {
         if (data == null) {
@@ -50,11 +56,15 @@ public class Date2Letter {
     }
 
     /**
-     * Generate the calendar CSV
-     * Columns: date, weekday, cycle_letter
+     * generate the calendar CSV
+     * columns: date, weekday, cycle_letter
      * - cycle_letter advances through A..H on weekdays (Mon–Fri)
      * - weekends (Sat, Sun) get '0' and do NOT advance the cycle
      * - holidays get '0' and do NOT advance the cycle
+     * @param startDate start date
+     * @param holidays list of holidays
+     * @param numDays number of days to generate
+     * @param outputPath path
      */
     public static void generateCalendarCsv(
             LocalDate startDate,
@@ -105,7 +115,13 @@ public class Date2Letter {
         data = readCSV(outputPath.toString());
     }
 
-
+    /**
+     * generates a calendar csv based on provided holiday
+     * @param startDate
+     * @param numDays
+     * @param holidays
+     * @throws IOException
+     */
     public static void generateCalendarCsv(
             LocalDate startDate,
             int numDays,
@@ -120,6 +136,7 @@ public class Date2Letter {
      * Expected format:
      * - First column = date in YYYY-MM-DD (ISO) format.
      * - First row is treated as header and skipped.
+     * @param holidayFile file containing holidays
      */
     public static Set<LocalDate> loadHolidaysFromCsv(File holidayFile) {
         Set<LocalDate> holidays = new HashSet<>();
@@ -156,8 +173,10 @@ public class Date2Letter {
     }
 
     /**
-     * Internal CSV reader used for the main calendar file.
-     * Skips the header row.
+     * internal CSV reader used for the main calendar file.
+     * skips the header row.
+     * @param file path of th ecsv file
+     * @return allData list of String
      */
     private static List<String[]> readCSV(String file) {
         List<String[]> allData = null;

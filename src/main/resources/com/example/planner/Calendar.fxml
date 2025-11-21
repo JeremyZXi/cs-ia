@@ -148,7 +148,7 @@
             <!-- Calendar grid (6 rows → up to 6 weeks) -->
             <ScrollPane fitToWidth="true" prefHeight="360.0">
                 <content>
-                    <GridPane fx:id="gridMonth" gridLinesVisible="true" hgap="5.0" prefHeight="360.0" vgap="5.0">
+                    <GridPane fx:id="gridMonth" gridLinesVisible="true" hgap="5.0" vgap="5.0">
                         <columnConstraints>
                             <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
                             <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
@@ -158,16 +158,18 @@
                             <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
                             <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
                         </columnConstraints>
+
+                        <!-- let GridPane compute height based on children -->
                         <rowConstraints>
-                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
-                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
-                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
-                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
-                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
-                            <RowConstraints minHeight="60.0" prefHeight="60.0" vgrow="ALWAYS" />
+                            <RowConstraints minHeight="60.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="60.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="60.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="60.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="60.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="60.0" vgrow="SOMETIMES" />
                         </rowConstraints>
-                        <!-- dynamically filled from controller -->
                     </GridPane>
+
                 </content>
             </ScrollPane>
         </VBox>
@@ -181,10 +183,10 @@
                     <children>
                         <HBox spacing="10.0">
                             <CheckBox fx:id="checkBoxIsComplete" mnemonicParsing="false" />
-                            <TextField fx:id="txtFieldTaskName" promptText="Task name" />
+                            <TextField fx:id="txtFieldTaskName" />
                         </HBox>
                         <HBox spacing="6.0">
-                            <Label fx:id="lblTaskInfo" text="No due date" textFill="#1888ed" />
+                            <Label fx:id="lblTaskInfo" text=" " textFill="#1888ed" />
                             <ImageView fx:id="prioritySign" fitHeight="20.0" fitWidth="20.0" preserveRatio="true" />
                         </HBox>
                     </children>
@@ -201,7 +203,7 @@
                     <items>
                         <ScrollPane>
                             <content>
-                                <TextArea fx:id="txtAreaDescription" prefHeight="420.0" prefWidth="512.0" promptText="Task notes..." />
+                                <TextArea fx:id="txtAreaDescription" prefHeight="420.0" prefWidth="512.0" />
                             </content>
                         </ScrollPane>
                         <ScrollPane prefHeight="420.0" prefWidth="200.0">

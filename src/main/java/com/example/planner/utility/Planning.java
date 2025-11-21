@@ -7,6 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * class use to employ dynamic programming to optimize task allocation
+ * <p>
+ *     turn problem into 0-1 allocation problem
+ *     objective function: max priority
+ *     subject to: time contrains
+ * </p>
+ */
 public class Planning {
 
     public static void main(String[] args) {
@@ -14,6 +22,12 @@ public class Planning {
 
     }
 
+    /**
+     *
+     * @param tasks list of task to optimize
+     * @param availableTime available time
+     * @return optimized list of task
+     */
     public static ArrayList<Task> plan(Map<String, Task> tasks, int availableTime) {
 
         List<Task> taskList = new ArrayList<>(tasks.values());
@@ -25,9 +39,11 @@ public class Planning {
         for (int i = 1; i <= num; i++) {
             Task currentTask = taskList.get(i - 1);
             for (int j = 0; j <= availableTime; j++) {
+                // see if select
                 if (j < currentTask.getTimeSpan()) {
-                    result[i][j] = result[i - 1][j];
+                    result[i][j] = result[i - 1][j]; // drop the current task because they can't fit into the time slot
                 } else {
+                    // time available for the current task, see if the task is prioritized or not to determine whether pick or note
                     result[i][j] = Math.max(
                             result[i - 1][j],
                             result[i - 1][j - currentTask.getTimeSpan()] + currentTask.getPriority()
@@ -49,8 +65,39 @@ public class Planning {
                 j -= selected.getTimeSpan();
             }
         }
-        //TODO: Add sorting based on priority
 
-        return selectedTasks;
+
+        return sort(selectedTasks);
     }
+
+    /**
+     * sort the task based on priority
+     * @param taskList list of task to sort
+     * @return sorted task descending
+     */
+    private static ArrayList<Task> sort(ArrayList<Task> taskList) {
+
+
+        boolean swapped = true;
+        int n = taskList.size();
+
+        while (swapped) {
+            swapped = false;
+
+            for (int i = 0; i < n - 1; i++) {
+                Task current = taskList.get(i);
+                Task next = taskList.get(i + 1);
+
+                // big one goes first
+                if (current.getPriority() < next.getPriority()) {
+                    taskList.set(i, next);
+                    taskList.set(i + 1, current);
+                    swapped = true;
+                }
+            }
+        }
+
+        return new ArrayList<>(taskList);
+    }
+
 }

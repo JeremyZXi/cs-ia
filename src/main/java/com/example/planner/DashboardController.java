@@ -30,8 +30,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//TODO: add some sort of searching functionality
+/**
+ * A controller class responsible for the UI components of the Dashboard window, as well as some data processing
+ * <p>
+ * update UI components and sync them with data, vice versa
+ * edit tasks, display task cards, involve optimization method
+ */
 public class DashboardController {
+
+    //fx:id for UI components
     @FXML
     private ImageView prioritySign;
     @FXML
@@ -72,7 +79,9 @@ public class DashboardController {
     @FXML
     private Button btnPlan;
 
+    //share data and window controll
     private MasterController masterController;
+    //map storing all the tasks
     private Map<String, Task> tasks = new HashMap<>();
 
 
@@ -98,7 +107,10 @@ public class DashboardController {
     private ArrayList<String> optimizedTaskIds = new ArrayList<>(); // store the order and id of planned task
 
 
+    //user setting
     private Setting setting;
+
+    //for detail pane
     private Section selectedSection;
 
 
@@ -138,81 +150,21 @@ public class DashboardController {
                 tasks = new HashMap<>();
             }
         }
-        inbox();
+        inbox();//refresh UI
 
 
     }
 
-    @FXML
-    public void handleAddTask() {
-        //masterController.openWindow("/com/example/planner/PopupSelection.fxml","Add New Tasks",null);
-        Stage currentStage = (Stage) btnPlan.getScene().getWindow();
-
-        masterController.openWindow("/com/example/planner/PopupSelection.fxml", "Add New Tasks", () -> {
-                    // callback runs AFTER the popup is closed
-                    // Reload task list from shared data
-                    tasks = masterController.getSharedData("Tasks");
-                    inbox(); // refresh the UI
-                }, null
-        );
 
 
-    }
-
-    @FXML
-    public void handleInbox() {
-        inbox();
-    }
-
-    @FXML
-    public void handleToday() {
-        vboxSection.getChildren().clear();
-        LocalDate today = LocalDate.now();
-        for (Section section : setting.getSections()) {
-            for (String letter : section.getLetterDates()) {
-                if (letter.equals(Date2Letter.letterDate(today))) {
-                    System.out.println(section.getName());
-
-                    Button sectionBtn = new Button(section.getName());
-                    sectionBtn.setOnAction(e -> {
-                        btnPlan.setDisable(false);
-                        optimizedActive = false;
-                        onInbox = false;
-                        optimizedTaskIds.clear();
-
-                        taskCardMap.clear();
-                        selectedSection = section;
-                        lblHeader.setText(section.getName());
-                        vboxAllTask.getChildren().clear();
-                        vboxTodayTask.getChildren().clear();
-                        //filter tasks
-                        Map<String, Task> selectedTasks = filterTask(tasks, section);
-                        for (Task task : selectedTasks.values()) {
-                            TaskCard card = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
-                            taskCardMap.put(task.getId(), card);
-                            card.refreshDisplay();
-                            if (task.getDueDate() != null && task.getDueDate().equals(today)) {
-                                vboxTodayTask.getChildren().add(card);
-                            } else if (task.getDueDate().isBefore(today)) {
-                                vboxTodayTask.getChildren().add(card);
-                                System.out.println("past due 1");
-                            } else {
-                                vboxAllTask.getChildren().add(card);
-                            }
-                            renderLists(selectedTasks);
-                            //optimizedTasks();
-                        }
-                    });
-                    vboxSection.getChildren().add(sectionBtn);
-                }
-            }
-        }
-    }
-
+    /**
+     * Refresh the UI components to its initial states. Display all the tasks and sections
+     */
     private void inbox() {
         onInbox = true;
         LocalDate today = LocalDate.now();
 
+        //clear all the varaibles
         selectedSection = null;
         optimizedActive = false;
         optimizedTaskIds.clear();
@@ -225,6 +177,7 @@ public class DashboardController {
         lblHeader.setText("inbox");
 
 
+        //display all the sections
         for (Section section : setting.getSections()) {
             Button sectionBtn = new Button(section.getName());
             sectionBtn.setOnAction(e -> {
@@ -281,44 +234,17 @@ public class DashboardController {
             }
         }
         renderLists(tasks);
-        //optimizedTasks();
-    }
-
-    @FXML
-    public void OnOptimizedTasks() {
-        LocalDate today = LocalDate.now();
-
-        Map<String, Task> todayTasks = tasks.entrySet().stream()
-                .filter(e -> e.getValue().getDueDate() != null
-                        && e.getValue().getDueDate().equals(today)
-                        || e.getValue().getDueDate().isBefore(today)
-                        && !e.getValue().isComplete())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        if (todayTasks.isEmpty()) {
-            optimizedActive = false;
-            optimizedTaskIds.clear();
-            renderLists(getActiveSource());
-            return;
-        }
-
-        int availableTime = 75; // TODO: obtain from settings
-        ArrayList<Task> plannedTasks = Planning.plan(todayTasks, availableTime);
-
-        // save the optimized tasks
-        optimizedActive = true;
-        optimizedTaskIds.clear();
-        for (Task t : plannedTasks) {
-            optimizedTaskIds.add(t.getId());
-        }
-
-        // render normally first
-        renderLists(getActiveSource());
-        // apply the separators
-        applyOptimizedLayout();
     }
 
 
+
+
+    /**
+     * filter tasks based on sections
+     * @param taskLists list of instacnes of Task class
+     * @param filterSection the target section for which we want to select
+     * @return filteredTask task belong to that section
+     */
     private Map<String, Task> filterTask(Map<String, Task> taskLists, Section filterSection) {
         Map<String, Task> filteredTask = new HashMap<>();
         for (Map.Entry<String, Task> entry : taskLists.entrySet()) {
@@ -338,8 +264,14 @@ public class DashboardController {
         return filteredTask;
     }
 
+
+    /**
+     * display content in the right detail pane
+     * @param task the task to display
+     */
     private void displayTaskDetail(Task task) {
 
+        //handle null
         if (task == null) {
             clearTaskDetail();
             return;
@@ -375,6 +307,9 @@ public class DashboardController {
         renderMarkdown(task.getDescription());
     }
 
+    /**
+     * clean up all the listeners to avoid memory leak
+     */
     private void cleanupEventListeners() {
         // Remove old listeners if they exist
         if (titleListener != null) {
@@ -388,6 +323,10 @@ public class DashboardController {
         }
     }
 
+    /**
+     * setup event listener for the task displayed in the detail pane
+     * @param task the task which we want to update
+     */
     private void setupEventListeners(Task task) {
 
         //listen to title, description, completion
@@ -419,6 +358,10 @@ public class DashboardController {
         checkBoxIsComplete.setOnAction(completionHandler);
     }
 
+    /**
+     * convert markdown into html to display in the webengine
+     * @param markdownText the markdown task to display
+     */
     private void renderMarkdown(String markdownText) {
         if (markdownText == null) markdownText = "";
 
@@ -428,6 +371,9 @@ public class DashboardController {
         webEngine.loadContent(html, "text/html");
     }
 
+    /**
+     * save tasks to permanent storage by using StorageManager
+     */
     private void saveTasksToStorage() {
         try {
             StorageManager.save(tasks);
@@ -439,6 +385,7 @@ public class DashboardController {
 
     /**
      * refreshes the corresponding TaskCard when a task is updated
+     * @param task the task which displayed by the TaskCard
      */
     private void refreshTaskCard(Task task) {
         if (task == null || task.getId() == null) return;
@@ -452,9 +399,10 @@ public class DashboardController {
     /**
      * handle task updates from TaskCard(e.g., completion checkbox changes)
      * Updates the detail pane if this task is currently displayed
+     * @param task the task which we want to update
      */
     private void handleTaskUpdateFromCard(Task task) {
-        if (task == null) return;
+        if (task == null) return; //in case of null task
 
         // save the updated task to storage
         saveTasksToStorage();
@@ -474,9 +422,10 @@ public class DashboardController {
     /**
      * refresh the detail pane to reflect the current task state
      * this is called when the task is updated from a TaskCard
+     * @param task the task which we want to refresh
      */
     private void refreshDetailPane(Task task) {
-        if (task == null) return;
+        if (task == null) return; //prevent null poitner exceptions
 
         // update the UI components without triggering listeners
         //  remove listeners to avoid infinite loops
@@ -499,6 +448,9 @@ public class DashboardController {
         renderMarkdown(task.getDescription());
     }
 
+    /**
+     * Clear detail pane for latter use
+     */
     private void clearTaskDetail() {
         cleanupEventListeners();
         currentDisplayedTask = null;
@@ -509,6 +461,10 @@ public class DashboardController {
         prioritySign.imageProperty().set(null);
     }
 
+    /**
+     * display/update task cards in all the destination(VBox es)
+     * @param source list of tasks to display
+     */
     private void renderLists(Map<String, Task> source) {
         vboxTodayTask.getChildren().clear();
         vboxAllTask.getChildren().clear();
@@ -518,6 +474,7 @@ public class DashboardController {
         ArrayList<Task> completeToday = new ArrayList<>();
         ArrayList<Task> completeAll = new ArrayList<>();
 
+        //loop over all the tasks
         for (Task task : source.values()) {
             TaskCard card = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
             taskCardMap.put(task.getId(), card);
@@ -542,7 +499,7 @@ public class DashboardController {
             }
         }
 
-        // Append completed at the bottom of each list
+        // append completed at the bottom of each list
         for (Task t : completeToday) {
             TaskCard c = taskCardMap.get(t.getId());
             if (c != null) vboxTodayTask.getChildren().add(c);
@@ -554,6 +511,10 @@ public class DashboardController {
     }
 
 
+    /**
+     * correspond priority to the corresponding UI component
+     * @param task corresponding task object
+     */
     private Image getPrioritySign(Task task) {
         double p = task.getPriority();
         final double EPS = 1e-6; // handle floating point precision
@@ -579,7 +540,10 @@ public class DashboardController {
         }
     }
 
-    //return map we should redner now(either selectedSection or other)
+    /**
+     * return map we should redner now(either selectedSection or other)
+     * @return filterTask(tasks, selectedSection) list of filtered tasks
+     */
     private Map<String, Task> getActiveSource() {
         if (selectedSection == null) {
             return tasks;
@@ -587,6 +551,10 @@ public class DashboardController {
         return filterTask(tasks, selectedSection);
     }
 
+    /**
+     * apply layout for optimized tasks if optimized
+     * add seperators
+     */
     private void applyOptimizedLayout() {
         // if there's nothing, remove all the separators
         if (!optimizedActive || optimizedTaskIds == null || optimizedTaskIds.isEmpty()) {
@@ -618,7 +586,7 @@ public class DashboardController {
         }
 
         // insert top separator
-        Label topLabel = new Label("Recommended Tasks (Optimized)");
+        Label topLabel = new Label("Recommended Tasks");
         topLabel.getStyleClass().add("optimized-header");
         vboxTodayTask.getChildren().add(0, topLabel);
 
@@ -642,6 +610,9 @@ public class DashboardController {
         optimizedTaskIds = stillApplicable;
     }
 
+    /**
+     * remove all the separators for optimized tasks
+     */
     private void removeOptimizedSeparators() {
         vboxTodayTask.getChildren().removeIf(node ->
                 node instanceof Label &&
@@ -652,17 +623,111 @@ public class DashboardController {
         );
     }
 
-    //temporary date convertion
-    //TODO: implement whatever Mr.Ben implemented in his VB code
+
+    @FXML
+    public void handleAddTask() {
+        //masterController.openWindow("/com/example/planner/PopupSelection.fxml","Add New Tasks",null);
+        Stage currentStage = (Stage) btnPlan.getScene().getWindow();
+
+        masterController.openWindow("/com/example/planner/PopupSelection.fxml", "Add New Tasks", () -> {
+                    // callback runs AFTER the popup is closed
+                    // Reload task list from shared data
+                    tasks = masterController.getSharedData("Tasks");
+                    inbox(); // refresh the UI
+                }, null
+        );
 
 
+    }
+
+    @FXML
+    public void handleInbox() {
+        inbox();
+    }
+
+    @FXML
+    public void handleToday() {
+        vboxSection.getChildren().clear();
+        LocalDate today = LocalDate.now();
+        //filter tasks
+        for (Section section : setting.getSections()) {
+            for (String letter : section.getLetterDates()) {
+                if (letter.equals(Date2Letter.letterDate(today))) {
+                    System.out.println(section.getName());
+
+                    Button sectionBtn = new Button(section.getName());
+                    sectionBtn.setOnAction(e -> {
+                        btnPlan.setDisable(false);
+                        optimizedActive = false;
+                        onInbox = false;
+                        optimizedTaskIds.clear();
+
+                        taskCardMap.clear();
+                        selectedSection = section;
+                        lblHeader.setText(section.getName());
+                        vboxAllTask.getChildren().clear();
+                        vboxTodayTask.getChildren().clear();
+                        //filter tasks
+                        Map<String, Task> selectedTasks = filterTask(tasks, section);
+                        for (Task task : selectedTasks.values()) {
+                            TaskCard card = new TaskCard(task, this::displayTaskDetail, this::handleTaskUpdateFromCard);
+                            taskCardMap.put(task.getId(), card);
+                            card.refreshDisplay();
+                            if (task.getDueDate() != null && task.getDueDate().equals(today)) {
+                                vboxTodayTask.getChildren().add(card);
+                            } else if (task.getDueDate().isBefore(today)) {
+                                vboxTodayTask.getChildren().add(card);
+                                System.out.println("past due 1");
+                            } else {
+                                vboxAllTask.getChildren().add(card);
+                            }
+                            renderLists(selectedTasks);
+                            //optimizedTasks();
+                        }
+                    });
+                    vboxSection.getChildren().add(sectionBtn);
+                }
+            }
+        }
+    }
+    @FXML
+    public void onOptimizedTasks() {
+        LocalDate today = LocalDate.now();
+
+        Map<String, Task> todayTasks = tasks.entrySet().stream()
+                .filter(e -> e.getValue().getDueDate() != null
+                        && e.getValue().getDueDate().equals(today)
+                        || e.getValue().getDueDate().isBefore(today)
+                        && !e.getValue().isComplete())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        if (todayTasks.isEmpty()) {
+            optimizedActive = false;
+            optimizedTaskIds.clear();
+            renderLists(getActiveSource());
+            return;
+        }
+
+        int availableTime = 75; // TODO: obtain from settings
+        ArrayList<Task> plannedTasks = Planning.plan(todayTasks, availableTime);
+
+        // save the optimized tasks
+        optimizedActive = true;
+        optimizedTaskIds.clear();
+        for (Task t : plannedTasks) {
+            optimizedTaskIds.add(t.getId());
+        }
+
+        // render normally first
+        renderLists(getActiveSource());
+        // apply the separators
+        applyOptimizedLayout();
+    }
     //navbar navigation
 
     @FXML
     public void onSetting() {
-        Stage currentStage = (Stage) btnPlan.getScene().getWindow();
-        masterController.closeWindow("Dashboard");
-        masterController.openWindow("/com/example/planner/Setting.fxml", "Setting", null, currentStage);
+        masterController.openWindow("/com/example/planner/Setting.fxml", "Setting", null, null);
     }
 
     @FXML
@@ -687,6 +752,13 @@ public class DashboardController {
         Stage currentStage = (Stage) btnPlan.getScene().getWindow();
         masterController.openWindow("/com/example/planner/SearchView.fxml", "Search", null, null);
     }
+
+    @FXML
+    private void onHelp() {
+        masterController.openWindow("/com/example/planner/Help.fxml", "Help",null,null);
+    }
+
+
 
 
 }
