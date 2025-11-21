@@ -80,7 +80,7 @@ public class TaskCalendarCard extends Button {
 
     /**
      * convert hex to webcolor
-     * @param c
+     * @param c color object
      * @return RGB format
      */
     private String toWebColor(Color c) {

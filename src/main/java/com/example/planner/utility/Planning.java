@@ -18,7 +18,6 @@ import java.util.Map;
 public class Planning {
 
     public static void main(String[] args) {
-        Map<String, Task> tasks = new HashMap<>();
 
     }
 
