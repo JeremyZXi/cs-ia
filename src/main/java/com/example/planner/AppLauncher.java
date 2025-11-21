@@ -6,12 +6,10 @@ import javafx.stage.Stage;
 
 public class AppLauncher extends Application {
 
-    private MasterController masterController;
-
     @Override
     public void start(Stage stage) throws Exception {
 
-        masterController = MasterController.getInstance();
+        MasterController masterController = MasterController.getInstance();
         // masterController.openWindow("/com/example/planner/hello-view.fxml", "Login", null);
         if (!SettingManager.storageExists()) {
             masterController.openWindow("/com/example/planner/Onboarding.fxml", "Welcome", null, null);

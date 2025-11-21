@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 public class TaskCalendarCard extends Button {
 
     private final Task task;
-    private Color accentColor = Color.web("#e3f2fd"); // default color
+    private Color accentColor;
 
     /**
      * constructor creates an instance of TaskCalendarCard
@@ -44,7 +44,7 @@ public class TaskCalendarCard extends Button {
         getStyleClass().add("task-calendar-card");
 
         // Only display the title of the task
-        String title = (task != null && task.getTitle() != null)
+        String title = (task.getTitle() != null)
                 ? task.getTitle()
                 : "(no title)";
         setText(title);

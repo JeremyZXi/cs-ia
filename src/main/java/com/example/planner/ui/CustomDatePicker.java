@@ -43,8 +43,8 @@ public class CustomDatePicker extends DatePicker {
 
             /**
              * overridde method to display letter date
-             * @param date
-             * @param empty
+             * @param date date to display
+             * @param empty whether is empty or not
              */
             @Override
             public void updateItem(LocalDate date, boolean empty) {
@@ -70,7 +70,7 @@ public class CustomDatePicker extends DatePicker {
 
             /**
              * build badge for letter date display
-             * @return
+             * @return a pane
              */
             private StackPane buildBadge() {
                 Label lbl = new Label();
@@ -83,7 +83,7 @@ public class CustomDatePicker extends DatePicker {
 
             /**
              * create wrapper for badge
-             * @param b
+             * @param b node to wrap
              * @return wrapper
              */
             private Node wrapWithCornerBadge(Node b) {
@@ -98,7 +98,7 @@ public class CustomDatePicker extends DatePicker {
 
     /**
      * conver calendar date to letter date
-     * @param date
+     * @param date date in calendar
      * @return letterdtae
      */
     public char getLetterForDate(LocalDate date) {

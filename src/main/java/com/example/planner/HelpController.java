@@ -21,9 +21,6 @@ public class HelpController{
     @FXML
     private WebView webView;
 
-    private Parser markdownParser;
-    private HtmlRenderer markdownRenderer;
-
 
     public void initialize() {
         // flexmark setup
@@ -32,8 +29,8 @@ public class HelpController{
                 TablesExtension.create()
         ));
 
-        markdownParser = Parser.builder(options).build();
-        markdownRenderer = HtmlRenderer.builder(options).build();
+        Parser markdownParser = Parser.builder(options).build();
+        HtmlRenderer markdownRenderer = HtmlRenderer.builder(options).build();
 
 
         WebEngine engine = webView.getEngine();

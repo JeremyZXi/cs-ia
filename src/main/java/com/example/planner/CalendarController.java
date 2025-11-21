@@ -16,7 +16,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -31,6 +30,7 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -47,18 +47,7 @@ public class CalendarController implements Initializable {
     @FXML
     private BorderPane root;
 
-    // Header controls
-    @FXML
-    private Button btnPrevMonth;
-    @FXML
-    private Button btnNextMonth;
-    @FXML
-    private Button btnToday;
-    @FXML
-    private Button addTaskBtn;
 
-    @FXML
-    private HBox topHbox;
 
     @FXML
     private ComboBox<String> cmbMonth;   // visible month dropdown
@@ -246,7 +235,7 @@ public class CalendarController implements Initializable {
 
     /**
      * involve method to display task details
-     * @param task
+     * @param task task to display
      */
     private void onTaskClicked(Task task) {
         if (task == null) return; //prevent null
@@ -398,20 +387,20 @@ public class CalendarController implements Initializable {
 
         try {
             if (Math.abs(p - 1.0) < EPS) {
-                return new Image(getClass()
-                        .getResource("/com/example/planner/icon/priority_regular.png")
+                return new Image(Objects.requireNonNull(getClass()
+                                .getResource("/com/example/planner/icon/priority_regular.png"))
                         .toExternalForm());
             } else if (Math.abs(p - 5.0) < EPS) {
-                return new Image(getClass()
-                        .getResource("/com/example/planner/icon/priority_high.png")
+                return new Image(Objects.requireNonNull(getClass()
+                                .getResource("/com/example/planner/icon/priority_high.png"))
                         .toExternalForm());
             } else if (Math.abs(p - 2.5) < EPS) {
-                return new Image(getClass()
-                        .getResource("/com/example/planner/icon/priority_medium.png")
+                return new Image(Objects.requireNonNull(getClass()
+                                .getResource("/com/example/planner/icon/priority_medium.png"))
                         .toExternalForm());
             } else if (Math.abs(p - 0.0) < EPS) {
-                return new Image(getClass()
-                        .getResource("/com/example/planner/icon/priority_low.png")
+                return new Image(Objects.requireNonNull(getClass()
+                                .getResource("/com/example/planner/icon/priority_low.png"))
                         .toExternalForm());
             }
         } catch (Exception e) {
@@ -472,19 +461,10 @@ public class CalendarController implements Initializable {
         buildCalendar();
     }
 
-    @FXML
-    private void onToday() {
-        currentYearMonth = YearMonth.now();
-        syncControlsFromYearMonth();
-        buildCalendar();
-        selectedDate = LocalDate.now();
-        lblTaskInfo.setText("Today: " + Date2Letter.letterDate(selectedDate));
-    }
 
     @FXML
     private void onNewTask() {
-        //masterController.openWindow("/com/example/planner/PopupSelection.fxml","Add New Tasks",null);
-        Stage currentStage = (Stage) lblTaskInfo.getScene().getWindow();
+
 
         masterController.openWindow("/com/example/planner/PopupSelection.fxml", "Add New Tasks", () -> {
                     // callback runs AFTER the popup is closed
@@ -499,7 +479,6 @@ public class CalendarController implements Initializable {
     @FXML
     private void onDashboard() {
 
-        Stage currentStage = (Stage) lblTaskInfo.getScene().getWindow();
         masterController.closeWindow("Calendar");
         masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null, null);
     }

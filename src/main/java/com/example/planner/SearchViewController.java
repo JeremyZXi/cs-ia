@@ -23,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A controller class responsible for search window
@@ -34,10 +35,7 @@ public class SearchViewController {
 
     @FXML
     private TextField searchField;
-    @FXML
-    private Button searchButton;
-    @FXML
-    private Button cancelButton;
+
     @FXML
     private TableView<Task> taskTable;
     @FXML
@@ -67,7 +65,6 @@ public class SearchViewController {
     @FXML
     private ImageView prioritySign;
 
-    private MasterController masterController;
     private Map<String, Task> tasks;
     private ObservableList<Task> allTasks;
     private ObservableList<Task> displayedTasks;
@@ -85,7 +82,7 @@ public class SearchViewController {
 
     @FXML
     public void initialize() throws Exception {
-        masterController = MasterController.getInstance();
+        MasterController masterController = MasterController.getInstance();
         tasks = masterController.getSharedData("Tasks");
 
         // initialize markdown component
@@ -153,7 +150,7 @@ public class SearchViewController {
     }
 
     @FXML
-    void handleSearch(ActionEvent event) {
+    void handleSearch() {
         String searchTerm = searchField.getText();
         if (searchTerm == null || searchTerm.isEmpty()) {
             // if search is empty, display all tasks
@@ -211,7 +208,7 @@ public class SearchViewController {
     }
 
     @FXML
-    void handleCancel(ActionEvent event) {
+    void handleCancel() {
         // clear search and show all tasks
         searchField.clear();
         displayedTasks.clear();
@@ -376,20 +373,20 @@ public class SearchViewController {
         final double EPS = 1e-6;
 
         if (Math.abs(p - 1.0) < EPS) {
-            return new Image(getClass()
-                    .getResource("/com/example/planner/icon/priority_regular.png")
+            return new Image(Objects.requireNonNull(getClass()
+                            .getResource("/com/example/planner/icon/priority_regular.png"))
                     .toExternalForm());
         } else if (Math.abs(p - 5.0) < EPS) {
-            return new Image(getClass()
-                    .getResource("/com/example/planner/icon/priority_high.png")
+            return new Image(Objects.requireNonNull(getClass()
+                            .getResource("/com/example/planner/icon/priority_high.png"))
                     .toExternalForm());
         } else if (Math.abs(p - 2.5) < EPS) {
-            return new Image(getClass()
-                    .getResource("/com/example/planner/icon/priority_medium.png")
+            return new Image(Objects.requireNonNull(getClass()
+                            .getResource("/com/example/planner/icon/priority_medium.png"))
                     .toExternalForm());
         } else if (Math.abs(p - 0.0) < EPS) {
-            return new Image(getClass()
-                    .getResource("/com/example/planner/icon/priority_low.png")
+            return new Image(Objects.requireNonNull(getClass()
+                            .getResource("/com/example/planner/icon/priority_low.png"))
                     .toExternalForm());
         } else {
             return null;

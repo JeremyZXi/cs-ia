@@ -26,6 +26,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * window use to add new task
@@ -42,8 +43,6 @@ public class AddTaskController {
     @FXML
     private TitledPane sectionOption;
 
-    @FXML
-    private Button btnEnter;
 
     @FXML
     private Label lblDueInfo;
@@ -54,8 +53,6 @@ public class AddTaskController {
     @FXML
     private Button timeSpanBtn;
 
-    @FXML
-    private Spinner<?> spinPriority;
 
     @FXML
     private TextArea txtAreaTaskDescription;
@@ -96,9 +93,7 @@ public class AddTaskController {
         HtmlRenderer renderer = HtmlRenderer.builder(options).build();
         webEngine = wvTaskDescription.getEngine();
 
-        txtFiledTaskName.textProperty().addListener((obs, oldVal, newVal) -> {
-            lblTaskName.setText(newVal);
-        });
+        txtFiledTaskName.textProperty().addListener((obs, oldVal, newVal) -> lblTaskName.setText(newVal));
         txtAreaTaskDescription.textProperty().addListener((obs, oldVal, newVal) -> {
             Node document = parser.parse(newVal);
             String html = renderer.render(document);
@@ -216,7 +211,7 @@ public class AddTaskController {
     private void onHighPriority() {
         priority = 5.0;
         priorityImage.setImage(new Image(
-                getClass().getResource("/com/example/planner/icon/priority_high.png").toExternalForm()
+                Objects.requireNonNull(getClass().getResource("/com/example/planner/icon/priority_high.png")).toExternalForm()
         ));
     }
 
@@ -224,7 +219,7 @@ public class AddTaskController {
     private void onMediumPriority() {
         priority = 2.5;
         priorityImage.setImage(new Image(
-                getClass().getResource("/com/example/planner/icon/priority_medium.png").toExternalForm()
+                Objects.requireNonNull(getClass().getResource("/com/example/planner/icon/priority_medium.png")).toExternalForm()
         ));
     }
 
@@ -232,7 +227,7 @@ public class AddTaskController {
     private void onLowPriority() {
         priority = 0.0;
         priorityImage.setImage(new Image(
-                getClass().getResource("/com/example/planner/icon/priority_low.png").toExternalForm()
+                Objects.requireNonNull(getClass().getResource("/com/example/planner/icon/priority_low.png")).toExternalForm()
         ));
     }
 
@@ -259,7 +254,7 @@ public class AddTaskController {
             LocalTime end = LocalTime.now();
             int timeSpan;
             if (selectedMinutes != null) {
-                timeSpan = selectedMinutes.intValue();
+                timeSpan = selectedMinutes;
             } else {
                 timeSpan = 15;
             }
