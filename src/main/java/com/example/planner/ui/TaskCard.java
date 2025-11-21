@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -183,7 +184,7 @@ public class TaskCard extends HBox {
      */
     private void playCheckSound() {
         try {
-            String soundPath = getClass().getResource("/com/example/planner/ding-402325.mp3").toExternalForm();
+            String soundPath = Objects.requireNonNull(getClass().getResource("/com/example/planner/ding-402325.mp3")).toExternalForm();
             Media sound = new Media(soundPath);
             MediaPlayer mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.play();

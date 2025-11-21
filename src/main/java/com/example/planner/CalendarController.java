@@ -18,11 +18,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.Stage;
+
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -74,7 +74,6 @@ public class CalendarController implements Initializable {
 
     // state
     private YearMonth currentYearMonth;
-    private LocalDate selectedDate;
     private boolean updatingControls = false;
     private MasterController masterController;
     private Map<String, Task> tasks = new HashMap<>();
@@ -239,7 +238,7 @@ public class CalendarController implements Initializable {
      */
     private void onTaskClicked(Task task) {
         if (task == null) return; //prevent null
-        selectedDate = task.getDueDate();
+        LocalDate selectedDate = task.getDueDate();
         displayTaskDetail(task);   // same as Dashboard
     }
 

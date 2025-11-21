@@ -235,7 +235,7 @@ public class AddTaskController {
     private void onRegularPriority() {
         priority = 1.0;
         priorityImage.setImage(new Image(
-                getClass().getResource("/com/example/planner/icon/priority_regular.png").toExternalForm()
+                Objects.requireNonNull(getClass().getResource("/com/example/planner/icon/priority_regular.png")).toExternalForm()
         ));
     }
 

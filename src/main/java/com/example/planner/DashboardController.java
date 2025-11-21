@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -47,11 +48,6 @@ public class DashboardController {
     @FXML
     private Label lblHeader;
 
-    @FXML
-    private Label lblTaskCat1;
-
-    @FXML
-    private Label lblTaskCat2;
 
     @FXML
     private VBox vboxAllTask;
@@ -59,8 +55,6 @@ public class DashboardController {
     @FXML
     private VBox vboxSection;
 
-    @FXML
-    private VBox vboxOptimized;
 
     @FXML
     private VBox vboxTodayTask;
@@ -93,8 +87,6 @@ public class DashboardController {
     private ChangeListener<String> descriptionListener = null;
     private EventHandler<ActionEvent> completionHandler = null;
 
-    // reusable Markdown components
-    private WebEngine webEngine;
     private Parser markdownParser;
     private HtmlRenderer markdownRenderer;
 
@@ -365,7 +357,8 @@ public class DashboardController {
     private void renderMarkdown(String markdownText) {
         if (markdownText == null) markdownText = "";
 
-        webEngine = wvDescription.getEngine();
+        // reusable Markdown components
+        WebEngine webEngine = wvDescription.getEngine();
         Node document = markdownParser.parse(markdownText);
         String html = markdownRenderer.render(document);
         webEngine.loadContent(html, "text/html");
@@ -520,20 +513,20 @@ public class DashboardController {
         final double EPS = 1e-6; // handle floating point precision
 
         if (Math.abs(p - 1.0) < EPS) {
-            return new Image(getClass()
-                    .getResource("/com/example/planner/icon/priority_regular.png")
+            return new Image(Objects.requireNonNull(getClass()
+                            .getResource("/com/example/planner/icon/priority_regular.png"))
                     .toExternalForm());
         } else if (Math.abs(p - 5.0) < EPS) {
-            return new Image(getClass()
-                    .getResource("/com/example/planner/icon/priority_high.png")
+            return new Image(Objects.requireNonNull(getClass()
+                            .getResource("/com/example/planner/icon/priority_high.png"))
                     .toExternalForm());
         } else if (Math.abs(p - 2.5) < EPS) {
-            return new Image(getClass()
-                    .getResource("/com/example/planner/icon/priority_medium.png")
+            return new Image(Objects.requireNonNull(getClass()
+                            .getResource("/com/example/planner/icon/priority_medium.png"))
                     .toExternalForm());
         } else if (Math.abs(p - 0.0) < EPS) {
-            return new Image(getClass()
-                    .getResource("/com/example/planner/icon/priority_low.png")
+            return new Image(Objects.requireNonNull(getClass()
+                            .getResource("/com/example/planner/icon/priority_low.png"))
                     .toExternalForm());
         } else {
             return null;
@@ -627,7 +620,7 @@ public class DashboardController {
     @FXML
     public void handleAddTask() {
         //masterController.openWindow("/com/example/planner/PopupSelection.fxml","Add New Tasks",null);
-        Stage currentStage = (Stage) btnPlan.getScene().getWindow();
+
 
         masterController.openWindow("/com/example/planner/PopupSelection.fxml", "Add New Tasks", () -> {
                     // callback runs AFTER the popup is closed
@@ -732,7 +725,7 @@ public class DashboardController {
 
     @FXML
     public void onCalendar() {
-        Stage currentStage = (Stage) btnPlan.getScene().getWindow();
+
         masterController.closeWindow("Dashboard");
         masterController.openWindow("/com/example/planner/Calendar.fxml", "Calendar", null, null);
 
@@ -741,7 +734,7 @@ public class DashboardController {
 
     @FXML
     public void onDashboard() {
-        Stage currentStage = (Stage) btnPlan.getScene().getWindow();
+
         masterController.closeWindow("Dashboard");
         masterController.openWindow("/com/example/planner/Dashboard.fxml", "Dashboard", null, null);
 
@@ -749,7 +742,7 @@ public class DashboardController {
 
     @FXML
     public void onSearch() {
-        Stage currentStage = (Stage) btnPlan.getScene().getWindow();
+
         masterController.openWindow("/com/example/planner/SearchView.fxml", "Search", null, null);
     }
 
