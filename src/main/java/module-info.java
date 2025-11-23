@@ -1,7 +1,6 @@
 module com.example.planner {
     requires javafx.controls;
-    requires transitive javafx.fxml;
-    requires transitive javafx.graphics;
+    requires javafx.fxml;
     requires javafx.web;
 
     requires org.controlsfx.controls;
