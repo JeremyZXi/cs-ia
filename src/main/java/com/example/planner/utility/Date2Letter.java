@@ -22,6 +22,7 @@ import java.util.Set;
  * A utility class converting calendar date to letter date
  * <p>
  * LocalDate to A-H
+ * <p>
  */
 public class Date2Letter {
 

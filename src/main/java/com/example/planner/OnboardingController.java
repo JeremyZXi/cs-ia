@@ -77,6 +77,43 @@ public class OnboardingController {
             }
             if (!suppressRebuild) rebuildGrid();
         });
+
+        setDays(8);
+
+        periodRow.getChildren().clear();
+        periodCounter = 1;
+
+        // P1 08:00 - 09:15
+        periodRow.getChildren().add(
+                makePeriodRow(LocalTime.of(8, 0), LocalTime.of(9, 15))
+        );
+        periodCounter++;
+
+        // P2 09:40 - 10:55
+        periodRow.getChildren().add(
+                makePeriodRow(LocalTime.of(9, 40), LocalTime.of(10, 55))
+        );
+        periodCounter++;
+
+        // P3 11:10 - 12:25
+        periodRow.getChildren().add(
+                makePeriodRow(LocalTime.of(11, 10), LocalTime.of(12, 25))
+        );
+        periodCounter++;
+
+        // P4 13:25 - 14:10 (01:25 PM - 02:10 PM)
+        periodRow.getChildren().add(
+                makePeriodRow(LocalTime.of(13, 25), LocalTime.of(14, 10))
+        );
+        periodCounter++;
+
+        // P5 14:15 - 15:30 (02:15 PM - 03:30 PM)
+        periodRow.getChildren().add(
+                makePeriodRow(LocalTime.of(14, 15), LocalTime.of(15, 30))
+        );
+        periodCounter++;
+
+        rebuildGrid();
     }
 
     /*UI syncing and control related methods*/
