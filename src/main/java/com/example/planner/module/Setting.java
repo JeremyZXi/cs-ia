@@ -7,10 +7,14 @@ import java.util.ArrayList;
  * <p>
  * function as a module to hold data
  */
+
+//TODO: some sort of graph
+//TODO: allow the user to import and export
 public class Setting {
 
     /** array contains sections*/
     private ArrayList<Section> sections;
+    private boolean openNextTime;
 
     /** constructor for Jackson*/
     public Setting() {
@@ -20,11 +24,21 @@ public class Setting {
      * @param sections list of sections
      */
     public Setting(ArrayList<Section> sections) {
+
         this.sections = sections;
+        this.openNextTime = true;
     }
 
     public void addSection(Section section) {
         this.sections.add(section);
+    }
+
+    public boolean isOpenNextTime() {
+        return openNextTime;
+    }
+
+    public void setOpenNextTime(boolean openNextTime) {
+        this.openNextTime = openNextTime;
     }
 
     public ArrayList<Section> getSections() {

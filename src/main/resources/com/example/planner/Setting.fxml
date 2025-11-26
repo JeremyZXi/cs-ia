@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.SettingController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.SettingController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="424.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
@@ -95,6 +95,30 @@
                                 <Tooltip text="Import config file contains holidays to generate cycle date " />
                             </tooltip>
                         </Button>
+                  <Button mnemonicParsing="false" onAction="#onExport" prefHeight="26.0" prefWidth="154.0" text="Export Data">
+                     <graphic>
+                        <ImageView fitHeight="17.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icon/export_data.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Export your tasks and setting" />
+                     </tooltip>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onImport" prefHeight="26.0" prefWidth="154.0" text="Import Data">
+                     <graphic>
+                        <ImageView fitHeight="17.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icon/export_data.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Export your tasks and setting" />
+                     </tooltip>
+                  </Button>
                     </children>
                 </VBox>
             </children>
@@ -102,19 +126,14 @@
     </right>
 
     <bottom>
-        <HBox prefHeight="40.0" prefWidth="712.0" spacing="5.0" BorderPane.alignment="CENTER">
+        <HBox prefHeight="57.0" prefWidth="1032.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
-                <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
-                    <children>
-                        <Button mnemonicParsing="false" onAction="#onAddPeriod" prefHeight="26.0" prefWidth="128.0" text="+ Period">
-                            <tooltip>
-                                <Tooltip text="click to add a new time slot" />
-                            </tooltip>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#onSave" prefHeight="26.0" prefWidth="140.0" text="Save" />
-                    </children>
-                </VBox>
-                <Pane prefHeight="57.0" prefWidth="427.0" />
+                  <Button mnemonicParsing="false" onAction="#onSave" prefHeight="26.0" prefWidth="140.0" text="Save" />
+                  <Button mnemonicParsing="false" onAction="#onAddPeriod" prefHeight="26.0" prefWidth="128.0" text="+ Period">
+                      <tooltip>
+                          <Tooltip text="click to add a new time slot" />
+                      </tooltip>
+                  </Button>
             </children>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" />
@@ -143,7 +162,7 @@
 
                 <VBox fx:id="periodRow" prefHeight="211.0" prefWidth="194.0" spacing="5.0" style="-fx-background-color: #fafafa; -fx-border-color: #dcdcdc; -fx-padding: 8;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-                <GridPane fx:id="midGrid" hgap="10.0" style="-fx-background-color: #ffffff; -fx-border-color: #dcdcdc; -fx-padding: 8;" vgap="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <GridPane fx:id="midGrid" hgap="10.0" prefHeight="244.0" prefWidth="836.0" style="-fx-background-color: #ffffff; -fx-border-color: #dcdcdc; -fx-padding: 8;" vgap="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label text="Period">
                     <GridPane.margin>
                         <Insets left="10.0" />

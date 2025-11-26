@@ -1,10 +1,14 @@
 package com.example.planner;
 
+import com.example.planner.module.Task;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -14,15 +18,28 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
+
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 
 public class HelpController{
 
     @FXML
     private WebView webView;
+    @FXML
+    private PieChart pieChartTaskStats;
 
 
-    public void initialize() {
+    public void initialize() throws Exception {
+
+        MasterController masterController = MasterController.getInstance();
+
+        Map<String, Task> tasks = masterController.getSharedData("Tasks");
+
+
+
+        pieChartTaskStats.setData(generateStats(tasks));
+
         // flexmark setup
         MutableDataSet options = new MutableDataSet();
         options.set(Parser.EXTENSIONS, List.of(
@@ -31,6 +48,8 @@ public class HelpController{
 
         Parser markdownParser = Parser.builder(options).build();
         HtmlRenderer markdownRenderer = HtmlRenderer.builder(options).build();
+
+
 
 
         WebEngine engine = webView.getEngine();
@@ -74,6 +93,7 @@ public class HelpController{
                 """.formatted(css, htmlBody);
 
         engine.loadContent(html, "text/html");
+
     }
 
     /** Utility to read a text resource from the classpath into a String. */
@@ -94,4 +114,23 @@ public class HelpController{
             return null;
         }
     }
+    private ObservableList<PieChart.Data> generateStats(Map<String, Task> tasks) {
+        int completed = 0;
+        int incomplete = 0;
+
+        for (Task task : tasks.values()) {
+            if (task.isComplete()) {
+                completed++;
+            } else {
+                incomplete++;
+            }
+        }
+
+        return FXCollections.observableArrayList(
+                new PieChart.Data("Completed (" + completed + ")", completed),
+                new PieChart.Data("Incomplete (" + incomplete + ")", incomplete)
+        );
+    }
+
+
 }

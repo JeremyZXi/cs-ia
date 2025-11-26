@@ -66,6 +66,10 @@ public class OnboardingController {
 
     public void initialize() throws Exception {
         masterController = MasterController.getInstance();
+
+
+
+
         //listener to update the table based on user input
         daysInCycle.textProperty().addListener((obs, oldVal, newVal) -> {
             try {

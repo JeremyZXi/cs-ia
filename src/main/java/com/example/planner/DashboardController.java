@@ -108,6 +108,7 @@ public class DashboardController {
 
     public void initialize() throws Exception {
         masterController = MasterController.getInstance();
+
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM d"); // AKA Monday Sep 17
         lblGreetings.setText(today.format(formatter) + ", " + Date2Letter.letterDate(today) + " day");
@@ -143,6 +144,11 @@ public class DashboardController {
             }
         }
         inbox();//refresh UI
+        if(setting.isOpenNextTime()){
+            masterController.openWindow("/com/example/planner/Help.fxml", "Tips", null, null);
+            System.out.println("tips opened");
+        }
+
 
 
     }
