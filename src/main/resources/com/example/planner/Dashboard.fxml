@@ -36,6 +36,9 @@
                                     </image>
                                 </ImageView>
                             </graphic>
+                     <tooltip>
+                        <Tooltip text="Dashboard View" />
+                     </tooltip>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onCalendar" prefHeight="40.0" prefWidth="40.0">
                             <graphic>
@@ -45,6 +48,9 @@
                                     </image>
                                 </ImageView>
                             </graphic>
+                     <tooltip>
+                        <Tooltip text="Calendar View" />
+                     </tooltip>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onSetting" prefHeight="40.0" prefWidth="40.0">
                             <VBox.margin>
@@ -57,6 +63,9 @@
                                     </image>
                                 </ImageView>
                             </graphic>
+                     <tooltip>
+                        <Tooltip text="Setting" />
+                     </tooltip>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onSearch" prefHeight="40.0" prefWidth="40.0">
                             <graphic>
@@ -66,6 +75,9 @@
                                     </image>
                                 </ImageView>
                             </graphic>
+                     <tooltip>
+                        <Tooltip text="Lookup your task" />
+                     </tooltip>
                         </Button>
                         <Pane prefHeight="200.0" prefWidth="200.0" />
                         <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="41.0" prefWidth="32.0">
@@ -76,6 +88,9 @@
                                     </image>
                                 </ImageView>
                             </graphic>
+                     <tooltip>
+                        <Tooltip text="Help" />
+                     </tooltip>
                         </Button>
                     </children>
                     <padding>
@@ -238,7 +253,7 @@
                         </ScrollPane>
                         <ScrollPane prefHeight="420.0" prefWidth="200.0">
                             <content>
-                                <WebView fx:id="wvDescription" minHeight="-1.0" minWidth="-1.0" prefHeight="411.0" prefWidth="161.0" />
+                                <WebView fx:id="wvDescription" minHeight="-1.0" minWidth="-1.0" prefHeight="400.0" prefWidth="200.0" />
                             </content>
                         </ScrollPane>
                     </items>

@@ -10,7 +10,7 @@ public class AppLauncher extends Application {
     public void start(Stage stage) throws Exception {
 
         MasterController masterController = MasterController.getInstance();
-        // masterController.openWindow("/com/example/planner/hello-view.fxml", "Login", null);
+      
         if (!SettingManager.storageExists()) {
             masterController.openWindow("/com/example/planner/Onboarding.fxml", "Welcome", null, null);
         } else {

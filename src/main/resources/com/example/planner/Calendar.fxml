@@ -23,8 +23,6 @@
 <?import javafx.scene.web.WebView?>
 
 <BorderPane fx:id="root" prefHeight="515.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.planner.CalendarController">
-
-    <!-- ============ LEFT (icon bar only) ============ -->
     <left>
         <VBox prefWidth="56.0" spacing="10.0" style="-fx-background-color: #ececec;" BorderPane.alignment="CENTER">
             <padding>
@@ -84,19 +82,15 @@
             </Button>
         </VBox>
     </left>
-
-    <!-- ============ CENTER (calendar area) ============ -->
     <center>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
             </padding>
 
-            <!-- Top bar: greeting + month/year controls + new task -->
             <VBox spacing="4.0">
                 <HBox fx:id="topHbox" alignment="CENTER_LEFT" spacing="10.0">
 
-                    <!-- Month / Year controls -->
                     <Button fx:id="btnPrevMonth" onAction="#onPreviousMonth" text="‹" />
 
                     <ComboBox fx:id="cmbMonth" prefWidth="120.0" />
@@ -107,7 +101,6 @@
 
                     <Pane HBox.hgrow="ALWAYS" />
 
-                    <!-- New task button -->
                     <Button fx:id="addTaskBtn" mnemonicParsing="false" onAction="#onNewTask" text="New Task">
                         <graphic>
                             <ImageView fitHeight="14.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
@@ -120,7 +113,6 @@
                 </HBox>
             </VBox>
 
-            <!-- Weekday header -->
             <GridPane hgap="5.0" vgap="5.0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
@@ -145,7 +137,6 @@
                 </rowConstraints>
             </GridPane>
 
-            <!-- Calendar grid (6 rows → up to 6 weeks) -->
             <ScrollPane fitToWidth="true" prefHeight="360.0">
                 <content>
                     <GridPane fx:id="gridMonth" gridLinesVisible="true" hgap="5.0" vgap="5.0">
@@ -159,7 +150,6 @@
                             <ColumnConstraints hgrow="ALWAYS" percentWidth="14.28" />
                         </columnConstraints>
 
-                        <!-- let GridPane compute height based on children -->
                         <rowConstraints>
                             <RowConstraints minHeight="60.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="60.0" vgrow="SOMETIMES" />
@@ -175,7 +165,6 @@
         </VBox>
     </center>
 
-    <!-- ============ RIGHT (detail pane) ============ -->
     <right>
         <BorderPane prefHeight="515.0" prefWidth="335.0" BorderPane.alignment="CENTER">
             <top>

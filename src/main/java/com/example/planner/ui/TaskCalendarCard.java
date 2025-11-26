@@ -43,11 +43,11 @@ public class TaskCalendarCard extends Button {
         setMaxWidth(Double.MAX_VALUE);      // fill cell width if needed
         getStyleClass().add("task-calendar-card");
 
-        // Only display the title of the task
+        // only display the title of the task
         String title = (task.getTitle() != null)
                 ? task.getTitle()
                 : "(no title)";
-        setText(title);
+        setText(shortenString(title,15));
 
         // Optional click callback
         if (onClick != null) {
@@ -95,5 +95,14 @@ public class TaskCalendarCard extends Button {
      */
     public Task getTask() {
         return task;
+    }
+
+    private String shortenString(String text, int len){
+        if (text.length() >= len){
+            return text.substring(0,len-1) + "...";
+        }
+        else {
+            return text;
+        }
     }
 }

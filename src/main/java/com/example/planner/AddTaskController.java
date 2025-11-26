@@ -33,7 +33,7 @@ import java.util.Objects;
  * <p>
  * Add new tasks
  * process data & permanent storage
- * <p>
+ *
  */
 public class AddTaskController {
 
@@ -85,6 +85,7 @@ public class AddTaskController {
         tasks = masterController.getSharedData("Tasks");
         setting = masterController.getSharedData("setting");
         Platform.runLater(() -> txtFiledTaskName.requestFocus());
+
 
 
         vboxLeft.getChildren().add(2, datePicker);
@@ -250,7 +251,12 @@ public class AddTaskController {
             String title = txtFiledTaskName.getText();
             String description = txtAreaTaskDescription.getText();
             Section section = selectedSection;
-            LocalDate date = datePicker.getValue();
+            LocalDate date;
+            if(datePicker.getValue()!=null){
+                date = datePicker.getValue();
+            } else {
+                date =LocalDate.now();
+            }
             LocalTime start = LocalTime.now();
             LocalTime end = LocalTime.now();
             int timeSpan;

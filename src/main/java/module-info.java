@@ -4,10 +4,10 @@ module com.example.planner {
     requires javafx.web;
 
     requires org.controlsfx.controls;
-    requires com.dlsc.formsfx;
-    requires net.synedra.validatorfx;
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.bootstrapfx.core;
+    //requires com.dlsc.formsfx;
+    //requires net.synedra.validatorfx;
+    //requires org.kordamp.ikonli.javafx;
+    //requires org.kordamp.bootstrapfx.core;
     requires com.almasb.fxgl.all;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.datatype.jsr310;
@@ -17,7 +17,7 @@ module com.example.planner {
     requires flexmark.util.builder;
     requires javafx.media;
     requires opencsv;
-    requires se.alipsa.ymp;
+    //requires se.alipsa.ymp;
     requires flexmark.ext.tables;
 
 

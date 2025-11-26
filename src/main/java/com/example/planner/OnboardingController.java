@@ -582,7 +582,7 @@ public class OnboardingController {
         if (dot >= 0) ext = name.substring(dot);
 
 
-        String newName = "calendar2" + ext;
+        String newName = "calendar" + ext;
 
         Path destination = relativeDir.resolve(newName);
 
@@ -617,7 +617,7 @@ public class OnboardingController {
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (!line.isEmpty()) {
-                    holidayDates.add(LocalDate.parse(line)); // 默认 ISO 格式 yyyy-MM-dd
+                    holidayDates.add(LocalDate.parse(line)); // in ISO format
                 }
             }
         }
