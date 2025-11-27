@@ -226,7 +226,7 @@ public class DashboardController {
                 vboxTodayTask.getChildren().add(card);
             } else if (task.getDueDate().isBefore(today)) {
                 vboxTodayTask.getChildren().add(card);
-                System.out.println("past due 2");
+                System.out.println( "["+card.getTask().getTitle()+"]"+" past due");
             } else {
                 vboxAllTask.getChildren().add(card);
             }
@@ -676,7 +676,7 @@ public class DashboardController {
                                 vboxTodayTask.getChildren().add(card);
                             } else if (task.getDueDate().isBefore(today)) {
                                 vboxTodayTask.getChildren().add(card);
-                                System.out.println("past due 1");
+                                System.out.println( "["+card.getTask().getTitle()+"]"+" past due");
                             } else {
                                 vboxAllTask.getChildren().add(card);
                             }
