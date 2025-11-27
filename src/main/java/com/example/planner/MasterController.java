@@ -28,6 +28,10 @@ public class MasterController {
         loadSetting();
     }
 
+    /**
+     * use to load tasks from permanent storage
+     * @throws Exception
+     */
     private void loadTasks() throws Exception {
         Map<String, Task> tasks = new HashMap<>();
         if (StorageManager.storageExists()) {
@@ -38,11 +42,20 @@ public class MasterController {
         setSharedData("Tasks", tasks);
     }
 
+    /**
+     * get window instance
+     * @param key key of the window
+     * @return Window
+     */
     public Stage getWindows(String key) {
         System.out.println(windows.get(key));
         return windows.get(key);
     }
 
+    /**
+     * load setting from permanent storage
+     * @throws Exception
+     */
     private void loadSetting() throws Exception {
         Setting setting = new Setting();
         if (SettingManager.storageExists()) {
@@ -51,7 +64,11 @@ public class MasterController {
         setSharedData("setting", setting);
     }
 
-    // Thread-safe Singleton instance retrieval method
+    /**
+     *
+     * @return instance of MasterController
+     * @throws Exception
+     */
     public static synchronized MasterController getInstance() throws Exception {
         if (instance == null) {
             instance = new MasterController();
@@ -65,7 +82,13 @@ public class MasterController {
         return (T) sharedData.get(key);
     }
 
-    // Method to open a new window
+    /**
+     * Open a new window
+     * @param fxmlPath path to the FXML
+     * @param title title of the window
+     * @param onCloseCallback callback method
+     * @param callerStage the stage object that calls this window
+     */
     public void openWindow(String fxmlPath, String title, Runnable onCloseCallback, Stage callerStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -93,6 +116,10 @@ public class MasterController {
         }
     }
 
+    /**
+     * hide the window with that title
+     * @param title hide that window
+     */
     public void hideWindow(String title) {
         Stage stage = windows.get(title);
         if (stage != null) {
@@ -100,6 +127,10 @@ public class MasterController {
         }
     }
 
+    /**
+     * show the window with that title
+     * @param title title/key
+     */
     public void showWindow(String title) {
         Stage stage = windows.get(title);
         if (stage != null) {
@@ -107,6 +138,10 @@ public class MasterController {
         }
     }
 
+    /**
+     *show the window with that title
+     * @param title title/key
+     */
     public void closeWindow(String title) {
         Stage stage = windows.get(title);
         if (stage != null) {
@@ -115,6 +150,11 @@ public class MasterController {
         }
     }
 
+    /**
+     * show alert pop up
+     * @param alertTitle title of that popup
+     * @param message message in the alert
+     */
     public void showAlert(String alertTitle, String message) {
         // Create and display an alert dialog with the given title and message
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -124,12 +164,21 @@ public class MasterController {
         alert.showAndWait(); // Wait for the user to acknowledge the alert
     }
 
-    // Method to add shared data
+
+    /**
+     * set shared data into master controller
+     * @param key key of that object
+     * @param value the object itself
+     */
     public void setSharedData(String key, Object value) {
         sharedData.put(key, value);
     }
 
-    // Helper method to get stack trace as string
+    /**
+     * method to get stack trace string
+     * @param e
+     * @return string of stack tace
+     */
     private String getStackTraceString(Exception e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
